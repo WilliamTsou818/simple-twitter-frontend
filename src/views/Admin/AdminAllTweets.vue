@@ -22,7 +22,6 @@ export default {
   components: {
     AdminTweet
   },
-
   data() {
     return {
       tweets: [
