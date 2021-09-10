@@ -14,7 +14,9 @@
 </template>
 
 <script>
-import AdminTweet from './../../components/AdminTweet'
+// @ is an alias to /src
+// import AdminTweet from './../../components/AdminTweet'
+import AdminTweet from '@/components/AdminTweet'
 
 export default {
   components: {

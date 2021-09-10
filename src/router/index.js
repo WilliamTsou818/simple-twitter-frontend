@@ -13,7 +13,6 @@ const routes = [
   {
     path: "/about",
     name: "About",
-
     component: () => import("../views/About.vue"),
   },
   //後台登入路由
@@ -26,6 +25,7 @@ const routes = [
   {
     path: "/admin",
     name: "Admin",
+    redirect: "/admin/tweets",
     component: () => import("../views/Admin.vue"),
     children: [
       {
