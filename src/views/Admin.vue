@@ -19,7 +19,7 @@ export default {
 
 <style lang="scss" scoped>
 .admin {
-  max-width: 1440px ;
+  max-width: 1280px ;
   display: flex;
   margin: 0 auto;
   border: 1px solid red;

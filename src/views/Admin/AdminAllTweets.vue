@@ -1,16 +1,56 @@
 <template>
-  <div>
-    <div>推文清單</div>
-    <div></div>
+  <div class="container">
+    <div class="container-head">推文清單</div>
+    <div>
+      <div v-for="tweet in tweets" :key="tweet.userId">
+        <div>
+          <AdminTweet
+            :init-tweet="tweet"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {
+import AdminTweet from './../../components/AdminTweet'
 
+export default {
+  components: {
+    AdminTweet
+  },
+
+  data() {
+    return {
+      tweets: [
+        {
+          userName:"Apple",
+          userId: "apple",
+          date: "2020-02-20",
+          content: "Lorem ipsum dolor sit amet, consectetur adipiscing ...",
+        },
+        {
+          userName:"Willian",
+          userId: "willian",
+          date: "2020-02-20",
+          content: "Lorem ipsum dolor sit amet, consectetur adipiscing ...",
+        },
+      ]
+    }
+  }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.container {
+  min-height: 100vh;
+  border-left: 1px solid var(--gray-200);
+  &-head{
+    text-align: left;
+    border-bottom: 1px solid var(--gray-200);
+    font-weight: bold;
+    padding: 1rem 1.5rem;
+  }
+}
 </style>
