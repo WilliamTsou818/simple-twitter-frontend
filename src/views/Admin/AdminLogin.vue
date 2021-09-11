@@ -42,57 +42,62 @@
 </template>
 
 <script>
-import adminAPI from './../../apis/admin'
-import { Toast } from './../../utils/helpers'
+import authorizationAPI from "./../../apis/authorization";
+import { Toast } from "./../../utils/helpers";
 
 export default {
   data() {
     return {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       isProcessing: false,
-    }
+    };
   },
   methods: {
     async handSubmit() {
       try {
         if (!this.email || !this.password) {
           Toast.fire({
-            icon: 'warning',
-            title: '請填入 email 和 password',
-          })
-          return
+            icon: "warning",
+            title: "請填入 email 和 password",
+          });
+          return;
         }
 
-        this.isProcessing = true
+        this.isProcessing = true;
 
-        const { data } = await adminAPI.signIn({
+        const { data } = await authorizationAPI.signIn({
           email: this.email,
           password: this.password,
-        })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
+        });
+        if (data.status !== "success") {
+          throw new Error(data.message);
         }
-        console.log(data)
+
+        //TODO:apiary
+        // if (data.message !== "ok") {
+        //   throw new Error(data.message);
+        // }
+
         //將伺服器發送的 token 保存在 localStorage
-        localStorage.setItem('token', data.token)
+        localStorage.setItem("token", data.token);
 
         // 將資料傳入Vuex中
-        this.$store.commit('setCurrentUser', data.user)
+        this.$store.commit("setCurrentUser", data.user);
 
-        //admin 登入成功轉去推文列表
-        this.$router.push('/admin/tweets')
+        //authorization 登入成功轉去推文列表
+        this.$router.push("/admin/tweets");
       } catch (err) {
-        this.isProcessing = false
-        this.password = ''
+        this.isProcessing = false;
+        this.password = "";
         Toast.fire({
-          icon: 'warning',
-          title: '輸入的帳號密碼有誤',
-        })
+          icon: "warning",
+          title: "輸入的帳號密碼有誤",
+        });
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
