@@ -20,7 +20,7 @@ export default {
 
 <style lang="scss" scoped>
 .admin {
-  max-width: 1280px;
+  max-width: 1440px;
   display: flex;
   margin: 0 auto;
   // TODO:測試用

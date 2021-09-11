@@ -71,6 +71,7 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   min-height: 100vh;
+  margin-left: 7vw;
   padding-top: 0.5rem;
   width: 235px;
   &__logo {
