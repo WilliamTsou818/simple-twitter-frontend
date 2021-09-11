@@ -6,13 +6,13 @@
 </template>
 
 <script>
-import Head from '@/components/Head'
-import AdminUserCard from '@/components/AdminUserCard'
+import Head from "@/components/Head";
+import AdminUserCard from "@/components/AdminUserCard";
 
 export default {
   components: {
     Head,
     AdminUserCard,
   },
-}
+};
 </script>
