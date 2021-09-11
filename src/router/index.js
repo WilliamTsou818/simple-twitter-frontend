@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from './../store'
 import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
@@ -38,5 +39,11 @@ const routes = [
 const router = new VueRouter({
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+  // 切換頁面時檢查當前使用者資料
+  store.dispatch('fetchCurrentUser')
+  next()
+})
 
 export default router;
