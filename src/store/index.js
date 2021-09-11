@@ -6,6 +6,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // 登入token
+    token: '',
     // 當前使用者資料
     currentUser: {
       id: -1,
@@ -23,12 +25,15 @@ export default new Vuex.Store({
         ...state.currentUser,
         ...currentUser
       }
+      // 將使用者驗證用的 token 儲存在 state 中
+      state.token = localStorage.getItem('token')
       state.isAuthenticated = true
     },
     // 登出，撤銷相關資料
     revokeAuthentication(state) {
       state.currentUser = {}
       state.isAuthenticated = false
+      state.token = ''
       localStorage.removeItem('token')
     }
   },
@@ -44,8 +49,12 @@ export default new Vuex.Store({
           image,
           isAdmin
         })
+        return true
       } catch (error) {
         console.log('error', error)
+        // 驗證失敗的話一併觸發登出的行為，以清除 state 中的 token
+        commit('revokeAuthentication')
+        return false
       }
     }
   },
