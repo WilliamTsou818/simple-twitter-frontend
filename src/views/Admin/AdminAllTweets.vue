@@ -1,6 +1,6 @@
 <template>
   <div class="container container--admin">
-    <Head :title="'推文清單'" />
+    <Head :title="title" />
     <div>
       <div v-for="(tweet, index) in tweets" :key="index">
         <div>
@@ -22,6 +22,7 @@ export default {
   },
   data() {
     return {
+      title: '推文清單',
       tweets: [
         {
           userName: 'Apple',
