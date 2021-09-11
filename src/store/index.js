@@ -24,12 +24,17 @@ export default new Vuex.Store({
         ...currentUser
       }
       state.isAuthenticated = true
+    },
+    // 登出，撤銷相關資料
+    revokeAuthentication(state) {
+      state.currentUser = {}
+      state.isAuthenticated = false
+      localStorage.removeItem('token')
     }
   },
   actions: {
     async fetchCurrentUser({ commit }) {
       try {
-        console.log('fetchCurrentUser')
         const { data } = await usersAPI.getCurrentUser()
         const { id, name, email, image, isAdmin } = data
         commit('setCurrentUser', {
@@ -41,7 +46,6 @@ export default new Vuex.Store({
         })
       } catch (error) {
         console.log('error', error)
-        console.error('can not fetch user information')
       }
     }
   },

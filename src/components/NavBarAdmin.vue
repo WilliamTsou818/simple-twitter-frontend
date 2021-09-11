@@ -40,7 +40,7 @@
         </router-link>
       </template>
     </nav>
-    <button class="nav-left__logout">
+    <button class="nav-left__logout" @click="handleLogout">
       <svg
         class="nav-left__logout__icon"
         width="24"
@@ -68,6 +68,12 @@ export default {
   name: 'NavBarAdmin',
   computed: {
     ...mapState(['currentUser']),
+  },
+  methods: {
+    handleLogout() {
+      this.$store.commit('revokeAuthentication')
+      this.$router.push('/admin/login')
+    },
   },
 }
 </script>
