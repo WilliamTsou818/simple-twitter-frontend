@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <!-- 開發中使用 -->
+    <!-- TODO:開發中使用 -->
     <router-link to="/">Home</router-link>
     <router-link to="/about">About</router-link>
     <router-link to="/admin/login">後台登入</router-link>
@@ -26,21 +26,10 @@ export default {
     display: block;
   }
 }
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
 a {
   color: var(--text);
   margin: 20px;
-  &:hover{
+  &:hover {
     color: var(--theme);
   }
 }

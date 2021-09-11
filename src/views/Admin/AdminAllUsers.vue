@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="container-head">使用者列表</div>
+    <div class="container__head">使用者列表</div>
     <AdminUserCard />
   </div>
 </template>
@@ -10,7 +10,7 @@ import AdminUserCard from '@/components/AdminUserCard'
 
 export default {
   components: {
-    AdminUserCard
+    AdminUserCard,
   },
 }
 </script>
@@ -19,7 +19,7 @@ export default {
 .container {
   min-height: 100vh;
   border-left: 1px solid var(--gray-200);
-  &-head{
+  &__head {
     text-align: left;
     border-bottom: 1px solid var(--gray-200);
     font-weight: bold;
