@@ -3,34 +3,41 @@
     <div class="logo">
       <img src="@/assets/images/logo.svg" alt="logo" />
     </div>
-    <div>後台登入</div>
-    <form @submit.prevent.stop="handSubmit">
-      <div>
-        <label for="email">帳號</label>
+    <form class="form" @submit.prevent.stop="handSubmit">
+      <div class="form__title">後台登入</div>
+      <div class="form__email">
         <input
+          class="form__email__input"
           v-model="email"
           id="email"
           name="email"
           type="email"
           required
-          autofocus
         />
+        <label for="form__email__input" class="form__email__label">帳號</label>
       </div>
-      <div>
-        <label for="password">密碼</label>
+      <div class="form__password">
         <input
+          class="form__password__input"
           v-model="password"
           id="password"
           name="password"
           type="password"
           required
-          autofocus
         />
+        <label for="form__password__input" class="form__password__label"
+          >密碼</label
+        >
       </div>
-      <button type="submit" :disabled="isProcessing">
+      <button class="form__submit" type="submit" :disabled="isProcessing">
         登入
       </button>
     </form>
+    <section class="section-actions">
+      <router-link class="section-actions__link" to="/user/login"
+        >前台登入</router-link
+      >
+    </section>
   </div>
 </template>
 
@@ -70,6 +77,9 @@ export default {
         //將伺服器發送的 token 保存在 localStorage
         localStorage.setItem('token', data.token)
 
+        // 將資料傳入Vuex中
+        this.$store.commit('setCurrentUser', data.user)
+
         //admin 登入成功轉去推文列表
         this.$router.push('/admin/tweets')
       } catch (err) {
@@ -87,9 +97,70 @@ export default {
 
 <style lang="scss" scoped>
 .logo {
-  margin: 0 auto;
-  margin-top: 65px;
+  margin: 65px auto 30px auto;
   width: 50px;
   height: 50px;
+}
+.section-actions {
+  margin: 0 auto;
+  margin-top: 40px;
+  width: 540px;
+  max-width: 90vw;
+  text-align: end;
+  &__link {
+    text-decoration: underline;
+    color: var(--blue-light);
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+.form {
+  margin: 0 auto;
+  width: 540px;
+  max-width: 90vw;
+  &__title {
+    font-size: 23px;
+    font-weight: bold;
+    color: var(--text);
+  }
+  &__email,
+  &__password {
+    position: relative;
+    margin-top: 20px;
+    border-radius: 4px;
+    border-bottom: 2px solid var(--gray-500);
+    &__label {
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gray-500);
+    }
+    &__input {
+      width: 100%;
+      height: 50px;
+      padding: 0 10px;
+      padding-top: 20px;
+      background-color: var(--input-bg);
+      border: none;
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--black);
+    }
+  }
+  &__submit {
+    margin-top: 30px;
+    width: 100%;
+    height: 50px;
+    background-color: var(--theme);
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--white);
+    &:disabled {
+      background-color: var(--theme-dark);
+    }
+  }
 }
 </style>

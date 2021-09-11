@@ -6,7 +6,7 @@
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Noto Sans TC, Helvetica, Arial, sans-serif;
   text-align: center;
   color: #2c3e50;
 }
