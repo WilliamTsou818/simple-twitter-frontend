@@ -1,29 +1,18 @@
 <template>
-  <div class="container">
-    <div class="container__head">使用者列表</div>
+  <div class="container container--admin">
+    <Head :title="'使用者列表'" />
     <AdminUserCard />
   </div>
 </template>
 
 <script>
+import Head from '@/components/Head'
 import AdminUserCard from '@/components/AdminUserCard'
 
 export default {
   components: {
+    Head,
     AdminUserCard,
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.container {
-  min-height: 100vh;
-  border-left: 1px solid var(--gray-200);
-  &__head {
-    text-align: left;
-    border-bottom: 1px solid var(--gray-200);
-    font-weight: bold;
-    padding: 1rem 1.5rem;
-  }
-}
-</style>
