@@ -2,7 +2,6 @@
   <div class="home">
     <!-- TODO:開發中使用 -->
     <router-link to="/">Home</router-link>
-    <router-link to="/about">About</router-link>
     <router-link to="/admin/login">後台登入</router-link>
     <router-link to="/admin/tweets">推文清單</router-link>
     <router-link to="/admin/users">使用者列表</router-link>
