@@ -1,0 +1,67 @@
+<template>
+  <div class="atweet">
+    <div class="atweet-avatar"></div>
+    <div class="atweet-detail">
+      <div class="atweet-detail-user">
+        <span class="atweet-detail-name">{{tweet.userName}}</span>
+        <span class="atweet-detail-id">@{{tweet.userId}}</span>
+        <span class="atweet-detail-date">・{{tweet.date}}</span>
+      </div>
+      <div class="atweet-detail-content">{{tweet.content}}</div>
+    </div>
+    <button class="atweet-button-remove">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.414 12.0001L19.207 6.20712C19.597 5.81712 19.597 5.18412 19.207 4.79312C18.817 4.40212 18.184 4.40312 17.793 4.79312L12 10.5861L6.207 4.79312C5.817 4.40312 5.184 4.40312 4.793 4.79312C4.402 5.18312 4.403 5.81612 4.793 6.20712L10.586 12.0001L4.793 17.7931C4.403 18.1831 4.403 18.8161 4.793 19.2071C4.988 19.4021 5.243 19.5001 5.5 19.5001C5.757 19.5001 6.012 19.4021 6.207 19.2071L12 13.4141L17.793 19.2071C17.988 19.4021 18.243 19.5001 18.5 19.5001C18.757 19.5001 19.012 19.4021 19.207 19.2071C19.597 18.8171 19.597 18.1841 19.207 17.7931L13.414 12.0001Z" fill="#657786"/>
+      </svg>
+    </button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'AdminTweet',
+  props: {
+    initTweet: {
+      type: Object,
+    },
+
+  },
+  data () {
+    return {
+      tweet: this.initTweet
+    }
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.atweet {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
+  &-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background-color: #C4C4C4;
+  }
+  &-detail {
+    flex: 1;
+    padding: 0 1rem;
+    &-name {
+      font-weight: bold;
+      padding-right: 5px;
+      color: var(--text);
+    }
+    &-id,&-date {
+      color: var(--gray-500);
+    }
+    &-content {
+      margin-top: 5px;
+      color: var(--text);
+    }
+  }
+}
+</style>
