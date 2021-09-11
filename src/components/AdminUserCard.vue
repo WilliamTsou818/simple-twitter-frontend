@@ -1,24 +1,24 @@
 <template>
   <div class="card">
-    <div class="card-user">
-      <div class="card-user-img">
-        <div class="card-user-cover"></div>
-        <div class="card-user-avatar"></div>
+    <div class="card__user">
+      <div class="card__user__img">
+        <div class="card__user__cover"></div>
+        <div class="card__user__avatar"></div>
       </div>
     </div>
-    <div class="card-info">
-      <div class="card-info-name">
+    <div class="card__info">
+      <div class="card__info__name">
         John Doe
       </div>
-      <div class="card-info-id">
+      <div class="card__info__id">
         @heyjohn
       </div>
     </div>
-    <div class="card-actions">
-       <span>1.5K</span>
-       <span>20K</span>
+    <div class="card__actions">
+      <span>1.5K</span>
+      <span>20K</span>
     </div>
-    <div class="card-follow">
+    <div class="card__follow">
       <span>34 個跟隨中</span>
       <span>59 位跟隨者</span>
     </div>
@@ -27,7 +27,7 @@
 
 <script>
 export default {
-   name: 'AdminUserCard',
+  name: 'AdminUserCard',
 }
 </script>
 
@@ -38,17 +38,17 @@ export default {
   height: 314px;
   border-radius: 10px;
   overflow: hidden;
-  background-color: #F6F7F8;
-  &-user {
-    &-img {
+  background-color: #f6f7f8;
+  &__user {
+    &__img {
       position: relative;
     }
-    &-cover {
+    &__cover {
       height: 140px;
       width: 100%;
-      background-color: #C4C4C4;
+      background-color: #c4c4c4;
     }
-    &-avatar {
+    &__avatar {
       position: absolute;
       top: 68px;
       margin: 0 auto;
@@ -56,18 +56,18 @@ export default {
       right: 0;
       width: 100px;
       height: 100px;
-      background-color: #C4C4C4;
+      background-color: #c4c4c4;
       border-radius: 50px;
       border: 4px solid white;
     }
   }
-  &-info {
+  &__info {
     padding-top: 32px;
   }
-  &-actions {
+  &__actions {
     padding: 1rem 0;
   }
-  &-actions {
+  &__actions {
     padding: 1rem 0;
   }
 }
