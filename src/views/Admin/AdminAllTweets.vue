@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="container__head">推文清單</div>
+  <div class="container container--admin">
+    <Head :title="'推文清單'" />
     <div>
       <div v-for="(tweet, index) in tweets" :key="index">
         <div>
@@ -12,11 +12,12 @@
 </template>
 
 <script>
-// @ is an alias to /src
+import Head from '@/components/Head'
 import AdminTweet from '@/components/AdminTweet'
 
 export default {
   components: {
+    Head,
     AdminTweet,
   },
   data() {
@@ -39,16 +40,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.container {
-  min-height: 100vh;
-  border-left: 1px solid var(--gray-200);
-  &__head {
-    text-align: left;
-    border-bottom: 1px solid var(--gray-200);
-    font-weight: bold;
-    padding: 1rem 1.5rem;
-  }
-}
-</style>

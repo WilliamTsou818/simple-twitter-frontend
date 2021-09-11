@@ -1,2 +1,13 @@
-@import "reset";
-@import "color";
+@import 'reset';
+@import 'color';
+
+.container {
+  min-height: 100vh;
+  &--admin {
+    border-left: 1px solid var(--gray-200);
+  }
+  &--user {
+    border-left: 1px solid var(--gray-200);
+    border-right: 1px solid var(--gray-200);
+  }
+}
