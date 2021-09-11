@@ -23,7 +23,7 @@ export default new Vuex.Store({
     setCurrentUser(state, currentUser) {
       state.currentUser = {
         ...state.currentUser,
-        ...currentUser
+        ...currentUser,
       }
       // 將使用者驗證用的 token 儲存在 state 中
       state.token = localStorage.getItem('token')

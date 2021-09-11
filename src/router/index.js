@@ -5,6 +5,16 @@ import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
+const authorizeIsAdmin = (to, from, next) => {
+  const currentUser = store.state.currentUser
+  if (currentUser && !currentUser.isAdmin) {
+    next('/404')
+    return
+  }
+  // console.log('authorizeIsAdmin')
+  next()
+}
+
 const routes = [
   {
     path: "/",
@@ -28,11 +38,13 @@ const routes = [
         path: "tweets",
         name: "AdminAllTweets",
         component: () => import("../views/Admin/AdminAllTweets.vue"),
+        beforeEnter: authorizeIsAdmin
       },
       {
         path: "users",
         name: "AdminAllUsers",
         component: () => import("../views/Admin/AdminAllUsers.vue"),
+        beforeEnter: authorizeIsAdmin
       },
     ],
   },
