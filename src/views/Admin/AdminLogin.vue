@@ -102,7 +102,7 @@ export default {
   margin: 0 auto;
   margin-top: 40px;
   width: 540px;
-  max-width: 100vw;
+  max-width: 90vw;
   text-align: end;
   &__link {
     text-decoration: underline;
@@ -114,7 +114,7 @@ export default {
 .form {
   margin: 0 auto;
   width: 540px;
-  max-width: 100vw;
+  max-width: 90vw;
   &__title {
     font-size: 23px;
     font-weight: bold;
