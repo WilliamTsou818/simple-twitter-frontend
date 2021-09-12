@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import Head from "@/components/Head";
-import AdminUserCard from "@/components/AdminUserCard";
+import Head from '@/components/Head'
+import AdminUserCard from '@/components/AdminUserCard'
 
 export default {
   components: {
@@ -16,8 +16,8 @@ export default {
   },
   data() {
     return {
-      title: "使用者列表",
-    };
+      title: '使用者列表',
+    }
   },
-};
+}
 </script>
