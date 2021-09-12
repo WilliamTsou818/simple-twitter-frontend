@@ -1,9 +1,9 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 import store from './../store'
-import Home from "../views/Home.vue";
+import Home from '../views/Home.vue'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const authorizeIsAdmin = (to, from, next) => {
   const currentUser = store.state.currentUser
@@ -17,42 +17,42 @@ const authorizeIsAdmin = (to, from, next) => {
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
+    path: '/',
+    name: 'Home',
     component: Home,
   },
   //後台登入路由
   {
-    path: "/admin/login",
-    name: "AdminLogin",
-    component: () => import("../views/Admin/AdminLogin.vue"),
+    path: '/admin/login',
+    name: 'AdminLogin',
+    component: () => import('../views/Admin/AdminLogin.vue'),
   },
   //後台路由
   {
-    path: "/admin",
-    name: "Admin",
-    redirect: "/admin/tweets",
-    component: () => import("../views/Admin.vue"),
+    path: '/admin',
+    name: 'Admin',
+    redirect: '/admin/tweets',
+    component: () => import('../views/Admin.vue'),
     children: [
       {
-        path: "tweets",
-        name: "AdminAllTweets",
-        component: () => import("../views/Admin/AdminAllTweets.vue"),
-        beforeEnter: authorizeIsAdmin
+        path: 'tweets',
+        name: 'AdminAllTweets',
+        component: () => import('../views/Admin/AdminAllTweets.vue'),
+        beforeEnter: authorizeIsAdmin,
       },
       {
-        path: "users",
-        name: "AdminAllUsers",
-        component: () => import("../views/Admin/AdminAllUsers.vue"),
-        beforeEnter: authorizeIsAdmin
+        path: 'users',
+        name: 'AdminAllUsers',
+        component: () => import('../views/Admin/AdminAllUsers.vue'),
+        beforeEnter: authorizeIsAdmin,
       },
     ],
   },
-];
+]
 
 const router = new VueRouter({
   routes,
-});
+})
 
 router.beforeEach(async (to, from, next) => {
   const tokenInLocalStorage = localStorage.getItem('token')
@@ -70,7 +70,11 @@ router.beforeEach(async (to, from, next) => {
 
   // TODO:開發中使用 (to.name !== 'Home')
   // token 無效，轉址到登入頁
-  if (!isAuthenticated && !pathsWithoutAuthentication.includes(to.name) && to.name !== 'Home') {
+  if (
+    !isAuthenticated &&
+    !pathsWithoutAuthentication.includes(to.name) &&
+    to.name !== 'Home'
+  ) {
     console.log('to.name', to.name)
     console.log('token 無效，轉址到指定登入頁')
     switch (to.name) {
@@ -103,4 +107,4 @@ router.beforeEach(async (to, from, next) => {
   next()
 })
 
-export default router;
+export default router

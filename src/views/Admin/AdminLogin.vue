@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import adminAPI from './../../apis/admin'
+import authorizationAPI from './../../apis/authorization'
 import { Toast } from './../../utils/helpers'
 
 export default {
@@ -66,21 +66,21 @@ export default {
 
         this.isProcessing = true
 
-        const { data } = await adminAPI.signIn({
+        const { data } = await authorizationAPI.signIn({
           email: this.email,
           password: this.password,
         })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        console.log(data)
+
         //將伺服器發送的 token 保存在 localStorage
         localStorage.setItem('token', data.token)
 
         // 將資料傳入Vuex中
         this.$store.commit('setCurrentUser', data.user)
 
-        //admin 登入成功轉去推文列表
+        //authorization 登入成功轉去推文列表
         this.$router.push('/admin/tweets')
       } catch (err) {
         this.isProcessing = false

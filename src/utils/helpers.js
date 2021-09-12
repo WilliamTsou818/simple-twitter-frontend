@@ -1,15 +1,19 @@
-import axios from "axios";
-import Swal from "sweetalert2";
+import axios from 'axios'
+import Swal from 'sweetalert2'
 
 //需替換
-const baseURL = "https://forum-express-api.herokuapp.com/api";
+const baseURL = 'https://forum-express-api.herokuapp.com/api'
+
+//TODO:apiary
+// const baseURL =
+//   "https://private-anon-b4043a34c1-whapsimpletwitter.apiary-mock.com/api/";
 
 const axiosInstance = axios.create({
-  baseURL
+  baseURL,
 })
 
 axiosInstance.interceptors.request.use(
-  config => {
+  (config) => {
     // 從 localStorage 將 token 取出
     const token = localStorage.getItem('token')
 
@@ -19,14 +23,14 @@ axiosInstance.interceptors.request.use(
     }
     return config
   },
-  err => Promise.reject(err)
+  (err) => Promise.reject(err)
 )
 
 export const apiHelper = axiosInstance
 
 export const Toast = Swal.mixin({
   toast: true,
-  position: "top-end",
+  position: 'top-end',
   showConfirmButton: false,
   timer: 2000,
-});
+})

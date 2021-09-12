@@ -14,10 +14,10 @@ export default new Vuex.Store({
       name: '',
       email: '',
       image: '',
-      isAdmin: false
+      isAdmin: false,
     },
     // 是否驗證
-    isAuthenticated: false
+    isAuthenticated: false,
   },
   mutations: {
     setCurrentUser(state, currentUser) {
@@ -35,7 +35,7 @@ export default new Vuex.Store({
       state.isAuthenticated = false
       state.token = ''
       localStorage.removeItem('token')
-    }
+    },
   },
   actions: {
     async fetchCurrentUser({ commit }) {
@@ -47,7 +47,7 @@ export default new Vuex.Store({
           name,
           email,
           image,
-          isAdmin
+          isAdmin,
         })
         return true
       } catch (error) {
@@ -56,8 +56,7 @@ export default new Vuex.Store({
         commit('revokeAuthentication')
         return false
       }
-    }
+    },
   },
-  modules: {
-  }
+  modules: {},
 })

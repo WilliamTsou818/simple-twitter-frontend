@@ -1,24 +1,17 @@
-import { apiHelper } from "./../utils/helpers";
+import { apiHelper } from './../utils/helpers'
 
-//串接應該會是 admin/signin
-
-// export default {
-//   signIn({ email, password }) {
-//     return apiHelper.post("/admin/signin", {
-//       email,
-//       password,
-//     });
-//   },
-// };
-
-//先用餐廳課程當測試
-//root@example.com
-//12345678
 export default {
-  signIn({ email, password }) {
-    return apiHelper.post("/signin", {
-      email,
-      password,
-    });
+  users: {
+    get() {
+      return apiHelper.get('/admin/users')
+    },
   },
-};
+  tweet: {
+    delete({ tweetId }) {
+      return apiHelper.delete(`/admin/tweets/${tweetId}`)
+    },
+    get() {
+      return apiHelper.get('/admin/tweets')
+    },
+  },
+}
