@@ -34,3 +34,27 @@ export const Toast = Swal.mixin({
   showConfirmButton: false,
   timer: 2000,
 })
+
+//FIXME: 先用來串admin tweet
+const apiaryURL =
+  'https://private-anon-b4043a34c1-whapsimpletwitter.apiary-mock.com/api'
+
+const axiosInstance2 = axios.create({
+  baseURL: apiaryURL,
+})
+
+axiosInstance2.interceptors.request.use(
+  (config) => {
+    // 從 localStorage 將 token 取出
+    const token = localStorage.getItem('token')
+
+    // 如果 token 存在的話，則帶入到 headers 當中
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`
+    }
+    return config
+  },
+  (err) => Promise.reject(err)
+)
+
+export const apiHelper2 = axiosInstance2

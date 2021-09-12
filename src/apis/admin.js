@@ -1,17 +1,18 @@
-import { apiHelper } from './../utils/helpers'
+// import { apiHelper } from './../utils/helpers'
+import { apiHelper2 } from './../utils/helpers'
 
 export default {
   users: {
     get() {
-      return apiHelper.get('/admin/users')
+      return apiHelper2.get('/admin/users')
     },
   },
-  tweet: {
+  tweets: {
     delete({ tweetId }) {
-      return apiHelper.delete(`/admin/tweets/${tweetId}`)
+      return apiHelper2.delete(`/admin/tweets/${tweetId}`)
     },
     get() {
-      return apiHelper.get('/admin/tweets')
+      return apiHelper2.get('/admin/tweets')
     },
   },
 }

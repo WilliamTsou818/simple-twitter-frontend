@@ -1,15 +1,20 @@
 <template>
   <div class="atweet">
-    <div class="atweet__avatar"></div>
+    <div
+      class="atweet__avatar"
+      v-bind:style="{ backgroundImage: 'url(' + tweet.User.avatar + ')' }"
+    ></div>
     <div class="atweet__detail">
       <div class="atweet__detail__user">
-        <span class="atweet__detail__name">{{ tweet.userName }}</span>
-        <span class="atweet__detail__id">@{{ tweet.userId }}</span>
-        <span class="atweet__detail__date">・{{ tweet.date }}</span>
+        <span class="atweet__detail__name">{{ tweet.User.name }}</span>
+        <span class="atweet__detail__id">@{{ tweet.UserId }}</span>
+        <span class="atweet__detail__date"
+          >・{{ tweet.updatedAt | fromNowFilter }}</span
+        >
       </div>
-      <div class="atweet__detail__content">{{ tweet.content }}</div>
+      <div class="atweet__detail__content">{{ tweet.description }}</div>
     </div>
-    <button class="atweet-button-remove">
+    <button class="atweet-button-remove" @click="handClickDele(tweet.id)">
       <svg
         width="24"
         height="24"
@@ -27,6 +32,7 @@
 </template>
 
 <script>
+import { fromNowFilter } from './../utils/mixins'
 export default {
   name: 'AdminTweet',
   props: {
@@ -34,7 +40,12 @@ export default {
       type: Object,
       required: true,
     },
+    handClickDele: {
+      type: Function,
+      default: () => {},
+    },
   },
+  mixins: [fromNowFilter],
   data() {
     return {
       tweet: this.initTweet,
@@ -55,6 +66,9 @@ export default {
     height: 50px;
     border-radius: 50px;
     background-color: #c4c4c4;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   &__detail {
     flex: 1;
