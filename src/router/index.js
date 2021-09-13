@@ -73,6 +73,12 @@ const routes = [
     name: 'UserLogin',
     component: () => import('../views/User/UserLogin.vue'),
   },
+  // 使用者註冊
+  {
+    path: '/user/register',
+    name: 'UserRegister',
+    component: () => import('../views/User/UserRegister.vue'),
+  },
   //前台路由
   {
     path: '/user',
@@ -108,7 +114,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // 設定不需要驗證 token 的頁面
-  const pathsWithoutAuthentication = ['UserLogin', 'AdminLogin']
+  const pathsWithoutAuthentication = ['UserLogin', 'UserRegister', 'AdminLogin']
 
   // TODO:開發中使用 (to.name !== 'Home')
   // token 無效，轉址到登入頁
