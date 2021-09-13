@@ -1,13 +1,14 @@
 <template>
   <div class="container container--admin">
     <Head :title="title" />
-    <div>
-      <div v-for="tweet in tweets" :key="tweet.id">
-        <div>
-          <AdminTweet :init-tweet="tweet" :handClickDele="deleteTweet" />
-        </div>
-      </div>
-    </div>
+    <section class="tweets">
+      <AdminTweet
+        v-for="tweet in tweets"
+        :key="tweet.id"
+        :tweet="tweet"
+        :handleClickDelete="deleteTweet"
+      />
+    </section>
   </div>
 </template>
 

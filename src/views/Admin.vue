@@ -1,9 +1,10 @@
 <template>
   <div class="admin">
     <NavBarAdmin class="sm-d-none" />
-    <div class="lg-d-none">
+    <TabBarAdmin class="lg-d-none" />
+    <!-- <div class="lg-d-none">
       <TabBarAdmin />
-    </div>
+    </div> -->
     <main>
       <router-view />
     </main>

@@ -57,7 +57,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  name: 'NavBarAdmin',
+  name: 'TabBarAdmin',
   computed: {
     ...mapState(['currentUser']),
   },
@@ -79,6 +79,8 @@ export default {
   width: 100%;
   height: 50px;
   border-top: 1px solid var(--gray-200);
+  background-color: var(--white);
+  z-index: 3;
   &__tab {
     display: flex;
     align-items: center;

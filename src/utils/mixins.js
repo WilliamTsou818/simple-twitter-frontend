@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-tw'
-dayjs.extend(relativeTime)
+dayjs.extend(relativeTime).locale('zh-tw')
 
 export const fromNowFilter = {
   filters: {
@@ -13,13 +13,9 @@ export const fromNowFilter = {
       const fromNowTime = now.diff(dateTime, 'hour')
       //如果時間間隔小於 24 小時，顯示M月DD日
       if (fromNowTime > 24) {
-        return dayjs(dateTime)
-          .locale('zh-tw')
-          .format('M月DD日')
+        return dayjs(dateTime).format('M月DD日')
       } else {
-        return dayjs(dateTime)
-          .locale('zh-tw')
-          .fromNow(true)
+        return dayjs(dateTime).fromNow(true)
       }
     },
   },

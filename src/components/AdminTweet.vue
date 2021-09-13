@@ -7,14 +7,14 @@
     <div class="atweet__detail">
       <div class="atweet__detail__user">
         <span class="atweet__detail__name">{{ tweet.User.name }}</span>
-        <span class="atweet__detail__id">@{{ tweet.UserId }}</span>
+        <span class="atweet__detail__account">@{{ tweet.User.account }}</span>
         <span class="atweet__detail__date"
           >・{{ tweet.updatedAt | fromNowFilter }}</span
         >
       </div>
       <div class="atweet__detail__content">{{ tweet.description }}</div>
     </div>
-    <button class="atweet-button-remove" @click="handClickDele(tweet.id)">
+    <button class="atweet__button-remove" @click="handleClickDelete(tweet.id)">
       <svg
         width="24"
         height="24"
@@ -36,21 +36,16 @@ import { fromNowFilter } from './../utils/mixins'
 export default {
   name: 'AdminTweet',
   props: {
-    initTweet: {
+    tweet: {
       type: Object,
       required: true,
     },
-    handClickDele: {
+    handleClickDelete: {
       type: Function,
       default: () => {},
     },
   },
   mixins: [fromNowFilter],
-  data() {
-    return {
-      tweet: this.initTweet,
-    }
-  },
 }
 </script>
 
@@ -78,7 +73,7 @@ export default {
       padding-right: 5px;
       color: var(--text);
     }
-    &__id,
+    &__account,
     &__date {
       color: var(--gray-500);
     }
