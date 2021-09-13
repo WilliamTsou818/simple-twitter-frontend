@@ -5,6 +5,25 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
+// TODO:之後改成判斷role === 'admin' or 'user'
+// const checkAuthorize = (to, from, next, role) => {
+//   const currentUser = store.state.currentUser
+//   if (currentUser && currentUser.role !== role) {
+//     next('/404')
+//     return
+//   }
+//   console.log(`checkAuthorize ${role} success`)
+//   next()
+// }
+
+// const checkUserAuthorize = (to, from, next) => {
+//   checkAuthorize(to, from, next, 'user')
+// }
+
+// const checkAdminAuthorize = (to, from, next) => {
+//   checkAuthorize(to, from, next, 'admin')
+// }
+
 const authorizeIsAdmin = (to, from, next) => {
   const currentUser = store.state.currentUser
   if (currentUser && !currentUser.isAdmin) {
@@ -48,6 +67,29 @@ const routes = [
       },
     ],
   },
+  //前台登入路由
+  {
+    path: '/user/login',
+    name: 'UserLogin',
+    component: () => import('../views/User/UserLogin.vue'),
+  },
+  //前台路由
+  {
+    path: '/user',
+    name: 'User',
+    // TODO:暫時回Home
+    redirect: '/'
+    // redirect: '/user/tweets',
+    // component: () => import('../views/User.vue'),
+    // children: [
+    //   {
+    //     path: 'tweets',
+    //     name: 'UserAllTweets',
+    //     component: () => import('../views/User/UserAllTweets.vue'),
+    //     beforeEnter: checkAdminAuthorize,
+    //   },
+    // ],
+  },
 ]
 
 const router = new VueRouter({
@@ -66,7 +108,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // 設定不需要驗證 token 的頁面
-  const pathsWithoutAuthentication = ['AdminLogin']
+  const pathsWithoutAuthentication = ['UserLogin', 'AdminLogin']
 
   // TODO:開發中使用 (to.name !== 'Home')
   // token 無效，轉址到登入頁
@@ -83,8 +125,7 @@ router.beforeEach(async (to, from, next) => {
         next('/admin/login')
         break
       default:
-        // TODO:這邊可以設定UserLogin
-        next('/admin/login')
+        next('/user/login')
     }
     return
   }
@@ -98,8 +139,7 @@ router.beforeEach(async (to, from, next) => {
         next('/admin')
         break
       default:
-        // TODO:這邊可以設定User
-        next('/admin')
+        next('/user')
     }
     return
   }

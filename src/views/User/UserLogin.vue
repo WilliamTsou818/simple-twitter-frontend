@@ -5,8 +5,12 @@
     </div>
     <LoginForm :title="title" :path="path" />
     <section class="section-actions">
-      <router-link class="section-actions__link" to="/user/login">
-        前台登入
+      <router-link class="section-actions__link" to="/user/register">
+        註冊 Alphitter
+      </router-link>
+      <span class="section-actions__dot">·</span>
+      <router-link class="section-actions__link" to="/admin/login">
+        後台登入
       </router-link>
     </section>
   </div>
@@ -16,15 +20,16 @@
 import LoginForm from '@/components/LoginForm'
 
 export default {
-  name: 'AdminLogin',
+  name: 'UserLogin',
   components: {
     LoginForm,
   },
   data() {
     return {
-      title: '後台登入',
+      title: '登入 Alphitter',
       // 登入成功跳轉頁面
-      path: { name: 'AdminAllTweets' },
+      // FIXME:之後要修改為使用者首頁
+      path: { name: 'Home' },
     }
   },
 }
@@ -43,11 +48,14 @@ export default {
   width: 540px;
   max-width: 90vw;
   text-align: end;
+  &__dot,
   &__link {
-    text-decoration: underline;
     color: var(--blue-light);
     font-size: 18px;
     font-weight: bold;
+  }
+  &__link {
+    text-decoration: underline;
   }
 }
 </style>

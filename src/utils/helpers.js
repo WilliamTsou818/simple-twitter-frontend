@@ -4,10 +4,6 @@ import Swal from 'sweetalert2'
 //需替換
 const baseURL = 'https://wahp-simeple-twitter-api.herokuapp.com/api'
 
-//TODO:apiary
-// const baseURL =
-//   "https://private-anon-b4043a34c1-whapsimpletwitter.apiary-mock.com/api/";
-
 const axiosInstance = axios.create({
   baseURL,
 })
@@ -35,7 +31,7 @@ export const Toast = Swal.mixin({
   timer: 2000,
 })
 
-//FIXME: 先用來串admin tweet
+//FIXME: apiary
 const apiaryURL =
   'https://private-anon-b4043a34c1-whapsimpletwitter.apiary-mock.com/api'
 

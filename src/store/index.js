@@ -12,9 +12,10 @@ export default new Vuex.Store({
     currentUser: {
       id: -1,
       name: '',
-      email: '',
+      account: '',
       email: '',
       image: '',
+      role: '',
       isAdmin: true,
     },
     // 是否驗證
@@ -42,12 +43,13 @@ export default new Vuex.Store({
     async fetchCurrentUser({ commit }) {
       try {
         const { data } = await usersAPI.getCurrentUser()
-        const { id, name, email, image, isAdmin } = data
+        const { id, name, email, image, role } = data
         commit('setCurrentUser', {
           id,
           name,
           email,
           image,
+          role,
         })
         return true
       } catch (error) {

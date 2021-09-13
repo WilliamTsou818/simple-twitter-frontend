@@ -2,15 +2,23 @@
   <div class="home">
     <!-- TODO:開發中使用 -->
     <router-link to="/">Home</router-link>
+    <router-link to="/user/login">前台登入</router-link>
     <router-link to="/admin/login">後台登入</router-link>
     <router-link to="/admin/tweets">推文清單</router-link>
     <router-link to="/admin/users">使用者列表</router-link>
+    <button @click.prevent.stop="handleLogout">登出(測試用)</button>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Home',
+  methods: {
+    handleLogout() {
+      console.log('登出(測試用)')
+      this.$store.commit('revokeAuthentication')
+    },
+  },
 }
 </script>
 
@@ -25,7 +33,8 @@ export default {
     display: block;
   }
 }
-a {
+a,
+button {
   color: var(--text);
   margin: 20px;
   &:hover {
