@@ -12,7 +12,9 @@
           >・{{ tweet.updatedAt | fromNowFilter }}</span
         >
       </div>
-      <div class="atweet__detail__content">{{ tweet.description }}</div>
+      <div class="atweet__detail__content">
+        {{ tweet.description | ellipsis }}
+      </div>
     </div>
     <button class="atweet__button-remove" @click="handleClickDelete(tweet.id)">
       <svg
@@ -46,6 +48,15 @@ export default {
     },
   },
   mixins: [fromNowFilter],
+  filters: {
+    ellipsis(value) {
+      if (!value) return ''
+      if (value.length > 50) {
+        return value.slice(0, 50) + '...'
+      }
+      return value
+    },
+  },
 }
 </script>
 

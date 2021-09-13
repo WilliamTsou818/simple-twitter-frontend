@@ -62,3 +62,13 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.tweets {
+  height: calc(100vh - 56px);
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+</style>
