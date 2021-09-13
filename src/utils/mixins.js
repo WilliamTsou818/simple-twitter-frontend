@@ -20,3 +20,17 @@ export const fromNowFilter = {
     },
   },
 }
+
+export const thousandFilter = {
+  filters: {
+    thousandFilter(num) {
+      if (!num) {
+        num = 0
+      } else if (Number(num) > 1000) {
+        num = (num / 1000).toFixed(1)
+        num = String(num) + 'K'
+      }
+      return num
+    },
+  },
+}
