@@ -156,13 +156,11 @@ export default {
       padding: 8px 8px;
     }
     &__nav__icon {
-      fill: var(--black);
       margin-right: 0;
     }
     &__logout {
       justify-content: center;
       &__icon {
-        stroke: var(--black);
         margin-right: 0;
       }
       &__text {
