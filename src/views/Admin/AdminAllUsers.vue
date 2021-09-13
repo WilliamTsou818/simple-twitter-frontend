@@ -2,7 +2,9 @@
   <div class="container container--admin">
     <Head :title="title" />
     <section class="users">
-      <AdminUserCard v-for="user in users" :user="user" :key="user.id" />
+      <div class="users__grid-container">
+        <AdminUserCard v-for="user in users" :user="user" :key="user.id" />
+      </div>
     </section>
   </div>
 </template>
@@ -48,21 +50,26 @@ export default {
 
 <style lang="scss" scoped>
 .users {
-  display: grid;
-  border: 1px solid red;
   padding: 15px;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  flex-wrap: wrap;
   width: 100%;
+  height: calc(100vh - 56px);
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &__grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+  }
 }
 @media screen and (max-width: 1080px) {
-  .users {
+  .users__grid-container {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 @media screen and (max-width: 600px) {
-  .users {
+  .users__grid-container {
     grid-template-columns: repeat(2, 1fr);
   }
 }

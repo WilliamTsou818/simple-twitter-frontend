@@ -38,11 +38,11 @@
     </div>
     <div class="card__follow">
       <span
-        ><span class="card__follow__count">{{ user.followingsCount }}個</span
+        ><span class="card__follow__count">{{ user.followingsCount }} 個</span
         >跟隨中</span
       >
       <span
-        ><span class="card__follow__count">{{ user.followersCount }}位</span
+        ><span class="card__follow__count">{{ user.followersCount }} 位</span
         >跟隨者</span
       >
     </div>
@@ -67,11 +67,10 @@ export default {
 .card {
   width: 100%;
   grid-area: span 1;
-  /* max-width: 245px; */
-  min-height: 314px;
   border-radius: 10px;
   overflow: hidden;
   background-color: var(--gray-300);
+  padding-bottom: 20px;
   &__user {
     position: relative;
     &__cover,
