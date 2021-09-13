@@ -32,9 +32,10 @@ export default {
 
 <style lang="scss" scoped>
 .logo {
-  margin: 65px auto 30px auto;
+  margin: 60px auto 30px auto;
   width: 50px;
   height: 50px;
+  padding: 5px;
 }
 .section-actions {
   margin: 0 auto;
