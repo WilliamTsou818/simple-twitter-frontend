@@ -209,7 +209,7 @@ export default {
     }
   }
   &__submit {
-    margin-top: 32px;
+    margin-top: 40px;
     width: 100%;
     height: 50px;
     background-color: var(--theme);

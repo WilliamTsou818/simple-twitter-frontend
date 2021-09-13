@@ -27,15 +27,13 @@ export default {
   methods: {
     async handleAfterSubmit(resquestData) {
       try {
-        console.log('handleAfterSubmit')
         this.isProcessing = true
         // 透過 API 將表單資料送到伺服器
         await setTimeout(() => {
           console.log('handleAfterSubmit start')
           console.log('resquestData', resquestData)
-          this.isProcessing = false
+          this.$router.push({ name: 'UserLogin' })
         }, 3000)
-        console.log('handleAfterSubmit success')
       } catch (err) {
         this.isProcessing = false
         console.log(err)
@@ -47,7 +45,7 @@ export default {
 
 <style lang="scss" scoped>
 .logo {
-  margin: 60px auto 30px auto;
+  margin: 60px auto 20px auto;
   width: 50px;
   height: 50px;
   padding: 5px;
