@@ -6,33 +6,33 @@ import Home from '../views/Home.vue'
 Vue.use(VueRouter)
 
 // TODO:之後改成判斷role === 'admin' or 'user'
-// const checkAuthorize = (to, from, next, role) => {
-//   const currentUser = store.state.currentUser
-//   if (currentUser && currentUser.role !== role) {
-//     next('/404')
-//     return
-//   }
-//   console.log(`checkAuthorize ${role} success`)
-//   next()
-// }
-
+const checkAuthorize = (to, from, next, role) => {
+  const currentUser = store.state.currentUser
+  if (currentUser && currentUser.role !== role) {
+    next('/404')
+    return
+  }
+  console.log(`checkAuthorize ${role} success`)
+  next()
+}
+//TODO:確認身分為用戶的頁面
 // const checkUserAuthorize = (to, from, next) => {
 //   checkAuthorize(to, from, next, 'user')
 // }
 
-// const checkAdminAuthorize = (to, from, next) => {
-//   checkAuthorize(to, from, next, 'admin')
-// }
-
-const authorizeIsAdmin = (to, from, next) => {
-  const currentUser = store.state.currentUser
-  if (currentUser && !currentUser.isAdmin) {
-    next('/404')
-    return
-  }
-  // console.log('authorizeIsAdmin')
-  next()
+const checkAdminAuthorize = (to, from, next) => {
+  checkAuthorize(to, from, next, 'admin')
 }
+
+// const authorizeIsAdmin = (to, from, next) => {
+//   const currentUser = store.state.currentUser
+//   if (currentUser && !currentUser.isAdmin) {
+//     next('/404')
+//     return
+//   }
+//   // console.log('authorizeIsAdmin')
+//   next()
+// }
 
 const routes = [
   {
@@ -57,13 +57,13 @@ const routes = [
         path: 'tweets',
         name: 'AdminAllTweets',
         component: () => import('../views/Admin/AdminAllTweets.vue'),
-        beforeEnter: authorizeIsAdmin,
+        beforeEnter: checkAdminAuthorize,
       },
       {
         path: 'users',
         name: 'AdminAllUsers',
         component: () => import('../views/Admin/AdminAllUsers.vue'),
-        beforeEnter: authorizeIsAdmin,
+        beforeEnter: checkAdminAuthorize,
       },
     ],
   },
@@ -78,7 +78,7 @@ const routes = [
     path: '/user',
     name: 'User',
     // TODO:暫時回Home
-    redirect: '/'
+    redirect: '/',
     // redirect: '/user/tweets',
     // component: () => import('../views/User.vue'),
     // children: [
@@ -105,6 +105,7 @@ router.beforeEach(async (to, from, next) => {
   if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore) {
     // 取得驗證成功與否
     isAuthenticated = await store.dispatch('fetchCurrentUser')
+    console.log('isAuthenticated', isAuthenticated)
   }
 
   // 設定不需要驗證 token 的頁面

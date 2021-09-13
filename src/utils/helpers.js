@@ -12,7 +12,6 @@ axiosInstance.interceptors.request.use(
   (config) => {
     // 從 localStorage 將 token 取出
     const token = localStorage.getItem('token')
-
     // 如果 token 存在的話，則帶入到 headers 當中
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
@@ -35,10 +34,8 @@ export const Toast = Swal.mixin({
 const apiaryURL =
   'https://private-anon-b4043a34c1-whapsimpletwitter.apiary-mock.com/api'
 
-const productionURL = 'https://wahp-simeple-twitter-api.herokuapp.com/api'
-
 const axiosInstance2 = axios.create({
-  baseURL: productionURL,
+  baseURL: apiaryURL,
 })
 
 axiosInstance2.interceptors.request.use(

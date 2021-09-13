@@ -50,7 +50,6 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        console.log(tweetId)
         this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
         Toast.fire({
           icon: 'success',

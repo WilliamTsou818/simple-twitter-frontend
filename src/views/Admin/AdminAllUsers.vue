@@ -33,7 +33,6 @@ export default {
       try {
         const { data } = await adminAPI.users.get()
         this.users = data
-        console.log(this.users)
         this.isLoading = false
       } catch (error) {
         console.log('error', error)
