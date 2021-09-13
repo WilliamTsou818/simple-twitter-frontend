@@ -4,9 +4,6 @@
     <section class="users">
       <AdminUserCard v-for="user in users" :key="user.id" />
     </section>
-    <div v-for="user in users" :key="user.id">
-      {{ user.id }}
-    </div>
   </div>
 </template>
 
