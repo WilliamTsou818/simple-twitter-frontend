@@ -8,10 +8,10 @@
       <div class="form__email">
         <input
           class="form__email__input"
-          v-model="email"
-          id="email"
-          name="email"
-          type="email"
+          v-model="account"
+          id="account"
+          name="account"
+          type="account"
           required
         />
         <label for="form__email__input" class="form__email__label">帳號</label>
@@ -48,7 +48,7 @@ import { Toast } from './../../utils/helpers'
 export default {
   data() {
     return {
-      email: '',
+      account: '',
       password: '',
       isProcessing: false,
     }
@@ -56,10 +56,10 @@ export default {
   methods: {
     async handSubmit() {
       try {
-        if (!this.email || !this.password) {
+        if (!this.account || !this.password) {
           Toast.fire({
             icon: 'warning',
-            title: '請填入 email 和 password',
+            title: '請填入 account 和 password',
           })
           return
         }
@@ -67,7 +67,7 @@ export default {
         this.isProcessing = true
 
         const { data } = await authorizationAPI.signIn({
-          email: this.email,
+          account: this.account,
           password: this.password,
         })
         if (data.status !== 'success') {
@@ -76,7 +76,8 @@ export default {
 
         //將伺服器發送的 token 保存在 localStorage
         localStorage.setItem('token', data.token)
-
+        console.log(data.message)
+        console.log(data.token)
         // 將資料傳入Vuex中
         this.$store.commit('setCurrentUser', data.user)
 

@@ -13,8 +13,9 @@ export default new Vuex.Store({
       id: -1,
       name: '',
       email: '',
+      email: '',
       image: '',
-      isAdmin: false,
+      isAdmin: true,
     },
     // 是否驗證
     isAuthenticated: false,
@@ -47,7 +48,6 @@ export default new Vuex.Store({
           name,
           email,
           image,
-          isAdmin,
         })
         return true
       } catch (error) {

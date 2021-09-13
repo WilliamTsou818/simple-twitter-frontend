@@ -2,7 +2,7 @@
   <div class="container container--admin">
     <Head :title="title" />
     <section class="users">
-      <AdminUserCard v-for="user in users" :key="user.id" />
+      <AdminUserCard v-for="user in users" :user="user" :key="user.id" />
     </section>
   </div>
 </template>
