@@ -34,7 +34,8 @@ export default {
 <style lang="scss" scoped>
 .card {
   width: 100%;
-  max-width: 245px;
+  grid-area: span 1;
+  /* max-width: 245px; */
   height: 314px;
   border-radius: 10px;
   overflow: hidden;
