@@ -32,14 +32,14 @@ export default {
 
 <style lang="scss" scoped>
 .logo {
-  margin: 60px auto 30px auto;
+  margin: 60px auto 20px auto;
   width: 50px;
   height: 50px;
   padding: 5px;
 }
 .section-actions {
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 20px;
   width: 540px;
   max-width: 90vw;
   text-align: end;
