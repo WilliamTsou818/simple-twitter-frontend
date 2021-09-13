@@ -4,7 +4,7 @@
       <img src="@/assets/images/logo.svg" alt="logo" />
     </div>
     <nav class="nav-left__nav">
-      <template v-if="currentUser.isAdmin">
+      <template v-if="currentUser.role === 'admin'">
         <router-link to="/admin/tweets" class="nav-left__nav__link">
           <svg
             class="nav-left__nav__icon"
