@@ -60,13 +60,9 @@ export default {
   max-width: 1440px;
   display: flex;
   margin: 0 auto;
-  // TODO:測試用
-  border: 1px solid red;
 }
 main {
   flex: 1;
-  // TODO:測試用
-  border: 1px solid blue;
 }
 .section-form {
   max-width: 642px;
