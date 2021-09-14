@@ -55,7 +55,7 @@ export default {
 <style lang="scss" scoped>
 .users {
   padding: 15px;
-  margin-bottom: 55px;
+  padding-bottom: 56px;
   width: 100%;
   height: calc(100vh - 56px);
   overflow-y: scroll;
