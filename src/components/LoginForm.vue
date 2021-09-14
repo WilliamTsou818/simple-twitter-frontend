@@ -70,8 +70,7 @@ export default {
         this.isProcessing = true
 
         const { data } = await authorizationAPI.signIn({
-          // FIXME:暫時用餐廳API，之後email要改成account
-          email: this.account,
+          account: this.account,
           password: this.password,
         })
         if (data.status !== 'success') {

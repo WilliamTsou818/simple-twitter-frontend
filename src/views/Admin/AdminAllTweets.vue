@@ -1,17 +1,21 @@
 <template>
   <div class="container container--admin">
     <Head :title="title" />
-    <div>
-      <div v-for="(tweet, index) in tweets" :key="index">
-        <div>
-          <AdminTweet :init-tweet="tweet" />
-        </div>
-      </div>
-    </div>
+    <section class="tweets">
+      <AdminTweet
+        v-for="tweet in tweets"
+        :key="tweet.id"
+        :tweet="tweet"
+        :handleClickDelete="deleteTweet"
+      />
+    </section>
   </div>
 </template>
 
 <script>
+import adminAPI from '@/apis/admin'
+import { Toast } from './../../utils/helpers'
+
 import Head from '@/components/Head'
 import AdminTweet from '@/components/AdminTweet'
 
@@ -23,21 +27,48 @@ export default {
   data() {
     return {
       title: '推文清單',
-      tweets: [
-        {
-          userName: 'Apple',
-          userId: 'apple',
-          date: '2020-02-20',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing ...',
-        },
-        {
-          userName: 'Willian',
-          userId: 'willian',
-          date: '2020-02-20',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing ...',
-        },
-      ],
+      isloading: true,
+      isProcessing: false,
+      tweets: [],
     }
+  },
+  created() {
+    this.fetchTweets()
+  },
+  methods: {
+    async fetchTweets() {
+      try {
+        const { data } = await adminAPI.tweets.get()
+        this.tweets = data
+      } catch (err) {
+        console.log('err', err)
+      }
+    },
+    async deleteTweet(tweetId) {
+      try {
+        const { data } = await adminAPI.tweets.delete({ tweetId })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
+        Toast.fire({
+          icon: 'success',
+          title: `The tweet id ${tweetId} deleted successfully`,
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.tweets {
+  height: calc(100vh - 56px);
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+</style>

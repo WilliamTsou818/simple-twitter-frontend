@@ -1,15 +1,22 @@
 <template>
   <div class="atweet">
-    <div class="atweet__avatar"></div>
+    <div
+      class="atweet__avatar"
+      v-bind:style="{ backgroundImage: 'url(' + tweet.User.avatar + ')' }"
+    ></div>
     <div class="atweet__detail">
       <div class="atweet__detail__user">
-        <span class="atweet__detail__name">{{ tweet.userName }}</span>
-        <span class="atweet__detail__id">@{{ tweet.userId }}</span>
-        <span class="atweet__detail__date">・{{ tweet.date }}</span>
+        <span class="atweet__detail__name">{{ tweet.User.name }}</span>
+        <span class="atweet__detail__account">@{{ tweet.User.account }}</span>
+        <span class="atweet__detail__date"
+          >・{{ tweet.updatedAt | fromNowFilter }}</span
+        >
       </div>
-      <div class="atweet__detail__content">{{ tweet.content }}</div>
+      <div class="atweet__detail__content">
+        {{ tweet.description | ellipsis }}
+      </div>
     </div>
-    <button class="atweet-button-remove">
+    <button class="atweet__button-remove" @click="handleClickDelete(tweet.id)">
       <svg
         width="24"
         height="24"
@@ -27,18 +34,28 @@
 </template>
 
 <script>
+import { fromNowFilter } from './../utils/mixins'
 export default {
   name: 'AdminTweet',
   props: {
-    initTweet: {
+    tweet: {
       type: Object,
       required: true,
     },
+    handleClickDelete: {
+      type: Function,
+      default: () => {},
+    },
   },
-  data() {
-    return {
-      tweet: this.initTweet,
-    }
+  mixins: [fromNowFilter],
+  filters: {
+    ellipsis(value) {
+      if (!value) return ''
+      if (value.length > 50) {
+        return value.slice(0, 50) + '...'
+      }
+      return value
+    },
   },
 }
 </script>
@@ -55,6 +72,9 @@ export default {
     height: 50px;
     border-radius: 50px;
     background-color: #c4c4c4;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   &__detail {
     flex: 1;
@@ -64,7 +84,7 @@ export default {
       padding-right: 5px;
       color: var(--text);
     }
-    &__id,
+    &__account,
     &__date {
       color: var(--gray-500);
     }

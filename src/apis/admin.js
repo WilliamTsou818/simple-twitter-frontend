@@ -6,7 +6,7 @@ export default {
       return apiHelper.get('/admin/users')
     },
   },
-  tweet: {
+  tweets: {
     delete({ tweetId }) {
       return apiHelper.delete(`/admin/tweets/${tweetId}`)
     },

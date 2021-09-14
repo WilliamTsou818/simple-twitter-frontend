@@ -12,9 +12,11 @@ export default new Vuex.Store({
     currentUser: {
       id: -1,
       name: '',
+      account: '',
       email: '',
       image: '',
-      isAdmin: false,
+      role: '',
+      // isAdmin: true,
     },
     // 是否驗證
     isAuthenticated: false,
@@ -41,17 +43,20 @@ export default new Vuex.Store({
     async fetchCurrentUser({ commit }) {
       try {
         const { data } = await usersAPI.getCurrentUser()
-        const { id, name, email, image, isAdmin } = data
+        console.log('fechCurrentUser')
+        const { id, name, email, image, role } = data
         commit('setCurrentUser', {
           id,
           name,
           email,
           image,
-          isAdmin,
+          role,
         })
         return true
       } catch (error) {
         console.log('error', error)
+        console.log('error', error.message)
+        console.log('取得當前使用者失敗')
         // 驗證失敗的話一併觸發登出的行為，以清除 state 中的 token
         commit('revokeAuthentication')
         return false
