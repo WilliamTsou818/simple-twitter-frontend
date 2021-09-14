@@ -104,6 +104,7 @@ export default {
   width: 540px;
   max-width: 90vw;
   &__title {
+    margin-bottom: 40px;
     font-size: 23px;
     font-weight: bold;
     color: var(--text);
@@ -111,7 +112,7 @@ export default {
   &__account,
   &__password {
     position: relative;
-    margin-top: 20px;
+    margin-top: 30px;
     border-radius: 4px;
     border-bottom: 2px solid var(--gray-500);
     &__label {
@@ -135,7 +136,7 @@ export default {
     }
   }
   &__submit {
-    margin-top: 30px;
+    margin-top: 40px;
     width: 100%;
     height: 50px;
     background-color: var(--theme);
