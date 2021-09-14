@@ -1,6 +1,7 @@
 <template>
   <div class="setting">
-    <NavBarAdmin />
+    <NavBarAdmin class="sm-d-none" />
+    <TabBarAdmin class="lg-d-none" />
     <main>
       <div class="container container--setting">
         <Head :title="title" />
@@ -17,6 +18,7 @@
 
 <script>
 import NavBarAdmin from '@/components/NavBarAdmin.vue'
+import TabBarAdmin from '@/components/TabBarAdmin.vue'
 import Head from '@/components/Head'
 import AccountForm from '@/components/AccountForm'
 
@@ -24,6 +26,7 @@ export default {
   name: 'UserRegister',
   components: {
     NavBarAdmin,
+    TabBarAdmin,
     Head,
     AccountForm,
   },
@@ -68,5 +71,15 @@ main {
 .section-form {
   max-width: 642px;
   padding: 0 16px;
+}
+@media screen and (max-width: 600px) {
+  .sm-d-none {
+    display: none;
+  }
+}
+@media screen and (min-width: 599px) {
+  .lg-d-none {
+    display: none;
+  }
 }
 </style>
