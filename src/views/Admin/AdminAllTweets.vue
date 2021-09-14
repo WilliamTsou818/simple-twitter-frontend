@@ -1,6 +1,7 @@
 <template>
   <div class="container container--admin">
     <Head :title="title" />
+    <Spinner v-if="isLoading" />
     <section class="tweets">
       <AdminTweet
         v-for="tweet in tweets"
@@ -16,18 +17,20 @@
 import adminAPI from '@/apis/admin'
 import { Toast } from './../../utils/helpers'
 
+import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import AdminTweet from '@/components/AdminTweet'
 
 export default {
   components: {
+    Spinner,
     Head,
     AdminTweet,
   },
   data() {
     return {
       title: '推文清單',
-      isloading: true,
+      isLoading: true,
       isProcessing: false,
       tweets: [],
     }
@@ -40,6 +43,7 @@ export default {
       try {
         const { data } = await adminAPI.tweets.get()
         this.tweets = data
+        this.isLoading = false
       } catch (err) {
         console.log('err', err)
       }
