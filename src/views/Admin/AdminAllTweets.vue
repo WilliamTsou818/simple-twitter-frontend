@@ -75,4 +75,10 @@ export default {
     display: none;
   }
 }
+
+@media screen and (max-width: 600px) {
+  .tweets {
+    padding-bottom: 56px;
+  }
+}
 </style>
