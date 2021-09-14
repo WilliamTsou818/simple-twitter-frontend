@@ -79,20 +79,26 @@ const routes = [
     name: 'UserRegister',
     component: () => import('../views/User/UserRegister.vue'),
   },
+  // 使用者註冊
+  {
+    path: '/user/setting',
+    name: 'UserSetting',
+    component: () => import('../views/User/UserSetting.vue'),
+  },
   //前台路由
   {
     path: '/user',
     name: 'User',
     // TODO:暫時回Home
     redirect: '/',
-    // redirect: '/user/tweets',
+    // redirect: '/user/home',
     // component: () => import('../views/User.vue'),
     // children: [
     //   {
-    //     path: 'tweets',
+    //     path: ':user_id/tweets',
     //     name: 'UserAllTweets',
     //     component: () => import('../views/User/UserAllTweets.vue'),
-    //     beforeEnter: checkAdminAuthorize,
+    //     beforeEnter: checkUserAuthorize,
     //   },
     // ],
   },

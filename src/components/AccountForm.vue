@@ -176,8 +176,7 @@ export default {
 
 <style lang="scss" scoped>
 .form {
-  margin: 0 auto;
-  width: 540px;
+  width: 100%;
   max-width: 90vw;
   &__account,
   &__name,
