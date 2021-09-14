@@ -10,9 +10,4 @@
   text-align: center;
   color: #2c3e50;
 }
-@media screen and (max-width: 599px) {
-  #app {
-    margin-bottom: 55px;
-  }
-}
 </style>

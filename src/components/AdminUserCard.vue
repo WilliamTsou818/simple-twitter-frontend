@@ -14,14 +14,14 @@
       <div class="card__info__name">
         {{ user.name }}
       </div>
-      <div class="card__info__id">@{{ user.account }}</div>
+      <div class="card__info__account">@{{ user.account }}</div>
     </div>
     <div class="card__actions">
       <div class="card__actions__tweets">
         <img
           class="card__actions__icon"
           src="@/assets/images/icon/reply.svg"
-          alt="like"
+          alt="tweets"
         />
         <span class="card__actions__count">{{
           user.tweetsCount | thousandFilter
@@ -33,16 +33,20 @@
           src="@/assets/images/icon/like.svg"
           alt="like"
         />
-        <span class="card__actions__count">{{ user.likesCount }}</span>
+        <span class="card__actions__count">{{
+          user.likesCount | thousandFilter
+        }}</span>
       </div>
     </div>
     <div class="card__follow">
       <span
-        ><span class="card__follow__count">{{ user.followingsCount }} 個</span
+        ><span class="card__follow__count"
+          >{{ user.followingsCount | thousandFilter }} 個</span
         >跟隨中</span
       >
       <span
-        ><span class="card__follow__count">{{ user.followersCount }} 位</span
+        ><span class="card__follow__count"
+          >{{ user.followersCount | thousandFilter }} 位</span
         >跟隨者</span
       >
     </div>
@@ -103,7 +107,7 @@ export default {
       font-weight: 900;
       color: var(--text);
     }
-    &__id {
+    &__account {
       color: var(--gray-500);
       margin-top: 2px;
     }
@@ -118,9 +122,6 @@ export default {
     &__tweets,
     &__like {
       display: flex;
-    }
-    &__like {
-      /* margin-left: 15px; */
     }
     &__icon {
       width: 24px;

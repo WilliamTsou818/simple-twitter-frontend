@@ -70,6 +70,7 @@ export default {
 <style lang="scss" scoped>
 .tweets {
   height: calc(100vh - 56px);
+  padding-bottom: 48px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
