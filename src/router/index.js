@@ -89,9 +89,8 @@ const routes = [
   {
     path: '/user',
     name: 'User',
-    // TODO:暫時回Home
-    redirect: '/',
-    // redirect: '/user/home',
+    // TODO:暫時到Setting
+    redirect: '/user/setting',
     // component: () => import('../views/User.vue'),
     // children: [
     //   {
