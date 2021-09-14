@@ -70,10 +70,15 @@ export default {
 <style lang="scss" scoped>
 .tweets {
   height: calc(100vh - 56px);
-  padding-bottom: 56px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .tweets {
+    padding-bottom: 56px;
   }
 }
 </style>
