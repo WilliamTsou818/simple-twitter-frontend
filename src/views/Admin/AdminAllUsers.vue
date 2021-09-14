@@ -2,6 +2,7 @@
   <div class="container container--admin">
     <Head :title="title" />
     <section class="users">
+      <Spinner v-if="isLoading" />
       <div class="users__grid-container">
         <AdminUserCard v-for="user in users" :user="user" :key="user.id" />
       </div>
@@ -13,11 +14,13 @@
 import adminAPI from '@/apis/admin'
 import { Toast } from './../../utils/helpers'
 
+import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import AdminUserCard from '@/components/AdminUserCard'
 
 export default {
   components: {
+    Spinner,
     Head,
     AdminUserCard,
   },
@@ -25,6 +28,7 @@ export default {
     return {
       title: '使用者列表',
       users: [],
+      isLoading: true,
     }
   },
   created() {
