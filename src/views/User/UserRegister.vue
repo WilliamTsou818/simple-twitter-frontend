@@ -15,6 +15,8 @@
 
 <script>
 import AccountForm from '@/components/AccountForm'
+import usersAPI from '@/apis/users'
+import { Toast } from '@/utils/helpers'
 
 export default {
   name: 'UserRegister',
@@ -30,15 +32,33 @@ export default {
     async handleAfterSubmit(resquestData) {
       try {
         this.isProcessing = true
-        // 透過 API 將表單資料送到伺服器
-        await setTimeout(() => {
-          console.log('handleAfterSubmit start')
-          console.log('resquestData', resquestData)
-          this.$router.push({ name: 'UserLogin' })
-        }, 3000)
+        console.log('resquestData', resquestData)
+
+        const { data } = await usersAPI.signUp(resquestData)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+        Toast.fire({
+          icon: 'success',
+          title: `帳號註冊成功！\n ${data.message}`,
+        })
+        this.$router.push({ name: 'UserLogin' })
       } catch (err) {
         this.isProcessing = false
-        console.log(err)
+        let message = ''
+        if (err.response) {
+          console.log(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
+        Toast.fire({
+          icon: 'error',
+          title: `帳號註冊失敗！\n ${message}`,
+        })
       }
     },
   },
