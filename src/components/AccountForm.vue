@@ -102,12 +102,24 @@ export default {
       type: Boolean,
       default: false,
     },
+    initAccount: {
+      type: String,
+      default: '',
+    },
+    initName: {
+      type: String,
+      default: '',
+    },
+    initEmail: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
-      account: '',
-      name: '',
-      email: '',
+      account: this.initAccount,
+      name: this.initName,
+      email: this.initEmail,
       password: '',
       checkPassword: '',
       // 字數上限

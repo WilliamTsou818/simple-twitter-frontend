@@ -8,6 +8,9 @@
         <section class="section-form">
           <AccountForm
             :init-is-processing="isProcessing"
+            :init-account="account"
+            :init-name="name"
+            :init-email="email"
             @after-submit="handleAfterSubmit"
           />
         </section>
@@ -23,7 +26,7 @@ import Head from '@/components/Head'
 import AccountForm from '@/components/AccountForm'
 
 export default {
-  name: 'UserRegister',
+  name: 'UserSetting',
   components: {
     NavBarAdmin,
     TabBarAdmin,
@@ -34,6 +37,9 @@ export default {
     return {
       title: '帳戶設定',
       isProcessing: false,
+      account: this.$store.state.currentUser.account,
+      name: this.$store.state.currentUser.name,
+      email: this.$store.state.currentUser.email,
     }
   },
   methods: {
@@ -44,7 +50,6 @@ export default {
         await setTimeout(() => {
           console.log('handleAfterSubmit start')
           console.log('resquestData', resquestData)
-          // this.$router.push({ name: 'UserLogin' })
         }, 3000)
       } catch (err) {
         this.isProcessing = false
