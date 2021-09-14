@@ -4,6 +4,7 @@
     <router-link to="/">Home</router-link>
     <router-link to="/user/login">前台登入</router-link>
     <router-link to="/user/register">使用者註冊</router-link>
+    <router-link to="/user/setting">使用者帳號設定</router-link>
     <router-link to="/admin/login">後台登入</router-link>
     <router-link to="/admin/tweets">推文清單</router-link>
     <router-link to="/admin/users">使用者列表</router-link>
