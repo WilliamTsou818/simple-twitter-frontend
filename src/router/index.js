@@ -16,9 +16,9 @@ const checkAuthorize = (to, from, next, role) => {
   next()
 }
 //TODO:確認身分為用戶的頁面
-// const checkUserAuthorize = (to, from, next) => {
-//   checkAuthorize(to, from, next, 'user')
-// }
+const checkUserAuthorize = (to, from, next) => {
+  checkAuthorize(to, from, next, 'user')
+}
 
 const checkAdminAuthorize = (to, from, next) => {
   checkAuthorize(to, from, next, 'admin')
@@ -100,6 +100,18 @@ const routes = [
     //     beforeEnter: checkUserAuthorize,
     //   },
     // ],
+  },
+  // TODO:暫時設定測試用
+  {
+    path: '/user/home',
+    name: 'UserHome',
+    beforeEnter: checkUserAuthorize,
+  },
+  {
+    path: '/user/:user_id',
+    name: 'UserInfo',
+    component: Home,
+    beforeEnter: checkUserAuthorize,
   },
 ]
 

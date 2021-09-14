@@ -88,7 +88,7 @@
       </div>
       <div class="tab-bar__tab">
         <router-link
-          :to="{ path: '/user/:user_id', params: { user_id: currentUser.id } }"
+          :to="{ name: 'UserInfo', params: { user_id: currentUser.id } }"
         >
           <svg
             class="tab-bar__tab__icon"
@@ -136,8 +136,11 @@ export default {
   },
   methods: {
     handleLogout() {
+      const role =
+        this.$store.state.currentUser.role === 'user' ? 'user' : 'admin'
       this.$store.commit('revokeAuthentication')
-      this.$router.push('/admin/login')
+      console.log(`handleLogout /${role}/login`)
+      this.$router.push(`/${role}/login`)
     },
   },
 }

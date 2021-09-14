@@ -53,7 +53,7 @@
           <span class="nav-left__nav__text">首頁</span>
         </router-link>
         <router-link
-          :to="{ path: '/user/:user_id', params: { user_id: currentUser.id } }"
+          :to="{ name: 'UserInfo', params: { user_id: currentUser.id } }"
           class="nav-left__nav__link"
         >
           <svg

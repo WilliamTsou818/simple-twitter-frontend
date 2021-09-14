@@ -5,6 +5,11 @@
     <router-link to="/user/login">前台登入</router-link>
     <router-link to="/user/register">使用者註冊</router-link>
     <router-link to="/user/setting">使用者帳號設定</router-link>
+    <router-link to="/user/home">使用者首頁</router-link>
+    <router-link :to="{ name: 'UserInfo', params: { user_id: 75 } }"
+      >使用者個人資訊</router-link
+    >
+    <hr />
     <router-link to="/admin/login">後台登入</router-link>
     <router-link to="/admin/tweets">推文清單</router-link>
     <router-link to="/admin/users">使用者列表</router-link>
@@ -15,6 +20,11 @@
 <script>
 export default {
   name: 'Home',
+  created() {
+    // TODO:測試用
+    const { user_id } = this.$route.params
+    console.log('user_id', user_id)
+  },
   methods: {
     handleLogout() {
       console.log('登出(測試用)')
