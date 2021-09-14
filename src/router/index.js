@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './../store'
+import { Toast } from '@/utils/helpers'
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
@@ -9,7 +10,11 @@ Vue.use(VueRouter)
 const checkAuthorize = (to, from, next, role) => {
   const currentUser = store.state.currentUser
   if (currentUser && currentUser.role !== role) {
-    next('/404')
+    console.log(`checkAuthorize ${role} fail`)
+    Toast.fire({
+      icon: 'error',
+      title: '權限不足，無法訪問！',
+    })
     return
   }
   console.log(`checkAuthorize ${role} success`)
