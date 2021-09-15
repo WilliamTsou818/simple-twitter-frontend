@@ -5,7 +5,7 @@
     <main>
       <router-view />
     </main>
-    <UserPopularTop />
+    <UserPopularTop class="sm-d-none" />
   </div>
 </template>
 
