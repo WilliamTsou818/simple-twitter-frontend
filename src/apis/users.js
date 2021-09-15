@@ -15,16 +15,24 @@ export default {
       checkPassword,
     })
   },
+  //取得該 user 的資料
+  getUser({ userId }) {
+    return apiHelper.get(`/users/${userId}`)
+  },
   // 編輯使用者帳戶資料
   setting({ userId, requestData }) {
     return apiHelper.put(`/users/${userId}`, requestData)
   },
   //取得熱門前十清單
   getPopularUsers() {
-    return apiHelper2.get('/users/top')
+    return apiHelper.get('/users/top')
   },
   //取得user的正追蹤清單
   getUserFollowing({ userId }) {
-    return apiHelper2.get(`/users/${userId}/followings`)
+    return apiHelper.get(`/users/${userId}/followings`)
+  },
+  //取得user的被誰追蹤清單
+  getUserFollower({ userId }) {
+    return apiHelper.get(`/users/${userId}/followers`)
   },
 }
