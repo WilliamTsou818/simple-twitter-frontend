@@ -6,7 +6,7 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
-// TODO:之後改成判斷role === 'admin' or 'user'
+// 檢查頁面權限
 const checkAuthorize = (to, from, next, role) => {
   const currentUser = store.state.currentUser
   if (currentUser && currentUser.role !== role) {
@@ -20,7 +20,7 @@ const checkAuthorize = (to, from, next, role) => {
   console.log(`checkAuthorize ${role} success`)
   next()
 }
-//TODO:確認身分為用戶的頁面
+
 const checkUserAuthorize = (to, from, next) => {
   checkAuthorize(to, from, next, 'user')
 }
@@ -28,16 +28,6 @@ const checkUserAuthorize = (to, from, next) => {
 const checkAdminAuthorize = (to, from, next) => {
   checkAuthorize(to, from, next, 'admin')
 }
-
-// const authorizeIsAdmin = (to, from, next) => {
-//   const currentUser = store.state.currentUser
-//   if (currentUser && !currentUser.isAdmin) {
-//     next('/404')
-//     return
-//   }
-//   // console.log('authorizeIsAdmin')
-//   next()
-// }
 
 const routes = [
   {
@@ -94,51 +84,45 @@ const routes = [
   {
     path: '/user',
     name: 'User',
-    // TODO:暫時到Setting
-    redirect: '/user/setting',
-    // component: () => import('../views/User.vue'),
-    // children: [
-    //   {
-    //     path: ':user_id/tweets',
-    //     name: 'UserAllTweets',
-    //     component: () => import('../views/User/UserAllTweets.vue'),
-    //     beforeEnter: checkUserAuthorize,
-    //   },
-    // ],
-  },
-  // TODO:暫時設定測試用
-  {
-    path: '/user/home',
-    name: 'UserHome',
-    component: Home,
-    beforeEnter: checkUserAuthorize,
-  },
-  {
-    path: '/user/:user_id',
-    name: 'UserInfo',
-    redirect: '/user/:user_id/tweets',
-    component: () => import('../views/UserInfo/UserInfo.vue'),
-    //TODO:不確定還需不需要這行
-    beforeEnter: checkUserAuthorize,
+    redirect: '/user/home',
+    component: () => import('../views/User.vue'),
     children: [
       {
-        path: 'tweets',
-        name: 'userTweets',
-        component: () => import('../views/UserInfo/UserAllTweets.vue'),
+        // 首頁
+        path: '/user/home',
+        name: 'UserHome',
+        component: () => import('../views/User/UserHome.vue'),
         beforeEnter: checkUserAuthorize,
       },
       {
-        path: 'replies',
-        name: 'userReplies',
-        component: () => import('../views/UserInfo/UserAllReplies.vue'),
+        // 個人資訊
+        path: '/user/:user_id',
+        name: 'UserInfo',
+        redirect: '/user/:user_id/tweets',
+        component: () => import('../views/UserInfo/UserInfo.vue'),
+        //TODO:不確定還需不需要這行
         beforeEnter: checkUserAuthorize,
-      },
-      {
-        path: 'like',
-        name: 'userLike',
-        component: () => import('../views/UserInfo/UserAllLike.vue'),
-        beforeEnter: checkUserAuthorize,
-      },
+        children: [
+          {
+            path: 'tweets',
+            name: 'UserAllTweets',
+            component: () => import('../views/UserInfo/UserAllTweets.vue'),
+            beforeEnter: checkUserAuthorize,
+          },
+          {
+            path: 'replies',
+            name: 'UserAllReplies',
+            component: () => import('../views/UserInfo/UserAllReplies.vue'),
+            beforeEnter: checkUserAuthorize,
+          },
+          {
+            path: 'like',
+            name: 'UserAllLike',
+            component: () => import('../views/UserInfo/UserAllLike.vue'),
+            beforeEnter: checkUserAuthorize,
+          },
+        ],
+      }
     ],
   },
 ]

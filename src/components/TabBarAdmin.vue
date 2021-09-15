@@ -169,7 +169,7 @@ export default {
     &__icon {
       fill: var(--black);
     }
-    > .router-link-exact-active {
+    > .router-link-active {
       > .tab-bar__tab__icon {
         fill: var(--theme);
       }
