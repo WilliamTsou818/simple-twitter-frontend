@@ -3,14 +3,16 @@
     <NavBarAdmin class="sm-d-none" />
     <TabBarAdmin class="lg-d-none" />
     <main>
-      <div>User_name</div>
-      <div>User_tweet_length</div>
-      <UserProfile
-        :user="userInfo"
-        :followingsCount="followingsCount"
-        :followersCount="followersCount"
-      />
-      <router-view />
+      <div class="container--user">
+        <div>User_name</div>
+        <div>User_tweet_length</div>
+        <UserProfile
+          :user="userInfo"
+          :followingsCount="followingsCount"
+          :followersCount="followersCount"
+        />
+        <router-view />
+      </div>
     </main>
     <UserPopularTop class="sm-d-none" />
   </div>
@@ -47,11 +49,9 @@ export default {
   },
   created() {
     const { user_id } = this.$route.params
-    console.log('user_id', user_id)
     this.userId = user_id
     this.fetchUser(user_id)
     this.fetchUserFollowing(user_id)
-    console.log(this.userInfo)
   },
   methods: {
     async fetchUser(userId) {
