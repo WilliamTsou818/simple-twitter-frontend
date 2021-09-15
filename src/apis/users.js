@@ -15,6 +15,10 @@ export default {
       checkPassword,
     })
   },
+  // 編輯使用者帳戶資料
+  setting({ userId, requestData }) {
+    return apiHelper.put(`/users/${userId}`, requestData)
+  },
   //取得熱門前十清單
   getPopularUsers() {
     return apiHelper2.get('/users/top')

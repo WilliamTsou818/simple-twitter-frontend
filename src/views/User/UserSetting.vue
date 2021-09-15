@@ -8,9 +8,9 @@
         <section class="section-form">
           <AccountForm
             :init-is-processing="isProcessing"
-            :init-account="account"
-            :init-name="name"
-            :init-email="email"
+            :init-account="currentUser.account"
+            :init-name="currentUser.name"
+            :init-email="currentUser.email"
             @after-submit="handleAfterSubmit"
           />
         </section>
@@ -20,10 +20,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import NavBarAdmin from '@/components/NavBarAdmin.vue'
 import TabBarAdmin from '@/components/TabBarAdmin.vue'
 import Head from '@/components/Head'
 import AccountForm from '@/components/AccountForm'
+import usersAPI from '@/apis/users'
+import { Toast } from '@/utils/helpers'
 
 export default {
   name: 'UserSetting',
@@ -37,23 +40,47 @@ export default {
     return {
       title: '帳戶設定',
       isProcessing: false,
-      account: this.$store.state.currentUser.account,
-      name: this.$store.state.currentUser.name,
-      email: this.$store.state.currentUser.email,
     }
   },
+  computed: {
+    ...mapState(['currentUser']),
+  },
   methods: {
-    async handleAfterSubmit(resquestData) {
+    async handleAfterSubmit(requestData) {
       try {
         this.isProcessing = true
-        // 透過 API 將表單資料送到伺服器
-        await setTimeout(() => {
-          console.log('handleAfterSubmit start')
-          console.log('resquestData', resquestData)
-        }, 3000)
+        // console.log('requestData', requestData)
+        const { data } = await usersAPI.setting({
+          userId: this.currentUser.id,
+          requestData,
+        })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.isProcessing = false
+        // console.log('data', data)
+        // 更新vuex的state
+        const { account, name, email } = data.user
+        this.$store.commit('setCurrentUser', { account, name, email })
+        Toast.fire({
+          icon: 'success',
+          title: `帳戶設定成功！\n ${data.message}`,
+        })
       } catch (err) {
         this.isProcessing = false
-        console.log(err)
+        let message = ''
+        if (err.response) {
+          console.log(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
+        Toast.fire({
+          icon: 'error',
+          title: `帳戶設定失敗！\n ${message}`,
+        })
       }
     },
   },
