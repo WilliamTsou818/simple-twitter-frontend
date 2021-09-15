@@ -29,8 +29,10 @@
 //TODO:如果是在 追蹤頁面要更改上層follow狀態
 export default {
   name: 'UserPopularTop.vue',
-  data: {
-    userIsFollowing: false,
+  data() {
+    return {
+      userIsFollowing: false,
+    }
   },
 }
 </script>
@@ -57,7 +59,6 @@ export default {
     &__list {
       display: flex;
       padding: 10px 15px;
-      border: 1px solid red;
       align-items: center;
       border-bottom: 1px solid var(--blue-gray-600);
     }
@@ -71,26 +72,29 @@ export default {
       flex: 1;
       text-align: left;
       padding-left: 20px;
+      font-weight: 900;
+      font-size: 15px;
     }
     &__name {
-      font-weight: 900;
       color: var(--text);
     }
     &__id {
       color: var(--gray-500);
       margin-top: 2px;
     }
-    &__follow {
-      padding: 8px 16px;
+    &__follow,
+    &__following {
+      font-family: Noto Sans TC;
+      font-size: 15px;
       border-radius: 20px;
+      padding: 8px 16px;
+      font-weight: 900;
+    }
+    &__follow {
       color: var(--theme);
       border: 1px solid var(--theme);
     }
     &__following {
-      padding: 8px 16px;
-      border-radius: 20px;
-      color: var(--theme);
-      border: 1px solid var(--theme);
       background-color: var(--theme);
       color: var(--white);
     }
