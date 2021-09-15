@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <NavBarAdmin class="sm-d-none" />
     <!-- TODO:開發中使用 -->
     <div class="development-link">
       <router-link to="/">Home</router-link>
@@ -17,27 +16,12 @@
       <router-link to="/admin/users">使用者列表</router-link>
       <button @click.prevent.stop="handleLogout">登出(測試用)</button>
     </div>
-    <UserPopularTop />
   </div>
 </template>
 
 <script>
-import NavBarAdmin from './../components/NavBarAdmin.vue'
-import TabBarAdmin from './../components/TabBarAdmin.vue'
-import UserPopularTop from './../components/UserPopularTop.vue'
-
 export default {
   name: 'Home',
-  components: {
-    NavBarAdmin,
-    TabBarAdmin,
-    UserPopularTop,
-  },
-  created() {
-    // TODO:測試用
-    const { user_id } = this.$route.params
-    console.log('user_id', user_id)
-  },
   methods: {
     handleLogout() {
       console.log('登出(測試用)')
@@ -72,17 +56,6 @@ button {
   margin: 20px;
   &:hover {
     color: var(--theme);
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .sm-d-none {
-    display: none;
-  }
-}
-@media screen and (min-width: 599px) {
-  .lg-d-none {
-    display: none;
   }
 }
 </style>
