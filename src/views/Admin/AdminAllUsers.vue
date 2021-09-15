@@ -73,8 +73,11 @@ export default {
   }
 }
 @media screen and (max-width: 600px) {
-  .users__grid-container {
-    grid-template-columns: repeat(2, 1fr);
+  .users {
+    padding-bottom: 56px;
+    &__grid-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }
 </style>
