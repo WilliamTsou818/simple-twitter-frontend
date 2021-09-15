@@ -1,6 +1,6 @@
 <template>
   <div class="atweet">
-    <div class="atweet__detail" @click="handleClickDetail(tweet.id)">
+    <div class="atweet__detail" @click="handleClickDetail(tweet.TweetId)">
       <div
         class="atweet__detail__avatar"
         v-bind:style="{ backgroundImage: 'url(' + tweet.User.avatar + ')' }"
@@ -23,7 +23,7 @@
     <div class="atweet__actions">
       <button
         class="atweet__actions__button"
-        @click="handleClickReply(tweet.id)"
+        @click="handleClickReply(tweet.TweetId)"
       >
         <svg
           class="atweet__actions__icon"
@@ -44,7 +44,7 @@
       </button>
       <button
         class="atweet__actions__button"
-        @click="handleClickLike(tweet.id)"
+        @click="handleClickLike(tweet.TweetId)"
       >
         <svg
           class="atweet__actions__icon"
