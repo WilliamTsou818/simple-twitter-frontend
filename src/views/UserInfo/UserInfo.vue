@@ -145,6 +145,7 @@ export default {
     height: 100%;
     font-size: 15px;
     font-weight: bold;
+    border-bottom: 2px solid var(--white);
     color: var(--gray-500);
     &:hover {
       color: var(--theme);
