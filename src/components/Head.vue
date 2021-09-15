@@ -1,6 +1,6 @@
 <template>
   <div class="head">
-    <div class="head__back" v-show="backArrow">
+    <div v-show="backArrow" class="head__back" @click="handleBack">
       <img
         class="head__back__icon"
         src="@/assets/images/icon/back.svg"
@@ -19,16 +19,22 @@ export default {
   name: 'Head',
   props: {
     backArrow: {
-      type: String,
-      default: true,
+      type: Boolean,
+      default: false,
     },
     title: {
       type: String,
+      default: 'loading',
       required: true,
     },
     count: {
       type: String,
       default: '',
+    },
+  },
+  methods: {
+    handleBack() {
+      this.$router.back()
     },
   },
 }
@@ -47,13 +53,14 @@ export default {
   border-bottom: 1px solid var(--gray-200);
   font-weight: bold;
   padding: 0 12px;
+  cursor: pointer;
   &__back {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 32px;
     height: 32px;
-    margin-right: 32px;
+    margin-right: 16px;
     border-radius: 16px;
     cursor: pointer;
     transition-duration: 0.2s;
@@ -69,6 +76,7 @@ export default {
   &__info {
     display: flex;
     flex-direction: column;
+    margin-left: 16px;
     &__title {
       font-size: 18px;
       font-weight: 900;
