@@ -23,25 +23,71 @@
       </button>
     </section>
     <div class="divider"></div>
-    <section class="section-tweets"></section>
+    <Spinner v-if="isLoading" />
+    <section class="section-tweets">
+      <div
+        class="section-tweets__tip"
+        v-show="!isLoading && tweets.length === 0"
+      >
+        目前沒有推文
+      </div>
+      <AdminTweet v-for="tweet in tweets" :key="tweet.id" :tweet="tweet" />
+    </section>
   </div>
 </template>
 
 <script>
+import usersAPI from '@/apis/users'
+import { Toast } from '@/utils/helpers'
 import { mapState } from 'vuex'
+
+import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
+import AdminTweet from '@/components/AdminTweet'
 
 export default {
   components: {
     Head,
+    Spinner,
+    AdminTweet,
   },
   data() {
     return {
       title: '首頁',
+      isLoading: true,
+      tweets: [],
     }
   },
   computed: {
     ...mapState(['currentUser']),
+  },
+  created() {
+    this.fetchTweets()
+  },
+  methods: {
+    async fetchTweets() {
+      try {
+        this.isLoading = true
+        const { data } = await usersAPI.tweets.get()
+        console.log('data', data)
+        this.tweets = data
+        this.isLoading = false
+      } catch (err) {
+        let message = ''
+        if (err.response) {
+          console.log(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
+        Toast.fire({
+          icon: 'error',
+          title: `獲取推文失敗！\n ${message}`,
+        })
+      }
+    },
   },
 }
 </script>
@@ -99,5 +145,23 @@ export default {
   width: 100%;
   height: 10px;
   background: var(--blue-gray-600);
+}
+.section-tweets {
+  height: calc(100vh - 190px);
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &__tip {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    min-width: 225px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .section-tweets {
+    padding-bottom: 56px;
+  }
 }
 </style>
