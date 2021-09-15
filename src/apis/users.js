@@ -39,5 +39,8 @@ export default {
     get() {
       return apiHelper.get('/tweets')
     },
+    newPost({ description }) {
+      return apiHelper.post('/tweets', { description })
+    }
   },
 }
