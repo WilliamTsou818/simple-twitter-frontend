@@ -29,12 +29,12 @@ export default {
     }
   },
   methods: {
-    async handleAfterSubmit(resquestData) {
+    async handleAfterSubmit(requestData) {
       try {
         this.isProcessing = true
-        console.log('resquestData', resquestData)
+        console.log('requestData', requestData)
 
-        const { data } = await usersAPI.signUp(resquestData)
+        const { data } = await usersAPI.signUp(requestData)
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
