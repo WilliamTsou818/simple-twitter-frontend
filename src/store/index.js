@@ -16,6 +16,8 @@ export default new Vuex.Store({
       email: '',
       avatar: '',
       image: '',
+      cover: '',
+      introduction: '',
       role: '',
     },
     // 是否驗證
@@ -44,7 +46,17 @@ export default new Vuex.Store({
       try {
         const { data } = await usersAPI.getCurrentUser()
         console.log('fechCurrentUser')
-        const { id, account, name, email, avatar, image, role } = data
+        const {
+          id,
+          account,
+          name,
+          email,
+          avatar,
+          image,
+          cover,
+          introduction,
+          role,
+        } = data
         commit('setCurrentUser', {
           id,
           account,
@@ -52,6 +64,8 @@ export default new Vuex.Store({
           email,
           avatar,
           image,
+          cover,
+          introduction,
           role,
         })
         return true

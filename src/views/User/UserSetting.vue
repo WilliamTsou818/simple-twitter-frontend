@@ -48,6 +48,7 @@ export default {
   methods: {
     async handleAfterSubmit(requestData) {
       try {
+        console.log(requestData)
         this.isProcessing = true
         // console.log('requestData', requestData)
         const { data } = await usersAPI.setting({
@@ -58,7 +59,7 @@ export default {
           throw new Error(data.message)
         }
         this.isProcessing = false
-        // console.log('data', data)
+        console.log('data', data)
         // 更新vuex的state
         const { account, name, email } = data.user
         this.$store.commit('setCurrentUser', { account, name, email })

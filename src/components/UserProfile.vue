@@ -1,6 +1,9 @@
 <template>
   <div class="user-profile">
-    <UserEditModal v-if="isModalOpen" />
+    <UserEditModal
+      v-show="isModalOpen"
+      :handleToggleModal="handleToggleModal"
+    />
     <div class="user-profile__img">
       <div
         class="user-profile__img__cover"
@@ -13,7 +16,9 @@
     </div>
     <div class="user-profile__action">
       <div v-if="isCurrentUser" class="user-profile__action__self">
-        <button class="user-profile__action__edit">編輯個人資料</button>
+        <button @click="handleToggleModal" class="user-profile__action__edit">
+          編輯個人資料
+        </button>
       </div>
       <div v-if="!isCurrentUser" class="user-profile__action__other">
         <button>
@@ -110,6 +115,9 @@ export default {
   methods: {
     handleClickNotify() {
       this.isNotify = !this.isNotify
+    },
+    handleToggleModal() {
+      this.isModalOpen = !this.isModalOpen
     },
   },
 }

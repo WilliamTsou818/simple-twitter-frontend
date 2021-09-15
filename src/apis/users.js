@@ -39,6 +39,9 @@ export default {
   getUserTweets({ userId }) {
     return apiHelper.get(`/users/${userId}/tweets`)
   },
+  edit({ userId, formData }) {
+    return apiHelper.put(`/users/${userId}`, formData)
+  },
   tweets: {
     get() {
       return apiHelper.get('/tweets')
