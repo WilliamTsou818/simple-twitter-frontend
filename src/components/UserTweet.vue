@@ -1,6 +1,9 @@
 <template>
   <div class="atweet">
-    <div class="atweet__detail" @click="handleClickDetail(tweet.TweetId)">
+    <div
+      class="atweet__detail"
+      @click.stop.prevent="handleClickDetail(tweet.TweetId)"
+    >
       <div
         class="atweet__detail__avatar"
         v-bind:style="{ backgroundImage: 'url(' + tweet.User.avatar + ')' }"
@@ -23,10 +26,10 @@
     <div class="atweet__actions">
       <button
         class="atweet__actions__button"
-        @click="handleClickReply(tweet.TweetId)"
+        @click.stop.prevent="handleClickReply(tweet.TweetId)"
       >
         <svg
-          class="atweet__actions__icon"
+          class="atweet__actions__icon atweet__actions__icon--reply"
           width="15"
           height="15"
           viewBox="0 0 15 15"
@@ -44,10 +47,12 @@
       </button>
       <button
         class="atweet__actions__button"
-        @click="handleClickLike(tweet.TweetId)"
+        @click.stop.prevent="handleClickLike(tweet.TweetId)"
+        :disabled="isProcessing"
       >
         <svg
-          class="atweet__actions__icon"
+          v-if="tweet.isLike === 0"
+          class="atweet__actions__icon atweet__actions__icon--unlike"
           width="15"
           height="15"
           viewBox="0 0 15 15"
@@ -59,6 +64,20 @@
             fill="#657786"
           />
         </svg>
+        <svg
+          v-else
+          class="atweet__actions__icon atweet__actions__icon--like"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 21.6381H11.986C9.40295 21.5901 1.94995 14.8561 1.94995 8.47812C1.94995 5.41412 4.47495 2.72412 7.35295 2.72412C9.64295 2.72412 11.183 4.30412 11.999 5.45412C12.813 4.30612 14.353 2.72412 16.644 2.72412C19.524 2.72412 22.048 5.41412 22.048 8.47912C22.048 14.8551 14.594 21.5891 12.011 21.6361H12V21.6381Z"
+            fill="#E0245E"
+          />
+        </svg>
         <span class="atweet__actions__text">
           {{ tweet.LikesCount | thousandFilter }}</span
         >
@@ -68,7 +87,10 @@
 </template>
 
 <script>
+import usersAPI from '@/apis/users'
+import { Toast } from '@/utils/helpers'
 import { fromNowFilter, altFilter, thousandFilter } from './../utils/mixins'
+
 export default {
   name: 'UserTweet',
   props: {
@@ -80,18 +102,54 @@ export default {
   data() {
     return {
       tweet: this.initTweet,
+      isProcessing: false,
     }
   },
   mixins: [fromNowFilter, altFilter, thousandFilter],
   methods: {
-    handleClickDetail(id) {
-      console.log('handleClickDetail', id)
+    handleClickDetail(tweetId) {
+      console.log('handleClickDetail', tweetId)
     },
-    handleClickReply(id) {
-      console.log('handleClickReply', id)
+    handleClickReply(tweetId) {
+      console.log('handleClickReply', tweetId)
     },
-    handleClickLike(id) {
-      console.log('handleClickLike', id)
+    async handleClickLike(tweetId) {
+      try {
+        this.isProcessing = true
+        // FIXME:這邊isLike是會改成true 跟 false嗎?
+        const isLike = this.tweet.isLike === 0
+        console.log('isLike', isLike)
+        let response = {}
+        if (isLike) {
+          response = await usersAPI.tweets.like({ tweetId })
+        } else {
+          response = await usersAPI.tweets.unlike({ tweetId })
+        }
+        const { data } = response
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.isProcessing = false
+        this.tweet = {
+          ...this.tweet,
+          isLike: isLike ? 1 : 0,
+          LikesCount: isLike
+            ? this.tweet.LikesCount + 1
+            : this.tweet.LikesCount - 1,
+        }
+        Toast.fire({
+          icon: 'success',
+          title: `${data.message}`,
+        })
+      } catch (err) {
+        this.isProcessing = false
+        console.log(err)
+        Toast.fire({
+          icon: 'error',
+          title: `${err.message}`,
+        })
+      }
     },
   },
 }
@@ -102,6 +160,7 @@ export default {
   min-height: 101px;
   max-height: 145px;
   padding: 10px 15px;
+  padding-bottom: 0;
   text-align: left;
   border-bottom: 1px solid var(--blue-gray-600);
   &__detail {
@@ -145,16 +204,24 @@ export default {
   }
   &__actions {
     display: flex;
-    margin-left: 60px;
+    margin-left: 55px;
     margin-top: 10px;
     padding: 3px 0;
+    height: 30px;
     &__button {
       display: flex;
+      justify-content: flex-start;
       align-items: center;
       margin-right: 50px;
     }
     &__icon {
       margin-right: 10px;
+      &--like ~ .atweet__actions__text {
+        color: var(--like-color);
+      }
+    }
+    &__text {
+      color: var(--gray-500);
     }
   }
 }
