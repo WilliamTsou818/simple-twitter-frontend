@@ -17,11 +17,11 @@ export default {
     })
   },
   //取得熱門前十清單
-  getPopularTop() {
-    return apiHelper.get('/users/top')
+  getPopularUsers() {
+    return apiHelper2.get('/users/top')
   },
   //取得user的正追蹤清單
   getUserFollowing({ userId }) {
-    return apiHelper.get(`/users/${userId}/folowing`)
+    return apiHelper2.get(`/users/${userId}/followings`)
   },
 }

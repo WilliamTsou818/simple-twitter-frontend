@@ -5,11 +5,18 @@
     </div>
     <div class="popular__user-list">
       <!-- <router-link :to="{ name: 'user-tweets', params: { id: user.id } }"> -->
-      <div class="popular__user-list__list">
-        <div class="popular__user-list__avatar"></div>
+      <div
+        class="popular__user-list__list"
+        v-for="user in popularUsers"
+        :key="user.id"
+      >
+        <div
+          class="popular__user-list__avatar"
+          :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
+        ></div>
         <div class="popular__user-list__info">
-          <div class="popular__user-list__name">user__name</div>
-          <div class="popular__user-list__account">user__account</div>
+          <div class="popular__user-list__name">{{ user.name }}</div>
+          <div class="popular__user-list__account">{{ user.account }}</div>
         </div>
         <button class="popular__user-list__action">
           <div v-show="!userIsFollowing" class="popular__user-list__follow">
@@ -26,13 +33,36 @@
 </template>
 
 <script>
-//TODO:如果是在 追蹤頁面要更改上層follow狀態
+//TODO:如果是在porfile有追蹤頁面要更改上層follow狀態
+import usersAPI from '@/apis/users'
+import { Toast } from '@/utils/helpers'
+
 export default {
   name: 'UserPopularTop.vue',
   data() {
     return {
       userIsFollowing: false,
+      popularUsers: [],
     }
+  },
+  created() {
+    this.fetchPopularUsers()
+  },
+  methods: {
+    async fetchPopularUsers() {
+      try {
+        const { data } = await usersAPI.getPopularUsers()
+        console.log(data)
+        this.popularUsers = data
+        console.log(this.popularUsers)
+      } catch (err) {
+        console.log(err)
+        Toast.fire({
+          icon: 'error',
+          title: 'PopularTop讀取失敗',
+        })
+      }
+    },
   },
 }
 </script>
@@ -61,12 +91,18 @@ export default {
       padding: 10px 15px;
       align-items: center;
       border-bottom: 1px solid var(--blue-gray-600);
+      &:last-child {
+        border-bottom: 0px solid var(--blue-gray-600);
+      }
     }
     &__avatar {
       width: 50px;
       height: 50px;
       background-color: #c4c4c4;
       border-radius: 50px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
     &__info {
       flex: 1;
