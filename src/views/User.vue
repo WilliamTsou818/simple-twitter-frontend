@@ -3,9 +3,7 @@
     <NavBarAdmin class="sm-d-none" />
     <TabBarAdmin class="lg-d-none" />
     <main>
-      <div class="container container--user">
-        <router-view />
-      </div>
+      <router-view />
     </main>
     <UserPopularTop />
   </div>

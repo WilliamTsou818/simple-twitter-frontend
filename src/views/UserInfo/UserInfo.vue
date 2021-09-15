@@ -1,20 +1,12 @@
 <template>
-  <div class="user-info">
-    <NavBarAdmin class="sm-d-none" />
-    <TabBarAdmin class="lg-d-none" />
-    <main>
-      <div class="container--user">
-        <div>User_name</div>
-        <div>User_tweet_length</div>
-        <UserProfile
-          :user="userInfo"
-          :followingsCount="followingsCount"
-          :followersCount="followersCount"
-        />
-        <router-view />
-      </div>
-    </main>
-    <UserPopularTop class="sm-d-none" />
+  <div class="container container--user">
+    <Head :title="title" />
+    <UserProfile
+      :user="userInfo"
+      :followingsCount="followingsCount"
+      :followersCount="followersCount"
+    />
+    <router-view />
   </div>
 </template>
 
@@ -26,6 +18,7 @@ import { Toast } from '@/utils/helpers'
 import NavBarAdmin from '@/components/NavBarAdmin.vue'
 import TabBarAdmin from '@/components/TabBarAdmin.vue'
 import UserPopularTop from '@/components/UserPopularTop.vue'
+import Head from '@/components/Head'
 import UserProfile from '@/components/UserProfile.vue'
 
 export default {
@@ -34,6 +27,7 @@ export default {
     NavBarAdmin,
     TabBarAdmin,
     UserPopularTop,
+    Head,
     UserProfile,
   },
   data() {
@@ -46,6 +40,12 @@ export default {
       followersCount: 0,
       userData: [],
     }
+  },
+  computed: {
+    // TODO:暫時用
+    title() {
+      return this.userInfo.name
+    },
   },
   created() {
     const { user_id } = this.$route.params
@@ -114,22 +114,5 @@ export default {
   display: flex;
   align-items: flex-start;
   margin: 0 auto;
-}
-main {
-  flex: 1;
-}
-.section-form {
-  max-width: 642px;
-  padding: 0 16px;
-}
-@media screen and (max-width: 600px) {
-  .sm-d-none {
-    display: none;
-  }
-}
-@media screen and (min-width: 599px) {
-  .lg-d-none {
-    display: none;
-  }
 }
 </style>
