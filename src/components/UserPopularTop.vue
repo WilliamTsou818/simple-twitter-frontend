@@ -8,12 +8,16 @@
       <div class="popular__user-list__list">
         <div class="popular__user-list__avatar"></div>
         <div class="popular__user-list__info">
-          <div>user__name</div>
-          <div>user__account</div>
+          <div class="popular__user-list__name">user__name</div>
+          <div class="popular__user-list__account">user__account</div>
         </div>
-        <button class="popular__user-list_action">
-          <div>追隨</div>
-          <div>正在跟隨</div>
+        <button class="popular__user-list__action">
+          <div v-show="!userIsFollowing" class="popular__user-list__follow">
+            追隨
+          </div>
+          <div v-show="userIsFollowing" class="popular__user-list__following">
+            正在跟隨
+          </div>
         </button>
       </div>
       <!-- </router-link> -->
@@ -23,7 +27,12 @@
 
 <script>
 //TODO:如果是在 追蹤頁面要更改上層follow狀態
-export default {}
+export default {
+  name: 'UserPopularTop.vue',
+  data: {
+    userIsFollowing: false,
+  },
+}
 </script>
 
 <style scoped lang="scss">
@@ -35,6 +44,7 @@ export default {}
   margin-right: 82px;
   border-radius: 14px;
   min-height: 50px;
+  padding-bottom: 8px;
   &__title {
     font-size: 18px;
     text-align: left;
@@ -44,9 +54,13 @@ export default {}
     border-bottom: 1px solid var(--blue-gray-600);
   }
   &__user-list {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--blue-gray-600);
+    &__list {
+      display: flex;
+      padding: 10px 15px;
+      border: 1px solid red;
+      align-items: center;
+      border-bottom: 1px solid var(--blue-gray-600);
+    }
     &__avatar {
       width: 50px;
       height: 50px;
@@ -55,6 +69,30 @@ export default {}
     }
     &__info {
       flex: 1;
+      text-align: left;
+      padding-left: 20px;
+    }
+    &__name {
+      font-weight: 900;
+      color: var(--text);
+    }
+    &__id {
+      color: var(--gray-500);
+      margin-top: 2px;
+    }
+    &__follow {
+      padding: 8px 16px;
+      border-radius: 20px;
+      color: var(--theme);
+      border: 1px solid var(--theme);
+    }
+    &__following {
+      padding: 8px 16px;
+      border-radius: 20px;
+      color: var(--theme);
+      border: 1px solid var(--theme);
+      background-color: var(--theme);
+      color: var(--white);
     }
   }
 }
