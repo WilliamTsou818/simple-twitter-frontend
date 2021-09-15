@@ -53,8 +53,6 @@ export default {
   display: flex;
   align-items: flex-start;
   margin: 0 auto;
-  // TODO:測試用
-  border: 1px solid red;
 }
 .development-link {
   flex: 1;

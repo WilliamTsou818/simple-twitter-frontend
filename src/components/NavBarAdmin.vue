@@ -189,7 +189,7 @@ export default {
       &:hover > .nav-left__nav__icon {
         fill: var(--theme);
       }
-      &.router-link-exact-active {
+      &.router-link-active {
         color: #ff6600;
         > .nav-left__nav__icon {
           fill: var(--theme);

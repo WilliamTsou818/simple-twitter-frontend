@@ -116,8 +116,30 @@ const routes = [
   {
     path: '/user/:user_id',
     name: 'UserInfo',
-    component: Home,
+    redirect: '/user/:user_id/tweets',
+    component: () => import('../views/UserInfo/UserInfo.vue'),
+    //TODO:不確定還需不需要這行
     beforeEnter: checkUserAuthorize,
+    children: [
+      {
+        path: 'tweets',
+        name: 'userTweets',
+        component: () => import('../views/UserInfo/UserAllTweets.vue'),
+        beforeEnter: checkUserAuthorize,
+      },
+      {
+        path: 'replies',
+        name: 'userReplies',
+        component: () => import('../views/UserInfo/UserAllReplies.vue'),
+        beforeEnter: checkUserAuthorize,
+      },
+      {
+        path: 'like',
+        name: 'userLike',
+        component: () => import('../views/UserInfo/UserAllLike.vue'),
+        beforeEnter: checkUserAuthorize,
+      },
+    ],
   },
 ]
 
