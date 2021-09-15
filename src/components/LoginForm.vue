@@ -40,6 +40,10 @@ import { Toast } from '@/utils/helpers'
 export default {
   name: 'LoginForm',
   props: {
+    isAdminLogin: {
+      type: Boolean,
+      default: false,
+    },
     title: {
       type: String,
       default: '',
@@ -69,10 +73,17 @@ export default {
 
         this.isProcessing = true
 
-        const { data } = await authorizationAPI.signIn({
-          account: this.account,
-          password: this.password,
-        })
+        // 是哪種登入
+        const { data } = this.isAdminLogin
+          ? await authorizationAPI.signInAdmin({
+              account: this.account,
+              password: this.password,
+            })
+          : await authorizationAPI.signIn({
+              account: this.account,
+              password: this.password,
+            })
+
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
