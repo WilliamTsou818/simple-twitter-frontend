@@ -14,6 +14,7 @@ export default new Vuex.Store({
       account: '',
       name: '',
       email: '',
+      avatar: '',
       image: '',
       role: '',
     },
@@ -43,12 +44,13 @@ export default new Vuex.Store({
       try {
         const { data } = await usersAPI.getCurrentUser()
         console.log('fechCurrentUser')
-        const { id, account, name, email, image, role } = data
+        const { id, account, name, email, avatar, image, role } = data
         commit('setCurrentUser', {
           id,
           account,
           name,
           email,
+          avatar,
           image,
           role,
         })
