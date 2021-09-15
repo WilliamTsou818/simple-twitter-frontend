@@ -3,7 +3,8 @@
 
 .container {
   min-height: 100vh;
-  &--admin {
+  &--admin,
+  &--setting {
     border-left: 1px solid var(--gray-200);
   }
   &--user {

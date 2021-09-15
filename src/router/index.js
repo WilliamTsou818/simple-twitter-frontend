@@ -21,9 +21,9 @@ const checkAuthorize = (to, from, next, role) => {
   next()
 }
 //TODO:確認身分為用戶的頁面
-// const checkUserAuthorize = (to, from, next) => {
-//   checkAuthorize(to, from, next, 'user')
-// }
+const checkUserAuthorize = (to, from, next) => {
+  checkAuthorize(to, from, next, 'user')
+}
 
 const checkAdminAuthorize = (to, from, next) => {
   checkAuthorize(to, from, next, 'admin')
@@ -84,22 +84,39 @@ const routes = [
     name: 'UserRegister',
     component: () => import('../views/User/UserRegister.vue'),
   },
+  // 使用者註冊
+  {
+    path: '/user/setting',
+    name: 'UserSetting',
+    component: () => import('../views/User/UserSetting.vue'),
+  },
   //前台路由
   {
     path: '/user',
     name: 'User',
-    // TODO:暫時回Home
-    redirect: '/',
-    // redirect: '/user/tweets',
+    // TODO:暫時到Setting
+    redirect: '/user/setting',
     // component: () => import('../views/User.vue'),
     // children: [
     //   {
-    //     path: 'tweets',
+    //     path: ':user_id/tweets',
     //     name: 'UserAllTweets',
     //     component: () => import('../views/User/UserAllTweets.vue'),
-    //     beforeEnter: checkAdminAuthorize,
+    //     beforeEnter: checkUserAuthorize,
     //   },
     // ],
+  },
+  // TODO:暫時設定測試用
+  {
+    path: '/user/home',
+    name: 'UserHome',
+    beforeEnter: checkUserAuthorize,
+  },
+  {
+    path: '/user/:user_id',
+    name: 'UserInfo',
+    component: Home,
+    beforeEnter: checkUserAuthorize,
   },
 ]
 

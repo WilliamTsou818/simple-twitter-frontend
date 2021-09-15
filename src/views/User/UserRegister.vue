@@ -4,10 +4,12 @@
       <img src="@/assets/images/logo.svg" alt="logo" />
     </div>
     <div class="title">建立你的帳號</div>
-    <AccountForm
-      :init-is-processing="isProcessing"
-      @after-submit="handleAfterSubmit"
-    />
+    <section class="section-form">
+      <AccountForm
+        :init-is-processing="isProcessing"
+        @after-submit="handleAfterSubmit"
+      />
+    </section>
   </div>
 </template>
 
@@ -44,10 +46,18 @@ export default {
         this.$router.push({ name: 'UserLogin' })
       } catch (err) {
         this.isProcessing = false
-        console.log(err)
+        let message = ''
+        if (err.response) {
+          console.log(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
         Toast.fire({
           icon: 'error',
-          title: `帳號註冊失敗！\n ${err.message}`,
+          title: `帳號註冊失敗！\n ${message}`,
         })
       }
     },
@@ -67,5 +77,9 @@ export default {
   font-size: 23px;
   font-weight: bold;
   color: var(--text);
+}
+.section-form {
+  margin: 0 auto;
+  max-width: 540px;
 }
 </style>

@@ -28,8 +28,10 @@ export default {
     return {
       title: '登入 Alphitter',
       // 登入成功跳轉頁面
-      // FIXME:之後要修改為使用者首頁
-      path: { name: 'Home' },
+      // TODO:因為登入之後可能不會一起拿到User資料，所以可能無法直接跳轉使用者首頁
+      // { name: 'UserHome', params: { user_id: store.state.currentUser.id }
+      // 改成直接轉/user，就會先取得一次currentUser，在跳轉
+      path: { name: 'User' },
     }
   },
 }

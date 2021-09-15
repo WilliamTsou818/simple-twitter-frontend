@@ -80,9 +80,6 @@ export default {
         //將伺服器發送的 token 保存在 localStorage
         localStorage.setItem('token', data.token)
 
-        // 將資料傳入Vuex中
-        this.$store.commit('setCurrentUser', data.user)
-
         //authorization 登入成功轉去指定頁面
         this.$router.push(this.path)
       } catch (err) {

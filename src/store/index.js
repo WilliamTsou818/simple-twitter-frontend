@@ -11,12 +11,11 @@ export default new Vuex.Store({
     // 當前使用者資料
     currentUser: {
       id: -1,
-      name: '',
       account: '',
+      name: '',
       email: '',
       image: '',
       role: '',
-      // isAdmin: true,
     },
     // 是否驗證
     isAuthenticated: false,
@@ -44,9 +43,10 @@ export default new Vuex.Store({
       try {
         const { data } = await usersAPI.getCurrentUser()
         console.log('fechCurrentUser')
-        const { id, name, email, image, role } = data
+        const { id, account, name, email, image, role } = data
         commit('setCurrentUser', {
           id,
+          account,
           name,
           email,
           image,
