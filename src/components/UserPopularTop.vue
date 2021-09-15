@@ -114,7 +114,7 @@ export default {
     &__name {
       color: var(--text);
     }
-    &__id {
+    &__account {
       color: var(--gray-500);
       margin-top: 2px;
     }

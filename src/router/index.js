@@ -110,6 +110,7 @@ const routes = [
   {
     path: '/user/home',
     name: 'UserHome',
+    component: Home,
     beforeEnter: checkUserAuthorize,
   },
   {
