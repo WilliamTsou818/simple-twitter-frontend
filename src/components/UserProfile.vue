@@ -12,10 +12,10 @@
       ></div>
     </div>
     <div class="user-profile__action">
-      <div class="user-profile__action__self">
-        <button>編輯個人資料</button>
+      <div v-if="isCurrentUser" class="user-profile__action__self">
+        <button class="user-profile__action__button">編輯個人資料</button>
       </div>
-      <div class="user-profile__action__other">
+      <div v-if="!isCurrentUser" class="user-profile__action__other">
         <button>
           <img src="@/assets/images/btn_messege.svg" alt="btn_messege" />
         </button>
@@ -61,15 +61,19 @@ export default {
     UserEditModal,
   },
   props: {
+    isCurrentUser: {
+      type: Boolean,
+      default: false,
+    },
     user: {
-      typeof: Object,
+      type: Object,
     },
     followingsCount: {
-      typeof: Number,
+      type: Number,
       default: 0,
     },
     followersCount: {
-      typeof: Number,
+      type: Number,
       default: 0,
     },
   },
@@ -113,6 +117,14 @@ export default {
   &__action {
     padding: 20px 15px 20px 0;
     text-align: right;
+    &__button {
+      color: var(--theme);
+      font-size: 15px;
+      font-weight: bold;
+      border: 1px solid var(--theme);
+      border-radius: 24px;
+      padding: 12px 16px;
+    }
   }
   &__detail {
     padding-left: 15px;

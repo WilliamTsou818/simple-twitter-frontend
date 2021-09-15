@@ -65,5 +65,10 @@ export default new Vuex.Store({
       }
     },
   },
+  getters: {
+    getCurrentUser(state) {
+      return state.currentUser
+    },
+  },
   modules: {},
 })

@@ -3,9 +3,11 @@
     <Head :title="title" count="50" backArrow />
     <UserProfile
       :user="userInfo"
+      :isCurrentUser="isCurrentUser"
       :followingsCount="followingsCount"
       :followersCount="followersCount"
     />
+    <div>{{ isCurrentUser }}</div>
     <section class="tab-router">
       <router-link
         :to="{ name: 'UserAllTweets', params: { user_id: userId } }"
@@ -31,8 +33,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import usersAPI from '@/apis/users'
-
 import { Toast } from '@/utils/helpers'
 
 import NavBarAdmin from '@/components/NavBarAdmin.vue'
@@ -54,7 +56,6 @@ export default {
     return {
       isLoading: true,
       userId: '',
-      isCurrentUser: false,
       userInfo: {},
       followingsCount: 0,
       followersCount: 0,
@@ -62,9 +63,13 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getCurrentUser']),
     // TODO:暫時用
     title() {
       return this.userInfo.name || ''
+    },
+    isCurrentUser() {
+      return this.userId == this.$store.getters.getCurrentUser.id
     },
   },
   created() {
