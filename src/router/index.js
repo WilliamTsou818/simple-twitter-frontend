@@ -94,51 +94,45 @@ const routes = [
   {
     path: '/user',
     name: 'User',
-    // TODO:暫時到Setting
-    redirect: '/user/setting',
-    // component: () => import('../views/User.vue'),
-    // children: [
-    //   {
-    //     path: ':user_id/tweets',
-    //     name: 'UserAllTweets',
-    //     component: () => import('../views/User/UserAllTweets.vue'),
-    //     beforeEnter: checkUserAuthorize,
-    //   },
-    // ],
-  },
-  // TODO:暫時設定測試用
-  {
-    path: '/user/home',
-    name: 'UserHome',
-    component: Home,
-    beforeEnter: checkUserAuthorize,
-  },
-  {
-    path: '/user/:user_id',
-    name: 'UserInfo',
-    redirect: '/user/:user_id/tweets',
-    component: () => import('../views/UserInfo/UserInfo.vue'),
-    //TODO:不確定還需不需要這行
-    beforeEnter: checkUserAuthorize,
+    redirect: '/user/home',
+    component: () => import('../views/User.vue'),
     children: [
       {
-        path: 'tweets',
-        name: 'userTweets',
-        component: () => import('../views/UserInfo/UserAllTweets.vue'),
+        // 首頁
+        path: '/user/home',
+        name: 'UserHome',
+        component: () => import('../views/User/UserHome.vue'),
         beforeEnter: checkUserAuthorize,
       },
       {
-        path: 'replies',
-        name: 'userReplies',
-        component: () => import('../views/UserInfo/UserAllReplies.vue'),
+        // 個人資訊
+        path: '/user/:user_id',
+        name: 'UserInfo',
+        redirect: '/user/:user_id/tweets',
+        component: () => import('../views/UserInfo/UserInfo.vue'),
+        //TODO:不確定還需不需要這行
         beforeEnter: checkUserAuthorize,
-      },
-      {
-        path: 'like',
-        name: 'userLike',
-        component: () => import('../views/UserInfo/UserAllLike.vue'),
-        beforeEnter: checkUserAuthorize,
-      },
+        children: [
+          {
+            path: 'tweets',
+            name: 'UserAllTweets',
+            component: () => import('../views/UserInfo/UserAllTweets.vue'),
+            beforeEnter: checkUserAuthorize,
+          },
+          {
+            path: 'replies',
+            name: 'UserAllReplies',
+            component: () => import('../views/UserInfo/UserAllReplies.vue'),
+            beforeEnter: checkUserAuthorize,
+          },
+          {
+            path: 'like',
+            name: 'UserAllLike',
+            component: () => import('../views/UserInfo/UserAllLike.vue'),
+            beforeEnter: checkUserAuthorize,
+          },
+        ],
+      }
     ],
   },
 ]
