@@ -64,7 +64,7 @@ export default {
   computed: {
     // TODO:暫時用
     title() {
-      return this.userInfo.name
+      return this.userInfo.name || ''
     },
   },
   created() {

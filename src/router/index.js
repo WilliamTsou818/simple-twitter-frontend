@@ -6,7 +6,7 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
-// TODO:之後改成判斷role === 'admin' or 'user'
+// 檢查頁面權限
 const checkAuthorize = (to, from, next, role) => {
   const currentUser = store.state.currentUser
   if (currentUser && currentUser.role !== role) {
@@ -20,7 +20,7 @@ const checkAuthorize = (to, from, next, role) => {
   console.log(`checkAuthorize ${role} success`)
   next()
 }
-//TODO:確認身分為用戶的頁面
+
 const checkUserAuthorize = (to, from, next) => {
   checkAuthorize(to, from, next, 'user')
 }
@@ -28,16 +28,6 @@ const checkUserAuthorize = (to, from, next) => {
 const checkAdminAuthorize = (to, from, next) => {
   checkAuthorize(to, from, next, 'admin')
 }
-
-// const authorizeIsAdmin = (to, from, next) => {
-//   const currentUser = store.state.currentUser
-//   if (currentUser && !currentUser.isAdmin) {
-//     next('/404')
-//     return
-//   }
-//   // console.log('authorizeIsAdmin')
-//   next()
-// }
 
 const routes = [
   {
