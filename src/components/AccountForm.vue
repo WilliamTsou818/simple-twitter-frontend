@@ -177,11 +177,11 @@ export default {
       }
       this.isProcessing = true
       const formData = new FormData(e.target)
-      const resquestData = {}
+      const requestData = {}
       for (let [key, value] of formData.entries()) {
-        resquestData[key] = value
+        requestData[key] = value
       }
-      this.$emit('after-submit', resquestData)
+      this.$emit('after-submit', requestData)
     },
   },
 }
