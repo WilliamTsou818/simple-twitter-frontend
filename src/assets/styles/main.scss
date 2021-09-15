@@ -5,11 +5,11 @@
   min-height: 100vh;
   &--admin,
   &--setting {
-    border-left: 1px solid var(--gray-200);
+    border-left: 1px solid var(--blue-gray-600);
   }
   &--user {
-    border-left: 1px solid var(--gray-200);
-    border-right: 1px solid var(--gray-200);
+    border-left: 1px solid var(--blue-gray-600);
+    border-right: 1px solid var(--blue-gray-600);
   }
 }
 
@@ -17,7 +17,7 @@
   .container {
     &--admin,
     &--setting {
-      border-right: 1px solid var(--gray-200);
+      border-right: 1px solid var(--blue-gray-600);
     }
   }
 }
