@@ -1,13 +1,12 @@
 <template>
   <div class="container container--user">
-    <Head :title="title" count="50" backArrow />
+    <Head :title="title" :count="count" backArrow />
     <UserProfile
       :user="userInfo"
       :isCurrentUser="isCurrentUser"
       :followingsCount="followingsCount"
       :followersCount="followersCount"
     />
-    <div>{{ isCurrentUser }}</div>
     <section class="tab-router">
       <router-link
         :to="{ name: 'UserAllTweets', params: { user_id: userId } }"
@@ -59,6 +58,7 @@ export default {
       userInfo: {},
       followingsCount: 0,
       followersCount: 0,
+      tweetsCount: 0,
       userData: [],
     }
   },
@@ -67,6 +67,9 @@ export default {
     // TODO:暫時用
     title() {
       return this.userInfo.name || ''
+    },
+    count() {
+      return this.tweetsCount || '0'
     },
     isCurrentUser() {
       return this.userId == this.$store.getters.getCurrentUser.id
@@ -77,6 +80,8 @@ export default {
     this.userId = user_id
     this.fetchUser(user_id)
     this.fetchUserFollowing(user_id)
+    this.fetchUserFollower(user_id)
+    this.fetchUserTweets(user_id)
   },
   methods: {
     async fetchUser(userId) {
@@ -118,6 +123,21 @@ export default {
       try {
         const { data } = await usersAPI.getUserFollower({ userId })
         this.followersCount = data.length
+      } catch (err) {
+        this.isLoading = false
+        let message = ''
+        if (err.response) {
+          message = err.response.data.message
+        } else {
+          message = err.message
+        }
+        console.log(message)
+      }
+    },
+    async fetchUserTweets(userId) {
+      try {
+        const { data } = await usersAPI.getUserTweets({ userId })
+        this.tweetsCount = data.length
       } catch (err) {
         this.isLoading = false
         let message = ''

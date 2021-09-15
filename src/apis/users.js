@@ -35,6 +35,10 @@ export default {
   getUserFollower({ userId }) {
     return apiHelper.get(`/users/${userId}/followers`)
   },
+  //取得 user的推文清單
+  getUserTweets({ userId }) {
+    return apiHelper.get(`/users/${userId}/tweets`)
+  },
   tweets: {
     get() {
       return apiHelper.get('/tweets')
