@@ -1,6 +1,6 @@
 <template>
   <div class="container container--user">
-    <Head :title="title" />
+    <Head :title="title" count="50" backArrow />
     <UserProfile
       :user="userInfo"
       :followingsCount="followingsCount"
