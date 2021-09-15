@@ -15,5 +15,12 @@ export default {
       checkPassword,
     })
   },
+  //取得熱門前十清單
+  getPopularUsers() {
+    return apiHelper2.get('/users/top')
+  },
+  //取得user的正追蹤清單
+  getUserFollowing({ userId }) {
+    return apiHelper2.get(`/users/${userId}/followings`)
+  },
 }
-
