@@ -12,3 +12,12 @@
     border-right: 1px solid var(--gray-200);
   }
 }
+
+@media screen and (min-width: 1440px) {
+  .container {
+    &--admin,
+    &--setting {
+      border-right: 1px solid var(--gray-200);
+    }
+  }
+}

@@ -3,7 +3,9 @@
     <NavBarAdmin class="sm-d-none" />
     <TabBarAdmin class="lg-d-none" />
     <main>
-      <router-view />
+      <div class="container container--user">
+        <router-view />
+      </div>
     </main>
     <UserPopularTop />
   </div>
@@ -34,8 +36,6 @@ export default {
 }
 main {
   flex: 1;
-  // TODO:測試用
-  border: 1px solid blue;
 }
 @media screen and (max-width: 600px) {
   .sm-d-none {
