@@ -52,9 +52,7 @@ export default {
     async fetchPopularUsers() {
       try {
         const { data } = await usersAPI.getPopularUsers()
-        console.log(data)
         this.popularUsers = data
-        console.log(this.popularUsers)
       } catch (err) {
         console.log(err)
         Toast.fire({
