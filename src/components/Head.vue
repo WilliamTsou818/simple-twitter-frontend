@@ -1,11 +1,20 @@
 <template>
-  <div class="container__head">{{ title }}</div>
+  <div>
+    <div v-show="backArrow">
+      <img src="@/assets/images/icon/back.svg" alt="back" />
+    </div>
+    <div class="container__head">{{ title }}</div>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'Head',
   props: {
+    backArrow: {
+      type: String,
+      default: false,
+    },
     title: {
       type: String,
       required: true,
