@@ -81,14 +81,15 @@
         取消
       </router-link>
     </template>
-    <button
-      v-else
-      class="form__submit form__submit--small"
-      type="submit"
-      :disabled="isProcessing"
-    >
-      儲存
-    </button>
+    <div v-else class="form__submit__wrapper">
+      <button
+        class="form__submit form__submit--setting"
+        type="submit"
+        :disabled="isProcessing"
+      >
+        儲存
+      </button>
+    </div>
   </form>
 </template>
 
@@ -101,12 +102,24 @@ export default {
       type: Boolean,
       default: false,
     },
+    initAccount: {
+      type: String,
+      default: '',
+    },
+    initName: {
+      type: String,
+      default: '',
+    },
+    initEmail: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
-      account: '',
-      name: '',
-      email: '',
+      account: this.initAccount,
+      name: this.initName,
+      email: this.initEmail,
       password: '',
       checkPassword: '',
       // 字數上限
@@ -176,8 +189,7 @@ export default {
 
 <style lang="scss" scoped>
 .form {
-  margin: 0 auto;
-  width: 540px;
+  width: 100%;
   max-width: 90vw;
   &__account,
   &__name,
@@ -220,8 +232,12 @@ export default {
     &:disabled {
       background-color: var(--theme-dark);
     }
-    &--small {
+    &--setting {
       width: 122px;
+    }
+    &__wrapper {
+      display: flex;
+      justify-content: flex-end;
     }
   }
   &__cancel-link {
@@ -231,6 +247,12 @@ export default {
     font-size: 18px;
     font-weight: bold;
     text-decoration: underline;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .form__submit__wrapper {
+    justify-content: center;
   }
 }
 </style>
