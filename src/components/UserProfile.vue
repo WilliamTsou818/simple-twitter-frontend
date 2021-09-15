@@ -19,7 +19,9 @@
         <button>
           <img src="@/assets/images/btn_messege.svg" alt="btn_messege" />
         </button>
-        <button></button>
+        <button>
+          <img src="@/assets/images/btn_messege.svg" alt="btn_messege" />
+        </button>
         <button>跟隨</button>
       </div>
     </div>
