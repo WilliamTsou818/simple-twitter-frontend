@@ -107,8 +107,11 @@ export default {
   },
   mixins: [fromNowFilter, altFilter, thousandFilter],
   methods: {
-    handleClickDetail(tweetId) {
-      console.log('handleClickDetail', tweetId)
+    handleClickDetail(tweet_id) {
+      this.$router.push({
+        name: 'UserTweetDetail',
+        params: { tweet_id },
+      })
     },
     handleClickReply(tweetId) {
       console.log('handleClickReply', tweetId)
