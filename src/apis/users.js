@@ -45,5 +45,8 @@ export default {
     unlike({ tweetId }) {
       return apiHelper.post(`/tweets/${tweetId}/unlike`)
     },
+    newPost({ description }) {
+      return apiHelper.post('/tweets', { description })
+    }
   },
 }

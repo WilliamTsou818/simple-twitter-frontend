@@ -9,22 +9,28 @@
         }"
       ></div>
       <textarea
-        class="section-post__text"
-        id="section-post__text"
-        name="text"
+        class="section-post__description"
+        id="section-post__description"
+        v-model.trim="description"
+        name="description"
         rows="2"
         minlength="1"
-        maxlength="140"
+        :maxlength="descriptionMaxLength"
         placeholder="有什麼新鮮事？"
         required
       ></textarea>
-      <button class="section-post__btn-tweet" type="button">
+      <button
+        class="section-post__btn-tweet"
+        type="button"
+        @click.prevent.stop="handleNewPost"
+        :disabled="isProcessing"
+      >
         推文
       </button>
     </section>
     <div class="divider"></div>
     <Spinner v-if="isLoading" />
-    <section class="section-tweets">
+    <section class="section-tweets" ref="sectionTweets">
       <div
         class="section-tweets__tip"
         v-show="!isLoading && tweets.length === 0"
@@ -59,7 +65,10 @@ export default {
     return {
       title: '首頁',
       isLoading: true,
+      isProcessing: false,
       tweets: [],
+      description: '',
+      descriptionMaxLength: 140,
     }
   },
   computed: {
@@ -73,8 +82,9 @@ export default {
       try {
         this.isLoading = true
         const { data } = await usersAPI.tweets.get()
-        console.log('data', data)
         this.tweets = data
+        // 回到頂部
+        this.$refs.sectionTweets.scrollTop = 0
         this.isLoading = false
       } catch (err) {
         let message = ''
@@ -89,6 +99,62 @@ export default {
         Toast.fire({
           icon: 'error',
           title: `獲取推文失敗！\n ${message}`,
+        })
+      }
+    },
+    // 驗證
+    validation() {
+      let toastTip = ''
+      if (!this.description || this.description.length === 0) {
+        toastTip = '內容不可空白'
+      } else if (this.description.length > this.descriptionMaxLength) {
+        toastTip = `內容上限 ${this.descriptionMaxLength} 字`
+      }
+      if (toastTip.length !== 0) {
+        Toast.fire({
+          icon: 'warning',
+          title: toastTip,
+        })
+        return false
+      }
+      return true
+    },
+    async handleNewPost() {
+      try {
+        if (!this.validation()) {
+          // 驗證失敗
+          return
+        }
+        this.isProcessing = true
+        const { data } = await usersAPI.tweets.newPost({
+          description: this.description,
+        })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+        this.description = ''
+        this.isProcessing = false
+        Toast.fire({
+          icon: 'success',
+          title: `推文成功！\n ${data.message}`,
+        })
+        this.fetchTweets()
+      } catch (err) {
+        this.description = ''
+        this.isProcessing = false
+        let message = ''
+        if (err.response) {
+          console.log(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
+        Toast.fire({
+          icon: 'error',
+          title: `推文失敗！\n ${message}`,
         })
       }
     },
@@ -113,20 +179,23 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
   }
-  &__text {
+  &__description {
     width: calc(100% - 75px - 15px);
     height: 52px;
     position: absolute;
     top: 21px;
     left: 75px;
     right: 15px;
-    color: var(--gray-400);
+    color: var(--text);
     font-weight: 500;
     font-size: 18px;
     border: none;
     resize: none;
     &::-webkit-scrollbar {
       display: none;
+    }
+    &::placeholder {
+      color: var(--gray-400);
     }
   }
   &__btn-tweet {
