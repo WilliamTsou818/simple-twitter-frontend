@@ -3,7 +3,7 @@
     <div class="logo">
       <img src="@/assets/images/logo.svg" alt="logo" />
     </div>
-    <LoginForm :title="title" :path="path" />
+    <LoginForm :title="title" :path="path" role="admin" />
     <section class="section-actions">
       <router-link class="section-actions__link" to="/user/login">
         前台登入
