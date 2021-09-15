@@ -6,6 +6,26 @@
       :followingsCount="followingsCount"
       :followersCount="followersCount"
     />
+    <section class="tab-router">
+      <router-link
+        :to="{ name: 'UserAllTweets', params: { user_id: userId } }"
+        class="tab-router__link"
+      >
+        <span class="tab-router__text">推文</span>
+      </router-link>
+      <router-link
+        :to="{ name: 'UserAllReplies', params: { user_id: userId } }"
+        class="tab-router__link"
+      >
+        <span class="tab-router__text">推文與回覆</span>
+      </router-link>
+      <router-link
+        :to="{ name: 'UserAllLike', params: { user_id: userId } }"
+        class="tab-router__link"
+      >
+        <span class="tab-router__text">喜歡的內容</span>
+      </router-link>
+    </section>
     <router-view />
   </div>
 </template>
@@ -109,10 +129,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user-info {
-  max-width: 1440px;
+.tab-router {
   display: flex;
-  align-items: flex-start;
-  margin: 0 auto;
+  align-items: center;
+  width: 100%;
+  height: 53px;
+  border-bottom: 1px solid var(--blue-gray-600);
+  &__link {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    max-width: 130px;
+    height: 100%;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--gray-500);
+    &:hover {
+      color: var(--theme);
+    }
+    &.router-link-active {
+      color: var(--theme);
+      border-bottom: 2px solid var(--theme);
+    }
+  }
 }
 </style>
