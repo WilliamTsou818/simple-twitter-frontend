@@ -44,10 +44,18 @@ export default {
         this.$router.push({ name: 'UserLogin' })
       } catch (err) {
         this.isProcessing = false
-        console.log(err)
+        let message = ''
+        if (err.response) {
+          console.log(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
         Toast.fire({
           icon: 'error',
-          title: `帳號註冊失敗！\n ${err.message}`,
+          title: `帳號註冊失敗！\n ${message}`,
         })
       }
     },
