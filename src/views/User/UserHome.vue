@@ -37,7 +37,11 @@
       >
         目前沒有推文
       </div>
-      <AdminTweet v-for="tweet in tweets" :key="tweet.id" :tweet="tweet" />
+      <UserTweet
+        v-for="tweet in tweets"
+        :key="tweet.TweetId"
+        :init-tweet="tweet"
+      />
     </section>
   </div>
 </template>
@@ -49,13 +53,13 @@ import { mapState } from 'vuex'
 
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
-import AdminTweet from '@/components/AdminTweet'
+import UserTweet from '@/components/UserTweet'
 
 export default {
   components: {
     Head,
     Spinner,
-    AdminTweet,
+    UserTweet,
   },
   data() {
     return {
