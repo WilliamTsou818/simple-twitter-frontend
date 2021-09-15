@@ -72,10 +72,15 @@ import { fromNowFilter, altFilter, thousandFilter } from './../utils/mixins'
 export default {
   name: 'UserTweet',
   props: {
-    tweet: {
+    initTweet: {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      tweet: this.initTweet,
+    }
   },
   mixins: [fromNowFilter, altFilter, thousandFilter],
   methods: {

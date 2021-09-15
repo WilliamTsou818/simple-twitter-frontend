@@ -31,7 +31,11 @@
       >
         目前沒有推文
       </div>
-      <UserTweet v-for="tweet in tweets" :key="tweet.TweetId" :tweet="tweet" />
+      <UserTweet
+        v-for="tweet in tweets"
+        :key="tweet.TweetId"
+        :init-tweet="tweet"
+      />
     </section>
   </div>
 </template>
