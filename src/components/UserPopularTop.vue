@@ -4,30 +4,32 @@
       Popular
     </div>
     <div class="popular__user-list">
-      <!-- <router-link :to="{ name: 'user-tweets', params: { id: user.id } }"> -->
       <div
         class="popular__user-list__list"
         v-for="user in popularUsers"
         :key="user.id"
       >
-        <div
-          class="popular__user-list__avatar"
-          :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
-        ></div>
-        <div class="popular__user-list__info">
-          <div class="popular__user-list__name">{{ user.name }}</div>
-          <div class="popular__user-list__account">{{ user.account }}</div>
-        </div>
-        <button class="popular__user-list__action">
-          <div v-show="!userIsFollowing" class="popular__user-list__follow">
-            追隨
+        <router-link :to="`/user/${user.id}/tweets`">
+          <!-- <router-link :to="{ name: 'UserAllTweets', params: { id: user.id } }"> -->
+          {{ user.id }}
+          <div
+            class="popular__user-list__avatar"
+            :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
+          ></div>
+          <div class="popular__user-list__info">
+            <div class="popular__user-list__name">{{ user.name }}</div>
+            <div class="popular__user-list__account">{{ user.account }}</div>
           </div>
-          <div v-show="userIsFollowing" class="popular__user-list__following">
-            正在跟隨
-          </div>
-        </button>
+          <button class="popular__user-list__action">
+            <div v-show="!userIsFollowing" class="popular__user-list__follow">
+              追隨
+            </div>
+            <div v-show="userIsFollowing" class="popular__user-list__following">
+              正在跟隨
+            </div>
+          </button>
+        </router-link>
       </div>
-      <!-- </router-link> -->
     </div>
   </div>
 </template>
@@ -52,6 +54,7 @@ export default {
     async fetchPopularUsers() {
       try {
         const { data } = await usersAPI.getPopularUsers()
+
         this.popularUsers = data
       } catch (err) {
         console.log(err)
