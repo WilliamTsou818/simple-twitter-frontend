@@ -43,10 +43,18 @@
           />
         </button>
         <button class="user-profile__action__button">
-          <div class="user-profile__action__follow" v-show="!isFollowing">
+          <div
+            @click.stop.prevent="addFollowing(user.id)"
+            class="user-profile__action__follow"
+            v-show="!isFollowing"
+          >
             跟隨
           </div>
-          <div class="user-profile__action__following" v-show="isFollowing">
+          <div
+            @click.stop.prevent="removeFollowing(user.id)"
+            class="user-profile__action__following"
+            v-show="isFollowing"
+          >
             正在跟隨
           </div>
         </button>
@@ -61,8 +69,6 @@
       </div>
       <div class="user-profile__detail__intro">
         {{ user.introduction }}
-        Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-        sint.
       </div>
       <div class="user-profile__detail__follow">
         <span
@@ -81,6 +87,8 @@
 </template>
 
 <script>
+import usersAPI from '@/apis/users'
+import { Toast } from '@/utils/helpers'
 import { altFilter, thousandFilter } from './../utils/mixins'
 import UserEditModal from '@/components/UserEditModal.vue'
 export default {
@@ -103,14 +111,22 @@ export default {
       type: Number,
       default: 0,
     },
+    initialFollowing: {
+      type: Boolean,
+    },
   },
   mixins: [altFilter],
   data() {
     return {
       isModalOpen: false,
       isNotify: false,
-      isFollowing: false,
+      isFollowing: this.initialFollowing,
     }
+  },
+  watch: {
+    initialFollowing(newValue) {
+      this.isFollowing = newValue
+    },
   },
   methods: {
     handleClickNotify() {
@@ -118,6 +134,41 @@ export default {
     },
     handleToggleModal() {
       this.isModalOpen = !this.isModalOpen
+    },
+    // 增加追蹤
+    async addFollowing(userId) {
+      try {
+        const { data } = await usersAPI.addFollowShip({ id: userId })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.isFollowing = true
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '新增追蹤失敗',
+        })
+      }
+    },
+    // 取消追蹤
+    async removeFollowing(userId) {
+      try {
+        console.log(userId)
+        const { data } = await usersAPI.removeFollowShip({ userId })
+        console.log('remov', data)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.isFollowing = false
+        // this.$emit('update-following', userId)
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '取消追蹤失敗',
+        })
+      }
     },
   },
 }
@@ -151,7 +202,7 @@ export default {
     }
   }
   &__action {
-    padding: 20px 15px 20px 0;
+    padding: 10px 15px 20px 0;
     text-align: right;
     &__edit {
       color: var(--theme);
@@ -178,17 +229,20 @@ export default {
       border-radius: 20px;
       padding: 8px 16px;
       font-weight: 900;
-      &:hover {
-        background-color: var(--theme-200);
-      }
     }
     &__follow {
       color: var(--theme);
       border: 1px solid var(--theme);
+      &:hover {
+        background-color: var(--theme-200);
+      }
     }
     &__following {
       background-color: var(--theme);
       color: var(--white);
+      &:hover {
+        background-color: var(--theme-600);
+      }
     }
   }
   &__detail {
