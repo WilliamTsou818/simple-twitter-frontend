@@ -19,26 +19,14 @@ export default new Vuex.Store({
       introduction: '',
       role: '',
     },
+    viewUser: {
+      isViewCurrentUser: false,
+      isFollowed: false,
+      id: -1,
+    },
+    isFollowing: [],
     // 是否驗證
     isAuthenticated: false,
-  },
-  mutations: {
-    setCurrentUser(state, currentUser) {
-      state.currentUser = {
-        ...state.currentUser,
-        ...currentUser,
-      }
-      // 將使用者驗證用的 token 儲存在 state 中
-      state.token = localStorage.getItem('token')
-      state.isAuthenticated = true
-    },
-    // 登出，撤銷相關資料
-    revokeAuthentication(state) {
-      state.currentUser = {}
-      state.isAuthenticated = false
-      state.token = ''
-      localStorage.removeItem('token')
-    },
   },
   actions: {
     async fetchCurrentUser({ commit }) {
@@ -75,11 +63,49 @@ export default new Vuex.Store({
         return false
       }
     },
+    async initFollowing(context) {
+      try {
+        const userId = context.state.currentUser.id
+        const { data } = await usersAPI.getUserFollowing({ userId })
+        console.log(data)
+      } catch (error) {
+        console.log('error', error)
+      }
+    },
+    isViewCurrentUser(context, user_id) {
+      context.commit('setIsViewCurrentUser', user_id)
+    },
+  },
+  mutations: {
+    setCurrentUser(state, currentUser) {
+      state.currentUser = {
+        ...state.currentUser,
+        ...currentUser,
+      }
+      // 將使用者驗證用的 token 儲存在 state 中
+      state.token = localStorage.getItem('token')
+      state.isAuthenticated = true
+    },
+    // 登出，撤銷相關資料
+    revokeAuthentication(state) {
+      state.currentUser = {}
+      state.isAuthenticated = false
+      state.token = ''
+      localStorage.removeItem('token')
+    },
+    setIsViewCurrentUser(state, id) {
+      if (state.currentUser.id === id - 0) {
+        state.viewUser.isViewCurrentUser = true
+      } else {
+        state.viewUser.isViewCurrentUser = false
+      }
+    },
   },
   getters: {
     getCurrentUser(state) {
       return state.currentUser
     },
+    getViewUser: (state) => state.viewUser,
   },
   modules: {},
 })

@@ -3,7 +3,7 @@
     <Head :title="title" :count="count" backArrow />
     <UserProfile
       :user="userInfo"
-      :isCurrentUser="isCurrentUser"
+      :isCurrentUser="currentViewUser.isViewCurrentUser"
       :followingsCount="followingsCount"
       :followersCount="followersCount"
       :initialFollowing="initialFollowing"
@@ -77,19 +77,24 @@ export default {
     isCurrentUser() {
       return this.userId == this.currentUser.id
     },
+    currentViewUser() {
+      return this.$store.getters.getViewUser
+    },
   },
   created() {
     const { user_id } = this.$route.params
     this.userId = user_id
+    this.$store.dispatch('initFollowing')
+    this.$store.dispatch('isViewCurrentUser', user_id)
     this.fetchUser(user_id)
     this.fetchUserFollowing(user_id)
     this.fetchUserFollower(user_id)
     this.fetchUserTweets(user_id)
   },
   beforeRouteUpdate(to, from, next) {
-    console.log('beforeRouteUpdate')
     const { user_id: userId } = to.params
     this.fetchUser(userId)
+    this.$store.dispatch('isViewCurrentUser', userId)
     next()
   },
   methods: {
