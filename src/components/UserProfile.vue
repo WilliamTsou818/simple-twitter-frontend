@@ -61,8 +61,6 @@
       </div>
       <div class="user-profile__detail__intro">
         {{ user.introduction }}
-        Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-        sint.
       </div>
       <div class="user-profile__detail__follow">
         <span
@@ -151,7 +149,7 @@ export default {
     }
   }
   &__action {
-    padding: 20px 15px 20px 0;
+    padding: 10px 15px 20px 0;
     text-align: right;
     &__edit {
       color: var(--theme);

@@ -27,9 +27,10 @@
                 class="modal__img__cover"
                 :style="{ backgroundImage: 'url(' + cover + ')' }"
               >
-                <div class="modal__img__change">
+                <div>
                   <label for="cover">
                     <svg
+                      class="modal__img__change"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
@@ -61,9 +62,10 @@
                 class="modal__img__avatar"
                 :style="{ backgroundImage: 'url(' + avatar + ')' }"
               >
-                <div class="icon--photo">
+                <div>
                   <label for="avatar">
                     <svg
+                      class="modal__img__change"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
@@ -341,6 +343,12 @@ export default {
   &__img {
     position: relative;
     height: 200px;
+    &__change {
+      cursor: pointer;
+      > .label {
+        cursor: pointer;
+      }
+    }
     &__cover,
     &__avatar {
       display: flex;
