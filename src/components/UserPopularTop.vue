@@ -1,17 +1,18 @@
 <template>
   <div class="popular">
-    <div class="popular__title">
-      Popular
-    </div>
-    <div class="popular__user-list">
-      <div
-        class="popular__user-list__list"
-        v-for="user in popularUsers"
-        :key="user.id"
-      >
-        <router-link :to="`/user/${user.id}/tweets`">
-          <!-- <router-link :to="{ name: 'UserAllTweets', params: { id: user.id } }"> -->
-          {{ user.id }}
+    <div class="popular__container">
+      <div class="popular__title">
+        Popular
+      </div>
+      <Spinner v-if="isLoading" />
+      <div class="popular__user-list">
+        <router-link
+          :to="{ name: 'UserAllTweets', params: { user_id: user.id } }"
+          class="popular__user-list__list"
+          v-for="user in popularUsers"
+          :key="user.id"
+        >
+          <!-- <router-link :to="`/user/${user.id}/tweets`"> -->
           <div
             class="popular__user-list__avatar"
             :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
@@ -21,10 +22,18 @@
             <div class="popular__user-list__account">{{ user.account }}</div>
           </div>
           <button class="popular__user-list__action">
-            <div v-show="!userIsFollowing" class="popular__user-list__follow">
+            <div
+              @click.stop.prevent="addFollowing(user.id)"
+              v-show="!user.isFollowed"
+              class="popular__user-list__follow"
+            >
               追隨
             </div>
-            <div v-show="userIsFollowing" class="popular__user-list__following">
+            <div
+              @click.stop.prevent="removeFollowing(user.id)"
+              v-show="user.isFollowed"
+              class="popular__user-list__following"
+            >
               正在跟隨
             </div>
           </button>
@@ -39,10 +48,16 @@
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 
+import Spinner from '@/components/Spinner'
+
 export default {
   name: 'UserPopularTop.vue',
+  components: {
+    Spinner,
+  },
   data() {
     return {
+      isLoading: true,
       userIsFollowing: false,
       popularUsers: [],
     }
@@ -54,13 +69,65 @@ export default {
     async fetchPopularUsers() {
       try {
         const { data } = await usersAPI.getPopularUsers()
-
         this.popularUsers = data
+        this.isLoading = false
       } catch (err) {
         console.log(err)
         Toast.fire({
           icon: 'error',
           title: 'PopularTop讀取失敗',
+        })
+      }
+    },
+    async addFollowing(userId) {
+      try {
+        const { data } = await usersAPI.addFollowShip({ id: userId })
+        console.log(data)
+        this.popularUsers.forEach((user) => {
+          if (user.id === userId) {
+            user.isFollowed = !user.isFollowed
+          }
+        })
+        Toast.fire({
+          icon: 'success',
+          title: `${data.message}`,
+        })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.isFollowing = true
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '新增追蹤失敗',
+        })
+      }
+    },
+    async removeFollowing(userId) {
+      try {
+        console.log(userId)
+        const { data } = await usersAPI.removeFollowShip({ userId })
+        console.log('remov', data)
+        this.popularUsers.forEach((user) => {
+          if (user.id === userId) {
+            user.isFollowed = !user.isFollowed
+          }
+        })
+        Toast.fire({
+          icon: 'success',
+          title: `${data.message}`,
+        })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.isFollowing = false
+        // this.$emit('update-following', userId)
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '取消追蹤失敗',
         })
       }
     },
@@ -71,13 +138,15 @@ export default {
 <style scoped lang="scss">
 .popular {
   width: 350px;
-  background-color: var(--blue-gray-500);
   margin-top: 15px;
   margin-left: 30px;
   margin-right: 82px;
-  border-radius: 14px;
-  min-height: 50px;
-  padding-bottom: 8px;
+  &__container {
+    background-color: var(--blue-gray-500);
+    border-radius: 14px;
+    min-height: 200px;
+    padding-bottom: 8px;
+  }
   &__title {
     font-size: 18px;
     text-align: left;
