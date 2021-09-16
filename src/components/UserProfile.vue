@@ -1,6 +1,9 @@
 <template>
   <div class="user-profile">
-    <UserEditModal v-if="isModalOpen" />
+    <UserEditModal
+      v-show="isModalOpen"
+      :handleToggleModal="handleToggleModal"
+    />
     <div class="user-profile__img">
       <div
         class="user-profile__img__cover"
@@ -12,17 +15,41 @@
       ></div>
     </div>
     <div class="user-profile__action">
-      <div class="user-profile__action__self">
-        <button>編輯個人資料</button>
+      <div v-if="isCurrentUser" class="user-profile__action__self">
+        <button @click="handleToggleModal" class="user-profile__action__edit">
+          編輯個人資料
+        </button>
       </div>
-      <div class="user-profile__action__other">
+      <div v-if="!isCurrentUser" class="user-profile__action__other">
         <button>
-          <img src="@/assets/images/btn_messege.svg" alt="btn_messege" />
+          <img
+            class="user-profile__action__icon"
+            src="@/assets/images/btn_messege.svg"
+            alt="btn_messege"
+          />
         </button>
-        <button>
-          <img src="@/assets/images/btn_messege.svg" alt="btn_messege" />
+        <button @click="handleClickNotify" class="user-profile__action__button">
+          <img
+            class="user-profile__action__icon"
+            v-show="!isNotify"
+            src="@/assets/images/btn_noti_normal.svg"
+            alt="noti_normal"
+          />
+          <img
+            class="user-profile__action__icon"
+            v-show="isNotify"
+            src="@/assets/images/btn_noti_active.svg"
+            alt="noti_active"
+          />
         </button>
-        <button>跟隨</button>
+        <button class="user-profile__action__button">
+          <div class="user-profile__action__follow" v-show="!isFollowing">
+            跟隨
+          </div>
+          <div class="user-profile__action__following" v-show="isFollowing">
+            正在跟隨
+          </div>
+        </button>
       </div>
     </div>
     <div class="user-profile__detail">
@@ -61,15 +88,19 @@ export default {
     UserEditModal,
   },
   props: {
+    isCurrentUser: {
+      type: Boolean,
+      default: false,
+    },
     user: {
-      typeof: Object,
+      type: Object,
     },
     followingsCount: {
-      typeof: Number,
+      type: Number,
       default: 0,
     },
     followersCount: {
-      typeof: Number,
+      type: Number,
       default: 0,
     },
   },
@@ -78,7 +109,16 @@ export default {
     return {
       isModalOpen: false,
       isNotify: false,
+      isFollowing: false,
     }
+  },
+  methods: {
+    handleClickNotify() {
+      this.isNotify = !this.isNotify
+    },
+    handleToggleModal() {
+      this.isModalOpen = !this.isModalOpen
+    },
   },
 }
 </script>
@@ -113,6 +153,43 @@ export default {
   &__action {
     padding: 20px 15px 20px 0;
     text-align: right;
+    &__edit {
+      color: var(--theme);
+      font-size: 15px;
+      font-weight: bold;
+      border: 1px solid var(--theme);
+      border-radius: 24px;
+      padding: 12px 16px;
+    }
+    &__other {
+      display: flex;
+      justify-content: flex-end;
+    }
+    &__icon {
+      border-radius: 50px;
+      &:hover {
+        background-color: var(--theme-200);
+      }
+    }
+    &__follow,
+    &__following {
+      font-family: Noto Sans TC;
+      font-size: 15px;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-weight: 900;
+      &:hover {
+        background-color: var(--theme-200);
+      }
+    }
+    &__follow {
+      color: var(--theme);
+      border: 1px solid var(--theme);
+    }
+    &__following {
+      background-color: var(--theme);
+      color: var(--white);
+    }
   }
   &__detail {
     padding-left: 15px;

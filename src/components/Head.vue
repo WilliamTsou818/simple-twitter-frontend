@@ -28,7 +28,7 @@ export default {
       required: true,
     },
     count: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
   },

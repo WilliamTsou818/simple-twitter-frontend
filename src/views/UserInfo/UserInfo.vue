@@ -1,8 +1,9 @@
 <template>
   <div class="container container--user">
-    <Head :title="title" count="50" backArrow />
+    <Head :title="title" :count="count" backArrow />
     <UserProfile
       :user="userInfo"
+      :isCurrentUser="isCurrentUser"
       :followingsCount="followingsCount"
       :followersCount="followersCount"
     />
@@ -31,8 +32,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import usersAPI from '@/apis/users'
-
 import { Toast } from '@/utils/helpers'
 
 import NavBarAdmin from '@/components/NavBarAdmin.vue'
@@ -54,17 +55,24 @@ export default {
     return {
       isLoading: true,
       userId: '',
-      isCurrentUser: false,
       userInfo: {},
       followingsCount: 0,
       followersCount: 0,
+      tweetsCount: 0,
       userData: [],
     }
   },
   computed: {
+    ...mapGetters(['getCurrentUser']),
     // TODO:暫時用
     title() {
       return this.userInfo.name || ''
+    },
+    count() {
+      return this.tweetsCount || '0'
+    },
+    isCurrentUser() {
+      return this.userId == this.$store.getters.getCurrentUser.id
     },
   },
   created() {
@@ -72,6 +80,8 @@ export default {
     this.userId = user_id
     this.fetchUser(user_id)
     this.fetchUserFollowing(user_id)
+    this.fetchUserFollower(user_id)
+    this.fetchUserTweets(user_id)
   },
   methods: {
     async fetchUser(userId) {
@@ -124,6 +134,21 @@ export default {
         console.log(message)
       }
     },
+    async fetchUserTweets(userId) {
+      try {
+        const { data } = await usersAPI.getUserTweets({ userId })
+        this.tweetsCount = data.length
+      } catch (err) {
+        this.isLoading = false
+        let message = ''
+        if (err.response) {
+          message = err.response.data.message
+        } else {
+          message = err.message
+        }
+        console.log(message)
+      }
+    },
   },
 }
 </script>
@@ -145,6 +170,7 @@ export default {
     height: 100%;
     font-size: 15px;
     font-weight: bold;
+    border-bottom: 2px solid var(--white);
     color: var(--gray-500);
     &:hover {
       color: var(--theme);
