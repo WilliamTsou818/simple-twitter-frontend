@@ -97,6 +97,7 @@ export default {
       }
     }
     &__content {
+      word-break: break-all;
       margin-top: 5px;
       font-weight: normal;
       font-size: 15px;
