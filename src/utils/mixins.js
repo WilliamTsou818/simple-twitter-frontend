@@ -21,6 +21,18 @@ export const fromNowFilter = {
   },
 }
 
+export const timeFormatFilter = {
+  filters: {
+    timeFormatFilter(dateTime) {
+      if (!dateTime) {
+        return '-'
+      }
+      const prefix = dayjs(dateTime).hour() > 12 ? '下午' : '上午'
+      return prefix + dayjs(dateTime).format(" hh:mm・YYYY年M月DD日")
+    },
+  },
+}
+
 export const thousandFilter = {
   filters: {
     thousandFilter(num) {
