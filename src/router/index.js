@@ -122,7 +122,14 @@ const routes = [
             beforeEnter: checkUserAuthorize,
           },
         ],
-      }
+      },
+      {
+        // 推文詳細資訊頁面
+        path: '/user/tweets/:tweet_id',
+        name: 'UserTweetDetail',
+        component: () => import('../views/User/UserTweetDetail.vue'),
+        beforeEnter: checkUserAuthorize,
+      },
     ],
   },
 ]

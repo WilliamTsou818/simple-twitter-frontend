@@ -55,5 +55,17 @@ export default {
     get() {
       return apiHelper.get('/tweets')
     },
+    like({ tweetId }) {
+      return apiHelper.post(`/tweets/${tweetId}/like`)
+    },
+    unlike({ tweetId }) {
+      return apiHelper.post(`/tweets/${tweetId}/unlike`)
+    },
+    newPost({ description }) {
+      return apiHelper.post('/tweets', { description })
+    },
+    getDetail({ tweetId }) {
+      return apiHelper.get(`/tweets/${tweetId}`)
+    }
   },
 }
