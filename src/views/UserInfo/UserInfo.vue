@@ -86,6 +86,12 @@ export default {
     this.fetchUserFollower(user_id)
     this.fetchUserTweets(user_id)
   },
+  beforeRouteUpdate(to, from, next) {
+    console.log('beforeRouteUpdate')
+    const { user_id: userId } = to.params
+    this.fetchUser(userId)
+    next()
+  },
   methods: {
     async fetchUser(userId) {
       try {

@@ -48,8 +48,8 @@ export default {
     return apiHelper.post('/followships', { id })
   },
   //取消追隨id相符的使用者
-  removeFollowShip({ followingId }) {
-    return apiHelper.delete(`/followships/${followingId}`)
+  removeFollowShip({ userId }) {
+    return apiHelper.delete(`/followships/${userId}`)
   },
   tweets: {
     get() {
@@ -66,6 +66,6 @@ export default {
     },
     getDetail({ tweetId }) {
       return apiHelper.get(`/tweets/${tweetId}`)
-    }
+    },
   },
 }
