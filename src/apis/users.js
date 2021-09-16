@@ -43,6 +43,14 @@ export default {
   editUser({ userId, avatar }) {
     return apiHelper.put(`/users/${userId}`, avatar)
   },
+  //追隨id相符的使用者
+  addFollowShip({ id }) {
+    return apiHelper.post('/followships', { id })
+  },
+  //取消追隨id相符的使用者
+  removeFollowShip({ followingId }) {
+    return apiHelper.delete(`/followships/${followingId}`)
+  },
   tweets: {
     get() {
       return apiHelper.get('/tweets')

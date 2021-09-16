@@ -6,6 +6,7 @@
       :isCurrentUser="isCurrentUser"
       :followingsCount="followingsCount"
       :followersCount="followersCount"
+      :initialFollowing="initialFollowing"
     />
     <section class="tab-router">
       <router-link
@@ -32,7 +33,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 
@@ -60,10 +61,12 @@ export default {
       followersCount: 0,
       tweetsCount: 0,
       userData: [],
+      initialFollowers: [],
+      initialFollowing: false,
     }
   },
   computed: {
-    ...mapGetters(['getCurrentUser']),
+    ...mapState(['currentUser']),
     // TODO:暫時用
     title() {
       return this.userInfo.name || ''
@@ -72,7 +75,7 @@ export default {
       return this.tweetsCount || '0'
     },
     isCurrentUser() {
-      return this.userId == this.$store.getters.getCurrentUser.id
+      return this.userId == this.currentUser.id
     },
   },
   created() {
@@ -122,6 +125,15 @@ export default {
     async fetchUserFollower(userId) {
       try {
         const { data } = await usersAPI.getUserFollower({ userId })
+        this.initialFollowers = data
+        console.log('initialFollowers', this.initialFollowers)
+        this.initialFollowers.forEach((item) => {
+          if (item.followerId === this.currentUser.id) {
+            this.initialFollowing = true
+            console.log(item.followerId)
+          }
+        })
+        console.log(this.initialFollowing)
         this.followersCount = data.length
       } catch (err) {
         this.isLoading = false
