@@ -51,6 +51,9 @@ export default {
     },
     newPost({ description }) {
       return apiHelper.post('/tweets', { description })
+    },
+    getDetail({ tweetId }) {
+      return apiHelper.get(`/tweets/${tweetId}`)
     }
   },
 }
