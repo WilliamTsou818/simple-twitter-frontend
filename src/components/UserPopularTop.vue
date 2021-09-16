@@ -165,6 +165,9 @@ export default {
       padding: 10px 15px;
       align-items: center;
       border-bottom: 1px solid var(--blue-gray-600);
+      &:hover {
+        background-color: var(--blue-gray-600);
+      }
       &:last-child {
         border-bottom: 0px solid var(--blue-gray-600);
       }
@@ -203,10 +206,16 @@ export default {
     &__follow {
       color: var(--theme);
       border: 1px solid var(--theme);
+      &:hover {
+        background-color: var(--theme-200);
+      }
     }
     &__following {
       background-color: var(--theme);
       color: var(--white);
+      &:hover {
+        background-color: var(--theme-600);
+      }
     }
   }
 }
