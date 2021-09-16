@@ -4,10 +4,11 @@
       class="atweet__detail"
       @click.stop.prevent="handleClickDetail(tweet.TweetId)"
     >
-      <div
+      <button
         class="atweet__detail__avatar"
         v-bind:style="{ backgroundImage: 'url(' + tweet.User.avatar + ')' }"
-      ></div>
+        @click.stop.prevent="handleClickAvatar(tweet.User.id)"
+      ></button>
       <div class="atweet__detail__right">
         <div class="atweet__detail__user">
           <span class="atweet__detail__name">{{ tweet.User.name }}</span>
@@ -107,6 +108,9 @@ export default {
   },
   mixins: [fromNowFilter, altFilter, thousandFilter],
   methods: {
+    handleClickAvatar(user_id) {
+      this.$router.push({ name: 'UserInfo', params: { user_id } })
+    },
     handleClickDetail(tweet_id) {
       this.$router.push({
         name: 'UserTweetDetail',
@@ -191,6 +195,7 @@ export default {
       color: var(--gray-500);
     }
     &__content {
+      word-break: break-all;
       margin-top: 6px;
       min-height: 22px;
       max-height: 66px;
