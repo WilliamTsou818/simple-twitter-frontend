@@ -19,7 +19,9 @@
           ></div>
           <div class="popular__user-list__info">
             <div class="popular__user-list__name">{{ user.name }}</div>
-            <div class="popular__user-list__account">{{ user.account }}</div>
+            <div class="popular__user-list__account">
+              {{ user.account | altFilter }}
+            </div>
           </div>
           <button class="popular__user-list__action">
             <div
@@ -47,6 +49,7 @@
 //TODO:如果是在porfile有追蹤頁面要更改上層follow狀態
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
+import { altFilter } from './../utils/mixins'
 
 import Spinner from '@/components/Spinner'
 
@@ -55,6 +58,7 @@ export default {
   components: {
     Spinner,
   },
+  mixins: [altFilter],
   data() {
     return {
       isLoading: true,
