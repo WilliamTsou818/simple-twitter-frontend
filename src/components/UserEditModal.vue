@@ -104,6 +104,7 @@
                 name="name"
                 type="text"
                 required
+                maxlength="50"
               />
               <label for="name" class="form__name__label">
                 名稱
@@ -120,15 +121,16 @@
                 class="form__introduction__textarea"
                 name="introduction"
                 id="introduction"
-                cols="30"
-                rows="10"
+                cols="40"
+                rows="8"
+                maxlength="160"
               ></textarea>
               <label for="introduction" class="form__introduction__label">
                 自我介紹
               </label>
             </div>
-            <div class="modal__name__length">
-              {{ introduction ? introduction.length : '0' }}/150
+            <div class="modal__introduction__length">
+              {{ introduction ? introduction.length : '0' }}/160
             </div>
           </div>
         </form>
@@ -190,7 +192,6 @@ export default {
           requestData[key] = value
         }
         this.isProcessing = true
-        console.log(requestData)
         // console.log('requestData', requestData)
         const { data } = await usersAPI.setting({
           userId: this.userId,
@@ -207,7 +208,7 @@ export default {
         // this.$store.commit('setCurrentUser', { account, name, email })
         Toast.fire({
           icon: 'success',
-          title: `資料編輯成功！\n ${data.message}`,
+          title: `資料更新成功！\n ${data.message}`,
         })
       } catch (err) {
         this.isProcessing = false
@@ -222,7 +223,7 @@ export default {
 
         Toast.fire({
           icon: 'error',
-          title: `帳戶設定失敗！\n ${message}`,
+          title: `資料更新失敗！\n ${message}`,
         })
       }
     },
@@ -233,7 +234,6 @@ export default {
 <style lang="scss" scoped>
 .form {
   width: 100%;
-  max-width: 90vw;
   &__name {
     position: relative;
     border-radius: 4px;
@@ -387,6 +387,11 @@ export default {
     margin: 0 15px;
     padding-top: 20px;
     padding-bottom: 50px;
+    &__length {
+      text-align: right;
+      font-size: 15px;
+      color: var(--gray-500);
+    }
   }
 }
 </style>
