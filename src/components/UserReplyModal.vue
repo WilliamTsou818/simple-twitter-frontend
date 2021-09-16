@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 import { mapState } from 'vuex'
 import { fromNowFilter, altFilter } from './../utils/mixins'
@@ -136,28 +137,29 @@ export default {
     },
     async handleNewReply() {
       try {
-        // if (!this.validation()) {
-        //   // 驗證失敗
-        //   return
-        // }
+        if (!this.validation()) {
+          // 驗證失敗
+          return
+        }
         this.isProcessing = true
-        // const { data } = await usersAPI.tweets.newPost({
-        //   description: this.description,
-        // })
-        // if (data.status !== 'success') {
-        //   throw new Error(data.message)
-        // }
-
+        const { data } = await usersAPI.tweets.newReply({
+          tweetId: this.reply.id,
+          comment: this.comment,
+        })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
         this.comment = ''
         this.isProcessing = false
         // 關閉Modal
         this.handleClose()
-        // Toast.fire({
-        //   icon: 'success',
-        //   title: `回覆成功！\n ${data.message}`,
-        // })
+        // 處理資料刷新
+        this.$emit('reply-success')
+        Toast.fire({
+          icon: 'success',
+          title: `回覆成功！\n ${data.message}`,
+        })
       } catch (err) {
-        this.description = ''
         this.isProcessing = false
         let message = ''
         if (err.response) {

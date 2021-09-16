@@ -90,6 +90,7 @@
       :init-reply="tweetDatail"
       :reply-to="replyTo"
       @close="handleReplyModal"
+      @reply-success="handleReplySuccess"
     />
   </div>
 </template>
@@ -222,6 +223,10 @@ export default {
     },
     handleReplyModal() {
       this.isReplyModalOpen = !this.isReplyModalOpen
+    },
+    handleReplySuccess() {
+      const { tweet_id: tweetId } = this.$route.params
+      this.fetchTweetDetail(tweetId)
     },
   },
 }
