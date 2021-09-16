@@ -77,16 +77,12 @@
         <div class="section-replies__tip" v-show="isNoReply">
           目前沒有回覆
         </div>
-        <div
+        <UserTweetReply
           v-for="reply in tweetDatail.Replies"
           :key="reply.id"
           :init-reply="reply"
-        >
-          {{ reply.comment }}
-        </div>
-        <div v-for="index in 50" :key="index">
-          {{ index }}
-        </div>
+          :reply-to="tweetDatail.User.account"
+        />
       </section>
     </div>
   </div>
@@ -99,11 +95,13 @@ import { timeFormatFilter, altFilter, thousandFilter } from '@/utils/mixins'
 
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
+import UserTweetReply from '@/components/UserTweetReply'
 
 export default {
   components: {
     Head,
     Spinner,
+    UserTweetReply,
   },
   mixins: [timeFormatFilter, altFilter, thousandFilter],
   created() {
@@ -111,7 +109,6 @@ export default {
     this.fetchTweetDetail(tweetId)
   },
   beforeRouteUpdate(to, from, next) {
-    console.log('beforeRouteUpdate')
     const { tweet_id: tweetId } = to.params
     this.fetchTweetDetail(tweetId)
     next()
@@ -207,6 +204,9 @@ export default {
         })
       }
     },
+    handleClickReply(tweetId) {
+      console.log('handleClickReply', tweetId)
+    },
   },
 }
 </script>
@@ -251,6 +251,7 @@ export default {
     }
   }
   &__content {
+    word-break: break-all;
     margin-top: 15px;
     font-weight: 500;
     font-size: 23px;
