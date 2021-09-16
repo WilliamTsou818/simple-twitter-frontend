@@ -1,27 +1,27 @@
 <template>
-  <div class="atweet">
-    <div class="atweet__detail">
+  <div class="reply">
+    <div class="reply__detail">
       <button
-        class="atweet__detail__avatar"
-        v-bind:style="{ backgroundImage: 'url(' + tweet.User.avatar + ')' }"
-        @click.stop.prevent="handleClickAvatar(tweet.User.id)"
+        class="reply__detail__avatar"
+        v-bind:style="{ backgroundImage: 'url(' + reply.User.avatar + ')' }"
+        @click.stop.prevent="handleClickAvatar(reply.User.id)"
       ></button>
-      <div class="atweet__detail__right">
-        <div class="atweet__detail__user">
-          <span class="atweet__detail__name">{{ tweet.User.name }}</span>
-          <span class="atweet__detail__account">{{
-            tweet.User.account | altFilter
+      <div class="reply__detail__right">
+        <div class="reply__detail__user">
+          <span class="reply__detail__name">{{ reply.User.name }}</span>
+          <span class="reply__detail__account">{{
+            reply.User.account | altFilter
           }}</span>
-          <span class="atweet__detail__date"
-            >・{{ tweet.updatedAt | fromNowFilter }}</span
+          <span class="reply__detail__date"
+            >・{{ reply.createdAt | fromNowFilter }}</span
           >
         </div>
-        <div class="atweet__detail__reply">
-          <span class="atweet__detail__reply--text">回覆</span>
+        <div class="reply__detail__reply">
+          <span class="reply__detail__reply--text">回覆</span>
           {{ replyTo | altFilter }}
         </div>
-        <div class="atweet__detail__content">
-          {{ tweet.description }}
+        <div class="reply__detail__content">
+          {{ reply.comment }}
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@ import { fromNowFilter, altFilter } from './../utils/mixins'
 export default {
   name: 'UserTweetReply',
   props: {
-    initTweet: {
+    initReply: {
       type: Object,
       required: true,
     },
@@ -45,7 +45,7 @@ export default {
   },
   data() {
     return {
-      tweet: this.initTweet,
+      reply: this.initReply,
       isProcessing: false,
     }
   },
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.atweet {
+.reply {
   padding: 15px;
   text-align: left;
   border-bottom: 1px solid var(--blue-gray-600);
