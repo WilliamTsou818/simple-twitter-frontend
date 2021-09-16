@@ -2,8 +2,8 @@
   <div class="container container--user">
     <Head :title="title" backArrow />
     <Spinner v-if="isLoading" />
-    <div class="wrapper">
-      <section v-if="!isLoading" class="section-tweet">
+    <div v-else class="wrapper">
+      <section v-if="tweetDatail.User" class="section-tweet">
         <div class="section-tweet__user">
           <div
             class="section-tweet__user__avatar"
@@ -100,46 +100,6 @@ import { timeFormatFilter, altFilter, thousandFilter } from '@/utils/mixins'
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 
-const dummydata = {
-  id: 25,
-  description: 'Optio illo non.',
-  createdAt: '2021-09-11 08:51:50',
-  LikesCount: 1,
-  isLike: 'false',
-  User: {
-    id: 15,
-    name: 'User1',
-    avatar: 'https://loremflickr.com/320/240/boy/?lock=30.340617297642325',
-    account: 'user1',
-  },
-  Replies: [
-    {
-      id: 65,
-      comment: 'Quia voluptates veniam.',
-      createdAt: '2021-09-11 08:51:50',
-      User: {
-        id: 15,
-        name: 'User1',
-        cover:
-          'https://loremflickr.com/320/240/landscape/?lock=21.83705421398281',
-        account: '@user1',
-      },
-    },
-    {
-      id: 75,
-      comment: 'Ducimus et ut.',
-      createdAt: '2021-09-11 08:51:50',
-      User: {
-        id: 25,
-        name: 'User2',
-        cover:
-          'https://loremflickr.com/320/240/landscape/?lock=21.83705421398281',
-        account: 'user2',
-      },
-    },
-  ],
-}
-
 export default {
   components: {
     Head,
@@ -176,11 +136,21 @@ export default {
   methods: {
     async fetchTweetDetail(tweetId) {
       try {
-        console.log('UserTweetDetail tweetId', tweetId)
         this.isLoading = true
         const { data } = await usersAPI.tweets.getDetail({ tweetId })
         console.log('data', data)
-        this.tweetDatail = data //{ ...data, Replies: dummydata.Replies }
+
+        // FIXME:已通知後端希望更改status為error
+        if (data.message === 'No tweet found') {
+          Toast.fire({
+            icon: 'error',
+            title: `獲取推文資訊失敗！\n ${data.message}`,
+          })
+          this.$router.back()
+          return
+        }
+
+        this.tweetDatail = data
         this.isLoading = false
       } catch (err) {
         let message = ''
@@ -251,7 +221,6 @@ export default {
 }
 .section-tweet {
   width: 100%;
-  // min-height: 400px;
   text-align: left;
   padding: 15px;
   border-bottom: 1px solid var(--blue-gray-600);
@@ -283,17 +252,9 @@ export default {
   }
   &__content {
     margin-top: 15px;
-    // padding-right: 75px;
-    // min-height: 136px;
     font-weight: 500;
     font-size: 23px;
     color: var(--text);
-    // 多行省略
-    // overflow: hidden;
-    // text-overflow: ellipsis;
-    // display: -webkit-box;
-    // -webkit-line-clamp: 4;
-    // -webkit-box-orient: vertical;
   }
   &__date {
     margin: 15px 0;
