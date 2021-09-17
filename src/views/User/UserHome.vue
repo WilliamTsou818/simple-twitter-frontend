@@ -41,8 +41,16 @@
         v-for="tweet in tweets"
         :key="tweet.TweetId"
         :init-tweet="tweet"
+        @action-reply="handleActionReply"
       />
     </section>
+    <UserReplyModal
+      v-show="isReplyModalOpen"
+      :init-reply="tweetDatail"
+      :reply-to="replyTo"
+      @close="handleReplyModal"
+      @reply-success="handleReplySuccess"
+    />
   </div>
 </template>
 
@@ -54,12 +62,14 @@ import { mapState } from 'vuex'
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import UserTweet from '@/components/UserTweet'
+import UserReplyModal from '@/components/UserReplyModal'
 
 export default {
   components: {
     Head,
     Spinner,
     UserTweet,
+    UserReplyModal,
   },
   data() {
     return {
@@ -69,22 +79,28 @@ export default {
       tweets: [],
       description: '',
       descriptionMaxLength: 140,
+      tweetDatail: {},
+      isReplyModalOpen: false,
     }
   },
   computed: {
     ...mapState(['currentUser']),
+    replyTo() {
+      return this.tweetDatail.User ? this.tweetDatail.User.account : ''
+    },
   },
   created() {
     this.fetchTweets()
   },
   methods: {
-    async fetchTweets() {
+    async fetchTweets(scrollTop = true) {
       try {
         this.isLoading = true
         const { data } = await usersAPI.tweets.get()
+        console.log('data', data)
         this.tweets = data
         // 回到頂部
-        this.$refs.sectionTweets.scrollTop = 0
+        scrollTop && (this.$refs.sectionTweets.scrollTop = 0)
         this.isLoading = false
       } catch (err) {
         let message = ''
@@ -157,6 +173,17 @@ export default {
           title: `推文失敗！\n ${message}`,
         })
       }
+    },
+    handleActionReply(tweet) {
+      // replyModal是抓id
+      this.tweetDatail = { ...tweet, id: tweet.TweetId }
+      this.handleReplyModal()
+    },
+    handleReplyModal() {
+      this.isReplyModalOpen = !this.isReplyModalOpen
+    },
+    handleReplySuccess() {
+      this.fetchTweets(false)
     },
   },
 }
