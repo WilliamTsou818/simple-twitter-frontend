@@ -48,8 +48,8 @@ export default {
     return apiHelper.get(`/users/${userId}/likes`)
   },
   // 編輯使用者帳戶資料
-  editUser({ userId, avatar }) {
-    return apiHelper.put(`/users/${userId}`, avatar)
+  editUserProfile({ userId, formData }) {
+    return apiHelper.put(`/users/${userId}`, formData)
   },
   //追隨id相符的使用者
   addFollowShip({ id }) {
