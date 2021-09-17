@@ -1,7 +1,7 @@
 <template>
   <div class="setting">
-    <NavBarAdmin class="sm-d-none" />
-    <TabBarAdmin class="lg-d-none" />
+    <NavBarAdmin class="sm-d-none" @new-post="handleActionNewPost" />
+    <TabBarAdmin class="lg-d-none" @new-post="handleActionNewPost" />
     <main>
       <div class="container container--setting">
         <Head :title="title" />
@@ -16,17 +16,24 @@
         </section>
       </div>
     </main>
+    <UserNewPostModal
+      v-show="isNewPostModalOpen"
+      @close="handleNewPostModalClose"
+      @post-success="handleNewPostSuccess"
+    />
   </div>
 </template>
 
 <script>
+import usersAPI from '@/apis/users'
+import { Toast } from '@/utils/helpers'
 import { mapState } from 'vuex'
 import NavBarAdmin from '@/components/NavBarAdmin.vue'
 import TabBarAdmin from '@/components/TabBarAdmin.vue'
 import Head from '@/components/Head'
 import AccountForm from '@/components/AccountForm'
-import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
+import UserNewPostModal from '@/components/UserNewPostModal'
+import { newPostAction } from '@/utils/mixins'
 
 export default {
   name: 'UserSetting',
@@ -35,6 +42,7 @@ export default {
     TabBarAdmin,
     Head,
     AccountForm,
+    UserNewPostModal,
   },
   data() {
     return {
@@ -43,7 +51,19 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser']),
+    ...mapState(['currentUser', 'isNewPostModalOpen']),
+  },
+  mixins: [newPostAction],
+  beforeRouteUpdate(to, from, next) {
+    if (this.isNewPostModalOpen) {
+      this.handleNewPostModalClose()
+    }
+    next()
+  },
+  beforeDestroy() {
+    if (this.isNewPostModalOpen) {
+      this.handleNewPostModalClose()
+    }
   },
   methods: {
     async handleAfterSubmit(requestData) {
@@ -82,6 +102,23 @@ export default {
           icon: 'error',
           title: `帳戶設定失敗！\n ${message}`,
         })
+      }
+    },
+    // 關閉Modal
+    handleNewPostModalClose() {
+      this.$store.dispatch('isNewPostModalOpen', false)
+    },
+    // 新增推文成功
+    handleNewPostSuccess() {
+      // 設定需要刷新，需要刷新的頁面必須watch state.isNewPostRefresh的變化
+      this.$store.dispatch('isNewPostRefresh', true)
+    },
+  },
+  watch: {
+    isNewPostRefresh(isRefresh) {
+      if (isRefresh) {
+        this.$store.dispatch('isNewPostRefresh', false)
+        // ...下面可以自行增加頁面刷新function
       }
     },
   },

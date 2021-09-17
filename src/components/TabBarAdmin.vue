@@ -55,7 +55,7 @@
     </template>
     <template v-if="currentUser.role === 'user'">
       <div class="tab-bar__tab">
-        <button>
+        <button @click.stop.prevent="$emit('new-post')">
           <svg
             class="tab-bar__tab__icon"
             width="24"

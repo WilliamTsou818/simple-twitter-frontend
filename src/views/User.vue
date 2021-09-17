@@ -1,10 +1,15 @@
 <template>
   <div class="user">
-    <NavBarAdmin class="sm-d-none" />
-    <TabBarAdmin class="lg-d-none" />
+    <NavBarAdmin class="sm-d-none" @new-post="handleActionNewPost" />
+    <TabBarAdmin class="lg-d-none" @new-post="handleActionNewPost" />
     <main>
       <router-view />
     </main>
+    <UserNewPostModal
+      v-show="isNewPostModalOpen"
+      @close="handleNewPostModalClose"
+      @post-success="handleNewPostSuccess"
+    />
     <UserReplyModal
       v-show="isReplyModalOpen"
       :init-reply="replyDetail"
@@ -22,6 +27,8 @@ import NavBarAdmin from './../components/NavBarAdmin.vue'
 import TabBarAdmin from './../components/TabBarAdmin.vue'
 import UserReplyModal from '@/components/UserReplyModal'
 import UserPopularTop from '@/components/UserPopularTop.vue'
+import UserNewPostModal from '@/components/UserNewPostModal'
+import { newPostAction } from '@/utils/mixins'
 
 export default {
   name: 'user',
@@ -30,25 +37,42 @@ export default {
     TabBarAdmin,
     UserReplyModal,
     UserPopularTop,
+    UserNewPostModal,
   },
   computed: {
-    ...mapState(['isReplyModalOpen', 'replyDetail']),
+    ...mapState(['isNewPostModalOpen', 'isReplyModalOpen', 'replyDetail']),
     replyTo() {
       return this.replyDetail.User ? this.replyDetail.User.account : ''
     },
   },
+  mixins: [newPostAction],
   beforeRouteUpdate(to, from, next) {
+    if (this.isNewPostModalOpen) {
+      this.handleNewPostModalClose()
+    }
     if (this.isReplyModalOpen) {
       this.$store.dispatch('isReplyModalOpen', false)
     }
     next()
   },
   beforeDestroy() {
+    if (this.isNewPostModalOpen) {
+      this.handleNewPostModalClose()
+    }
     if (this.isReplyModalOpen) {
       this.$store.dispatch('isReplyModalOpen', false)
     }
   },
   methods: {
+    // 關閉Modal
+    handleNewPostModalClose() {
+      this.$store.dispatch('isNewPostModalOpen', false)
+    },
+    // 新增推文成功
+    handleNewPostSuccess() {
+      // 設定需要刷新，需要刷新的頁面必須watch state.isNewPostRefresh的變化
+      this.$store.dispatch('isNewPostRefresh', true)
+    },
     handleReplyModalClose() {
       this.$store.dispatch('isReplyModalOpen', false)
     },
