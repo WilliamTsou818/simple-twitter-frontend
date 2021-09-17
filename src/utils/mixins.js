@@ -1,3 +1,4 @@
+import { mapState } from 'vuex'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-tw'
@@ -56,4 +57,26 @@ export const altFilter = {
       return '@' + account
     },
   },
+}
+
+// 側邊攔新增推文相關設定
+export const newPostAction = {
+  computed: {
+    ...mapState(['isNewPostRefresh']),
+  },
+  methods: {
+    handleActionNewPost() {
+      // 開啟Modal
+      this.$store.dispatch('isNewPostModalOpen', true)
+    },
+  },
+  // TODO:這個isNewPostRefresh要在自己的view裡面寫。
+  // watch: {
+  //   isNewPostRefresh(isRefresh) {
+  //     if (isRefresh) {
+  //       this.$store.dispatch('isNewPostRefresh', false)
+  //       // ...下面可以自行增加頁面刷新function
+  //     }
+  //   },
+  // },
 }
