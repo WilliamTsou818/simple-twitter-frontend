@@ -8,6 +8,7 @@
       v-for="tweet in tweets"
       :key="tweet.TweetId"
       :init-tweet="tweet"
+      @action-reply="handleActionReply"
     />
   </section>
 </template>
@@ -17,6 +18,7 @@ import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 import Spinner from '@/components/Spinner'
 import UserTweet from '@/components/UserTweet'
+import { replyAction } from '@/utils/mixins'
 
 export default {
   name: 'UserAllLike',
@@ -30,6 +32,7 @@ export default {
       tweets: [],
     }
   },
+  mixins: [replyAction],
   created() {
     const { user_id } = this.$route.params
     this.fetchUserLikes(user_id)
@@ -67,6 +70,17 @@ export default {
             title: `獲取喜歡的推文列表失敗！\n ${message}`,
           })
         }
+      }
+    },
+  },
+  watch: {
+    // 回覆成功，刷新
+    isReplyRefresh(isRefresh) {
+      if (isRefresh) {
+        this.$store.dispatch('isReplyRefresh', false)
+        // ...下面可以自行增加頁面刷新function
+        const { user_id } = this.$route.params
+        this.fetchUserLikes(user_id, false)
       }
     },
   },
