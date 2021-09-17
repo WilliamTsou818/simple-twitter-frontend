@@ -9,10 +9,9 @@
         <router-link
           :to="{ name: 'UserAllTweets', params: { user_id: user.id } }"
           class="popular__user-list__list"
-          v-for="user in popularUsers"
+          v-for="user in popular"
           :key="user.id"
         >
-          <!-- <router-link :to="`/user/${user.id}/tweets`"> -->
           <div
             class="popular__user-list__avatar"
             :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
@@ -46,7 +45,6 @@
 </template>
 
 <script>
-//TODO:如果是在porfile有追蹤頁面要更改上層follow狀態
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 import { altFilter } from './../utils/mixins'
@@ -63,8 +61,12 @@ export default {
     return {
       isLoading: true,
       userIsFollowing: false,
-      popularUsers: [],
     }
+  },
+  computed: {
+    popular() {
+      return this.$store.getters.getPopular
+    },
   },
   created() {
     this.fetchPopularUsers()
@@ -73,7 +75,7 @@ export default {
     async fetchPopularUsers() {
       try {
         const { data } = await usersAPI.getPopularUsers()
-        this.popularUsers = data
+        this.$store.dispatch('handleSetPopular', data)
         this.isLoading = false
       } catch (err) {
         console.log(err)
@@ -86,12 +88,7 @@ export default {
     async addFollowing(userId) {
       try {
         const { data } = await usersAPI.addFollowShip({ id: userId })
-        console.log(data)
-        this.popularUsers.forEach((user) => {
-          if (user.id === userId) {
-            user.isFollowed = !user.isFollowed
-          }
-        })
+        this.$store.dispatch('handleSetFollowed', userId)
         Toast.fire({
           icon: 'success',
           title: `${data.message}`,
@@ -110,14 +107,8 @@ export default {
     },
     async removeFollowing(userId) {
       try {
-        console.log(userId)
         const { data } = await usersAPI.removeFollowShip({ userId })
-        console.log('remov', data)
-        this.popularUsers.forEach((user) => {
-          if (user.id === userId) {
-            user.isFollowed = !user.isFollowed
-          }
-        })
+        this.$store.dispatch('handleSetFollowed', userId)
         Toast.fire({
           icon: 'success',
           title: `${data.message}`,

@@ -46,14 +46,14 @@
           <div
             @click.stop.prevent="addFollowing(user.id)"
             class="user-profile__action__follow"
-            v-show="!isFollowing"
+            v-show="!initialFollowing"
           >
             跟隨
           </div>
           <div
             @click.stop.prevent="removeFollowing(user.id)"
             class="user-profile__action__following"
-            v-show="isFollowing"
+            v-show="initialFollowing"
           >
             正在跟隨
           </div>
@@ -120,7 +120,6 @@ export default {
     return {
       isModalOpen: false,
       isNotify: false,
-      isFollowing: this.initialFollowing,
     }
   },
   watch: {
@@ -142,7 +141,7 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        this.isFollowing = true
+        this.$store.dispatch('handleSetFollowed', userId)
       } catch (e) {
         console.log(e)
         Toast.fire({
@@ -154,13 +153,11 @@ export default {
     // 取消追蹤
     async removeFollowing(userId) {
       try {
-        console.log(userId)
         const { data } = await usersAPI.removeFollowShip({ userId })
-        console.log('remov', data)
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        this.isFollowing = false
+        this.$store.dispatch('handleSetFollowed', userId)
         // this.$emit('update-following', userId)
       } catch (e) {
         console.log(e)

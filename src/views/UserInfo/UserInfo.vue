@@ -1,12 +1,16 @@
 <template>
   <div class="container container--user">
-    <Head :title="title" :count="count" backArrow />
+    <Head
+      :title="currentViewUser.data.name"
+      :count="currentViewUser.data.id"
+      backArrow
+    />
     <UserProfile
-      :user="userInfo"
-      :isCurrentUser="isCurrentUser"
+      :user="currentViewUser.data"
+      :isCurrentUser="currentViewUser.isViewCurrentUser"
       :followingsCount="followingsCount"
       :followersCount="followersCount"
-      :initialFollowing="initialFollowing"
+      :initialFollowing="currentViewUser.isFollowed"
     />
     <section class="tab-router">
       <router-link
@@ -67,29 +71,31 @@ export default {
   },
   computed: {
     ...mapState(['currentUser']),
-    // TODO:暫時用
-    title() {
-      return this.userInfo.name || ''
-    },
-    count() {
-      return this.tweetsCount || '0'
-    },
-    isCurrentUser() {
-      return this.userId == this.currentUser.id
+
+    // title() {
+    //   return this.userInfo.name || ''
+    // },
+    // count() {
+    //   return this.tweetsCount || '0'
+    // },
+    currentViewUser() {
+      return this.$store.getters.getViewUser
     },
   },
   created() {
     const { user_id } = this.$route.params
     this.userId = user_id
+    this.$store.dispatch('handleInitFollowing')
+    this.$store.dispatch('isViewCurrentUser', user_id)
     this.fetchUser(user_id)
     this.fetchUserFollowing(user_id)
     this.fetchUserFollower(user_id)
     this.fetchUserTweets(user_id)
   },
   beforeRouteUpdate(to, from, next) {
-    console.log('beforeRouteUpdate')
     const { user_id: userId } = to.params
     this.fetchUser(userId)
+    this.$store.dispatch('isViewCurrentUser', userId)
     next()
   },
   methods: {
@@ -98,6 +104,7 @@ export default {
         this.isLoading = true
         const { data } = await usersAPI.getUser({ userId })
         this.userInfo = data
+        this.$store.dispatch('handleInitViewUser', data)
         this.isLoading = false
       } catch (err) {
         this.isLoading = false
