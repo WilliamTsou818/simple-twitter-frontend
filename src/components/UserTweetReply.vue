@@ -18,7 +18,7 @@
         </div>
         <div class="reply__detail__reply">
           <span class="reply__detail__reply--text">回覆</span>
-          {{ replyTo | altFilter }}
+          {{ replyToAccount | altFilter }}
         </div>
         <div class="reply__detail__content">
           {{ reply.comment }}
@@ -40,7 +40,7 @@ export default {
     },
     replyTo: {
       type: String,
-      require: true,
+      default: '',
     },
   },
   data() {
@@ -48,6 +48,11 @@ export default {
       reply: this.initReply,
       isProcessing: false,
     }
+  },
+  computed: {
+    replyToAccount() {
+      return this.reply.Tweet ? this.reply.Tweet.User.account : this.replyTo
+    },
   },
   mixins: [fromNowFilter, altFilter],
   methods: {

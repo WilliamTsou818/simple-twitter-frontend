@@ -5,34 +5,36 @@
       :count="currentViewUser.data.id"
       backArrow
     />
-    <UserProfile
-      :user="currentViewUser.data"
-      :isCurrentUser="currentViewUser.isViewCurrentUser"
-      :followingsCount="currentViewUser.followings.length"
-      :followersCount="currentViewUser.followers.length"
-      :initialFollowing="currentViewUser.isFollowed"
-    />
-    <section class="tab-router">
-      <router-link
-        :to="{ name: 'UserAllTweets', params: { user_id: userId } }"
-        class="tab-router__link"
-      >
-        <span class="tab-router__text">推文</span>
-      </router-link>
-      <router-link
-        :to="{ name: 'UserAllReplies', params: { user_id: userId } }"
-        class="tab-router__link"
-      >
-        <span class="tab-router__text">推文與回覆</span>
-      </router-link>
-      <router-link
-        :to="{ name: 'UserAllLike', params: { user_id: userId } }"
-        class="tab-router__link"
-      >
-        <span class="tab-router__text">喜歡的內容</span>
-      </router-link>
-    </section>
-    <router-view />
+    <div class="section-wrapper">
+      <UserProfile
+        :user="currentViewUser.data"
+        :isCurrentUser="currentViewUser.isViewCurrentUser"
+        :followingsCount="currentViewUser.followings.length"
+        :followersCount="currentViewUser.followers.length"
+        :initialFollowing="currentViewUser.isFollowed"
+      />
+      <section class="tab-router">
+        <router-link
+          :to="{ name: 'UserAllTweets', params: { user_id: userId } }"
+          class="tab-router__link"
+        >
+          <span class="tab-router__text">推文</span>
+        </router-link>
+        <router-link
+          :to="{ name: 'UserAllReplies', params: { user_id: userId } }"
+          class="tab-router__link"
+        >
+          <span class="tab-router__text">推文與回覆</span>
+        </router-link>
+        <router-link
+          :to="{ name: 'UserAllLike', params: { user_id: userId } }"
+          class="tab-router__link"
+        >
+          <span class="tab-router__text">喜歡的內容</span>
+        </router-link>
+      </section>
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -60,7 +62,6 @@ export default {
     return {
       isLoading: true,
       userId: '',
-      tweetsCount: 0,
     }
   },
   computed: {
@@ -75,21 +76,20 @@ export default {
     this.$store.dispatch('handleInitFollowing')
     this.$store.dispatch('isViewCurrentUser', user_id)
     this.fetchUser(user_id)
-    this.fetchUserFollowing(user_id)
-    this.fetchUserFollower(user_id)
-    this.fetchUserTweets(user_id)
   },
   beforeRouteUpdate(to, from, next) {
-    const { user_id: userId } = to.params
-    this.fetchUser(userId)
-    this.fetchUserFollowing(userId)
-    this.fetchUserFollower(userId)
-    this.$store.dispatch('isViewCurrentUser', userId)
+    const { user_id } = to.params
+    if (this.userId !== user_id) {
+      this.fetchUser(user_id)
+    }
+    this.userId = user_id
+    this.$store.dispatch('isViewCurrentUser', user_id)
     next()
   },
   methods: {
     async fetchUser(userId) {
       try {
+        console.log('fetchUser')
         this.isLoading = true
         const { data } = await usersAPI.getUser({ userId })
         this.$store.dispatch('handleInitViewUser', data)
@@ -104,53 +104,9 @@ export default {
         }
         Toast.fire({
           icon: 'error',
-          title: `請稍後重整！\n ${message}`,
+          title: `取得使用者資訊失敗！\n ${message}`,
         })
-      }
-    },
-    async fetchUserFollowing(userId) {
-      try {
-        const { data } = await usersAPI.getUserFollowing({ userId })
-        this.$store.dispatch('handleSetViewUserFollowings', data)
-      } catch (err) {
-        this.isLoading = false
-        let message = ''
-        if (err.response) {
-          message = err.response.data.message
-        } else {
-          message = err.message
-        }
-        console.log(message)
-      }
-    },
-    async fetchUserFollower(userId) {
-      try {
-        const { data } = await usersAPI.getUserFollower({ userId })
-        this.$store.dispatch('handleSetViewUserFollowers', data)
-      } catch (err) {
-        this.isLoading = false
-        let message = ''
-        if (err.response) {
-          message = err.response.data.message
-        } else {
-          message = err.message
-        }
-        console.log(message)
-      }
-    },
-    async fetchUserTweets(userId) {
-      try {
-        const { data } = await usersAPI.getUserTweets({ userId })
-        this.tweetsCount = data.length
-      } catch (err) {
-        this.isLoading = false
-        let message = ''
-        if (err.response) {
-          message = err.response.data.message
-        } else {
-          message = err.message
-        }
-        console.log(message)
+        this.$router.back()
       }
     },
   },
@@ -158,6 +114,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.section-wrapper {
+  height: calc(100vh - 56px);
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 .tab-router {
   display: flex;
   align-items: center;
@@ -183,6 +146,12 @@ export default {
       color: var(--theme);
       border-bottom: 2px solid var(--theme);
     }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .section-wrapper {
+    padding-bottom: 56px;
   }
 }
 </style>
