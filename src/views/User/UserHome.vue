@@ -87,7 +87,9 @@ export default {
         const { data } = await usersAPI.tweets.get()
         this.tweets = data
         // 回到頂部
-        scrollTop && (this.$refs.sectionTweets.scrollTop = 0)
+        if (scrollTop && this.$refs.sectionTweets) {
+          this.$refs.sectionTweets.scrollTop = 0
+        }
         this.isLoading = false
       } catch (err) {
         let message = ''
