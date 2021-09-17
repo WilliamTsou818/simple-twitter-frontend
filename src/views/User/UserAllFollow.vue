@@ -7,13 +7,13 @@
     />
     <section class="tab-router">
       <router-link
-        :to="{ name: 'UserFollowings', params: { user_id: userId } }"
+        :to="{ name: 'UserFollowers', params: { user_id: userId } }"
         class="tab-router__link"
       >
         <span class="tab-router__text">跟隨者</span>
       </router-link>
       <router-link
-        :to="{ name: 'UserFollowers', params: { user_id: userId } }"
+        :to="{ name: 'UserFollowings', params: { user_id: userId } }"
         class="tab-router__link"
       >
         <span class="tab-router__text">正在跟隨</span>
