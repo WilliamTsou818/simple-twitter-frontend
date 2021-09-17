@@ -175,8 +175,7 @@ export default {
       }
     },
     handleActionReply(tweet) {
-      // replyModal是抓id
-      this.tweetDatail = { ...tweet, id: tweet.TweetId }
+      this.tweetDatail = tweet
       this.handleReplyModal()
     },
     handleReplyModal() {

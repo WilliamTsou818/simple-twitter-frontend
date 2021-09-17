@@ -126,7 +126,8 @@ export default {
       })
     },
     handleClickReply() {
-      this.$emit('action-reply', this.tweet)
+      // replyModal是抓id
+      this.$emit('action-reply', { ...this.tweet, id: this.tweet.TweetId })
     },
     async handleClickLike(tweetId) {
       try {
