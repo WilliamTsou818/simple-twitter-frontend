@@ -27,7 +27,7 @@
     <div class="atweet__actions">
       <button
         class="atweet__actions__button"
-        @click.stop.prevent="handleClickReply(tweet.TweetId)"
+        @click.stop.prevent="handleClickReply()"
       >
         <svg
           class="atweet__actions__icon atweet__actions__icon--reply"
@@ -106,6 +106,14 @@ export default {
       isProcessing: false,
     }
   },
+  watch: {
+    initTweet(newValue) {
+      this.tweet = {
+        ...this.tweet,
+        ...newValue,
+      }
+    },
+  },
   mixins: [fromNowFilter, altFilter, thousandFilter],
   methods: {
     handleClickAvatar(user_id) {
@@ -117,8 +125,8 @@ export default {
         params: { tweet_id },
       })
     },
-    handleClickReply(tweetId) {
-      console.log('handleClickReply', tweetId)
+    handleClickReply() {
+      this.$emit('action-reply', this.tweet)
     },
     async handleClickLike(tweetId) {
       try {

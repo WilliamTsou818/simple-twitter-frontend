@@ -81,10 +81,17 @@
           v-for="reply in tweetDatail.Replies"
           :key="reply.id"
           :init-reply="reply"
-          :reply-to="tweetDatail.User.account"
+          :reply-to="replyTo"
         />
       </section>
     </div>
+    <UserReplyModal
+      v-show="isReplyModalOpen"
+      :init-reply="tweetDatail"
+      :reply-to="replyTo"
+      @close="handleReplyModal"
+      @reply-success="handleReplySuccess"
+    />
   </div>
 </template>
 
@@ -96,12 +103,14 @@ import { timeFormatFilter, altFilter, thousandFilter } from '@/utils/mixins'
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import UserTweetReply from '@/components/UserTweetReply'
+import UserReplyModal from '@/components/UserReplyModal'
 
 export default {
   components: {
     Head,
     Spinner,
     UserTweetReply,
+    UserReplyModal,
   },
   mixins: [timeFormatFilter, altFilter, thousandFilter],
   created() {
@@ -119,6 +128,7 @@ export default {
       isLoading: true,
       isProcessing: false,
       tweetDatail: {},
+      isReplyModalOpen: false,
     }
   },
   computed: {
@@ -128,6 +138,9 @@ export default {
         this.tweetDatail.Replies &&
         this.tweetDatail.Replies.length === 0
       )
+    },
+    replyTo() {
+      return this.tweetDatail.User ? this.tweetDatail.User.account : ''
     },
   },
   methods: {
@@ -206,6 +219,14 @@ export default {
     },
     handleClickReply(tweetId) {
       console.log('handleClickReply', tweetId)
+      this.handleReplyModal()
+    },
+    handleReplyModal() {
+      this.isReplyModalOpen = !this.isReplyModalOpen
+    },
+    handleReplySuccess() {
+      const { tweet_id: tweetId } = this.$route.params
+      this.fetchTweetDetail(tweetId)
     },
   },
 }
