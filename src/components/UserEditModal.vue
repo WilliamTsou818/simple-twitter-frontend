@@ -349,7 +349,11 @@ export default {
     }
     &__save--wait {
       cursor: wait;
+      background-color: var(--theme-dark);
       pointer-events: all !important;
+      &:hover {
+        background-color: var(--theme-dark);
+      }
     }
   }
   &__img {
