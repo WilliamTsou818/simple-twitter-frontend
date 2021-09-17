@@ -2,7 +2,7 @@
   <div class="container container--user">
     <Head
       :title="currentViewUser.data.name"
-      :count="currentViewUser.data.id"
+      :count="currentViewUser.data.TweetsCount"
       backArrow
     />
     <div class="section-wrapper">

@@ -24,7 +24,7 @@
           alt="tweets"
         />
         <span class="card__actions__count">{{
-          user.tweetsCount | thousandFilter
+          user.TweetsCount | thousandFilter
         }}</span>
       </div>
       <div class="card__actions__like">
@@ -34,19 +34,19 @@
           alt="like"
         />
         <span class="card__actions__count">{{
-          user.likesCount | thousandFilter
+          user.LikesCount | thousandFilter
         }}</span>
       </div>
     </div>
     <div class="card__follow">
       <span
         ><span class="card__follow__count"
-          >{{ user.followingsCount | thousandFilter }} 個</span
+          >{{ user.FollowingsCount | thousandFilter }} 個</span
         >跟隨中</span
       >
       <span
         ><span class="card__follow__count"
-          >{{ user.followersCount | thousandFilter }} 位</span
+          >{{ user.FollowersCount | thousandFilter }} 位</span
         >跟隨者</span
       >
     </div>

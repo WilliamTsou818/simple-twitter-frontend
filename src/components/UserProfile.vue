@@ -46,14 +46,14 @@
           <div
             @click.stop.prevent="addFollowing(user.id)"
             class="user-profile__action__follow"
-            v-show="!initialFollowing"
+            v-show="!user.isFollowed"
           >
             跟隨
           </div>
           <div
             @click.stop.prevent="removeFollowing(user.id)"
             class="user-profile__action__following"
-            v-show="initialFollowing"
+            v-show="user.isFollowed"
           >
             正在跟隨
           </div>
@@ -78,7 +78,7 @@
         >
           <span
             ><span class="user-profile__detail__count"
-              >{{ followingsCount }}個</span
+              >{{ user.FollowingsCount }}個</span
             >跟隨中</span
           >
         </router-link>
@@ -88,7 +88,7 @@
         >
           <span
             ><span class="user-profile__detail__count"
-              >{{ followersCount }}位</span
+              >{{ user.FollowersCount }}位</span
             >跟隨者</span
           >
         </router-link>
@@ -114,14 +114,6 @@ export default {
     },
     user: {
       type: Object,
-    },
-    followingsCount: {
-      type: Number || String,
-      default: 0,
-    },
-    followersCount: {
-      type: Number,
-      default: 0,
     },
     initialFollowing: {
       type: Boolean,
