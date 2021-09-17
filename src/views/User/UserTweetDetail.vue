@@ -3,39 +3,39 @@
     <Head :title="title" backArrow />
     <Spinner v-if="isLoading" />
     <div v-else class="wrapper">
-      <section v-if="tweetDatail.User" class="section-tweet">
+      <section v-if="tweetDetail.User" class="section-tweet">
         <div class="section-tweet__user">
           <div
             class="section-tweet__user__avatar"
             v-bind:style="{
-              backgroundImage: 'url(' + tweetDatail.User.avatar + ')',
+              backgroundImage: 'url(' + tweetDetail.User.avatar + ')',
             }"
           ></div>
           <div class="section-tweet__user__right">
             <div class="section-tweet__user__name">
-              {{ tweetDatail.User.name }}
+              {{ tweetDetail.User.name }}
             </div>
             <div class="section-tweet__user__account">
-              {{ tweetDatail.User.account | altFilter }}
+              {{ tweetDetail.User.account | altFilter }}
             </div>
           </div>
         </div>
         <div class="section-tweet__content">
-          {{ tweetDatail.description }}
+          {{ tweetDetail.description }}
         </div>
         <div class="section-tweet__date">
-          {{ tweetDatail.updatedAt | timeFormatFilter }}
+          {{ tweetDetail.updatedAt | timeFormatFilter }}
         </div>
         <div class="divider"></div>
         <div class="section-tweet__count">
           <span class="section-tweet__count__text">
-            {{ tweetDatail.RepliesCount | thousandFilter }}
+            {{ tweetDetail.RepliesCount | thousandFilter }}
           </span>
           <span class="section-tweet__count__reply">
             回覆
           </span>
           <span class="section-tweet__count__text">
-            {{ tweetDatail.LikesCount | thousandFilter }}
+            {{ tweetDetail.LikesCount | thousandFilter }}
           </span>
           <span class="section-tweet__count__like">
             喜歡次數
@@ -45,7 +45,7 @@
         <div class="section-tweet__actions">
           <button
             class="section-tweet__actions__button"
-            @click.stop.prevent="handleClickReply(tweetDatail.id)"
+            @click.stop.prevent="handleClickReply(tweetDetail.id)"
           >
             <img
               class="section-tweet__actions__icon section-tweet__actions__icon--reply"
@@ -55,11 +55,11 @@
           </button>
           <button
             class="section-tweet__actions__button"
-            @click.stop.prevent="handleClickLike(tweetDatail.id)"
+            @click.stop.prevent="handleClickLike(tweetDetail.id)"
             :disabled="isProcessing"
           >
             <img
-              v-if="tweetDatail.isLike === 0"
+              v-if="tweetDetail.isLike === 0"
               class="section-tweet__actions__icon section-tweet__actions__icon--unlike"
               src="@/assets/images/icon/like.svg"
               alt="unlike"
@@ -78,7 +78,7 @@
           目前沒有回覆
         </div>
         <UserTweetReply
-          v-for="reply in tweetDatail.Replies"
+          v-for="reply in tweetDetail.Replies"
           :key="reply.id"
           :init-reply="reply"
           :reply-to="replyTo"
@@ -87,7 +87,7 @@
     </div>
     <UserReplyModal
       v-show="isReplyModalOpen"
-      :init-reply="tweetDatail"
+      :init-reply="tweetDetail"
       :reply-to="replyTo"
       @close="handleReplyModal"
       @reply-success="handleReplySuccess"
@@ -127,7 +127,7 @@ export default {
       title: '推文',
       isLoading: true,
       isProcessing: false,
-      tweetDatail: {},
+      tweetDetail: {},
       isReplyModalOpen: false,
     }
   },
@@ -135,12 +135,12 @@ export default {
     isNoReply() {
       return (
         !this.isLoading &&
-        this.tweetDatail.Replies &&
-        this.tweetDatail.Replies.length === 0
+        this.tweetDetail.Replies &&
+        this.tweetDetail.Replies.length === 0
       )
     },
     replyTo() {
-      return this.tweetDatail.User ? this.tweetDatail.User.account : ''
+      return this.tweetDetail.User ? this.tweetDetail.User.account : ''
     },
   },
   methods: {
@@ -160,7 +160,7 @@ export default {
           return
         }
 
-        this.tweetDatail = data
+        this.tweetDetail = data
         this.isLoading = false
       } catch (err) {
         let message = ''
@@ -183,7 +183,7 @@ export default {
       try {
         this.isProcessing = true
         // FIXME:這邊isLike是會改成true 跟 false嗎?
-        const isLike = this.tweetDatail.isLike === 0
+        const isLike = this.tweetDetail.isLike === 0
         console.log('isLike', isLike)
         let response = {}
         if (isLike) {
@@ -197,12 +197,12 @@ export default {
           throw new Error(data.message)
         }
         this.isProcessing = false
-        this.tweetDatail = {
-          ...this.tweetDatail,
+        this.tweetDetail = {
+          ...this.tweetDetail,
           isLike: isLike ? 1 : 0,
           LikesCount: isLike
-            ? this.tweetDatail.LikesCount + 1
-            : this.tweetDatail.LikesCount - 1,
+            ? this.tweetDetail.LikesCount + 1
+            : this.tweetDetail.LikesCount - 1,
         }
         Toast.fire({
           icon: 'success',
