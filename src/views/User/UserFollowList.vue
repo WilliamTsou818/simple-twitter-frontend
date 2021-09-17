@@ -21,7 +21,20 @@
               {{ user.account | altFilter }}
             </div>
           </div>
-          <button class="follow__list__action">
+          <button
+            v-if="
+              currentUser.id !== user.followerId &&
+                currentUser.id !== user.followeringId
+            "
+            @click="
+              handleClickFollow(
+                user.followingId,
+                user.followerId,
+                user.isFollowed
+              )
+            "
+            class="follow__list__action"
+          >
             <div v-show="!user.isFollowed" class="follow__list__follow">
               跟隨
             </div>
@@ -39,6 +52,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 import { altFilter } from '@/utils/mixins'
@@ -53,6 +67,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['currentUser']),
     currentViewUser() {
       return this.$store.getters.getViewUser
     },
@@ -72,10 +87,7 @@ export default {
     const { user_id } = this.$route.params
     const { name } = this.$route
     this.show = name
-    this.fetchUserFollowing(user_id)
-
-    // this.userId = user_id
-    // this.fetchUser(user_id)
+    this.fetchUserFollow(user_id)
   },
   beforeRouteUpdate(to, from, next) {
     const { name } = this.$route
@@ -84,11 +96,18 @@ export default {
     next()
   },
   methods: {
-    async fetchUserFollowing(userId) {
+    async fetchUserFollow(userId) {
       try {
-        const { data } = await usersAPI.getUserFollowing({ userId })
-        this.$store.dispatch('handleSetViewUserFollowings', data)
-        // this.followingsCount = data.length
+        const responseFollowing = await usersAPI.getUserFollowing({ userId })
+        this.$store.dispatch(
+          'handleSetViewUserFollowings',
+          responseFollowing.data
+        )
+        const responseFollowers = await usersAPI.getUserFollower({ userId })
+        this.$store.dispatch(
+          'handleSetViewUserFollowers',
+          responseFollowers.data
+        )
       } catch (err) {
         this.isLoading = false
         let message = ''
@@ -100,27 +119,28 @@ export default {
         console.log(message)
       }
     },
-    async fetchUserFollower(userId) {
+    async handleClickFollow(followingId, followerId, isFollowed) {
       try {
-        const { data } = await usersAPI.getUserFollower({ userId })
-        this.initialFollowers = data
-        this.initialFollowers.forEach((item) => {
-          if (item.followerId === this.currentUser.id) {
-            this.initialFollowing = true
-            console.log(item.followerId)
-          }
+        const userId = followingId || followerId
+        console.log(userId)
+        let response = isFollowed
+          ? await usersAPI.removeFollowShip({ userId })
+          : await usersAPI.addFollowShip({ id: userId })
+        const { data } = response
+        this.$store.dispatch('handleSetFollowed', userId)
+        Toast.fire({
+          icon: 'success',
+          title: `${data.message}`,
         })
-        console.log(this.initialFollowing)
-        this.followersCount = data.length
-      } catch (err) {
-        this.isLoading = false
-        let message = ''
-        if (err.response) {
-          message = err.response.data.message
-        } else {
-          message = err.message
+        if (data.status !== 'success') {
+          throw new Error(data.message)
         }
-        console.log(message)
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '更新失敗',
+        })
       }
     },
   },

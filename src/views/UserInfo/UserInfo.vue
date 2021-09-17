@@ -139,7 +139,6 @@ export default {
       try {
         const { data } = await usersAPI.getUserFollower({ userId })
         this.initialFollowers = data
-        console.log('initialFollowers', this.initialFollowers)
         this.initialFollowers.forEach((item) => {
           if (item.followerId === this.currentUser.id) {
             this.initialFollowing = true
