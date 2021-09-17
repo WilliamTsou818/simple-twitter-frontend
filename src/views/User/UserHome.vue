@@ -63,6 +63,7 @@ import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import UserTweet from '@/components/UserTweet'
 import UserReplyModal from '@/components/UserReplyModal'
+import { newPostAction } from '@/utils/mixins'
 
 export default {
   components: {
@@ -89,6 +90,7 @@ export default {
       return this.tweetDatail.User ? this.tweetDatail.User.account : ''
     },
   },
+  mixins: [newPostAction],
   created() {
     this.fetchTweets()
   },
@@ -184,6 +186,15 @@ export default {
     },
     handleReplySuccess() {
       this.fetchTweets(false)
+    },
+  },
+  watch: {
+    isNewPostRefresh(isRefresh) {
+      if (isRefresh) {
+        this.$store.dispatch('isNewPostRefresh', false)
+        // ...下面可以自行增加頁面刷新function
+        this.fetchTweets()
+      }
     },
   },
 }
