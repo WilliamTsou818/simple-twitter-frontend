@@ -49,6 +49,7 @@
         id="password"
         name="password"
         type="password"
+        :minlength="passwordMinLength"
         :maxlength="passwordMaxLength"
         required
       />
@@ -63,6 +64,7 @@
         id="checkPassword"
         name="checkPassword"
         type="password"
+        :minlength="passwordMinLength"
         :maxlength="passwordMaxLength"
         required
       />
@@ -125,6 +127,7 @@ export default {
       // 字數上限
       accountMaxLength: 50,
       nameMaxLength: 50,
+      passwordMinLength: 4,
       passwordMaxLength: 50,
       // 註冊中
       isProcessing: false,
@@ -152,10 +155,15 @@ export default {
         toastTip = `帳號上限 ${this.accountMaxLength} 字`
       } else if (this.name.length > this.nameMaxLength) {
         this.name = ''
-        toastTip = `名稱上限 ${this.accountMaxLength} 字`
+        toastTip = `名稱上限 ${this.nameMaxLength} 字`
       } else if (this.password.length > this.passwordMaxLength) {
         this.password = ''
-        toastTip = `密碼上限 ${this.accountMaxLength} 字`
+        this.checkPassword = ''
+        toastTip = `密碼上限 ${this.passwordMaxLength} 字`
+      } else if (this.password.length < this.passwordMinLength) {
+        this.password = ''
+        this.checkPassword = ''
+        toastTip = `密碼至少 ${this.passwordMinLength} 個字`
       } else if (this.password !== this.checkPassword) {
         this.checkPassword = ''
         toastTip = `密碼輸入不一致`
