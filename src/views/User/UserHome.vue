@@ -51,12 +51,11 @@
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 import { mapState } from 'vuex'
-import { replyAction } from '@/utils/mixins'
+import { newPostAction, replyAction } from '@/utils/mixins'
 
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import UserTweet from '@/components/UserTweet'
-import { newPostAction } from '@/utils/mixins'
 
 export default {
   components: {
