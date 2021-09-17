@@ -1,5 +1,5 @@
 <template>
-  <section class="section-tweets" ref="sectionTweets">
+  <section class="section-tweets">
     <Spinner v-if="isLoading" />
     <div class="section-tweets__tip" v-show="!isLoading && tweets.length === 0">
       目前沒有推文
@@ -45,16 +45,11 @@ export default {
     next()
   },
   methods: {
-    async fetchUserTweets(userId, scrollTop = true) {
+    async fetchUserTweets(userId) {
       try {
         this.isLoading = true
         const { data } = await usersAPI.getUserTweets({ userId })
         this.tweets = data
-        // 回到頂部
-        if (scrollTop && this.$refs.sectionTweets) {
-          // 切換分頁的時候sectionTweets可能已經不在了
-          this.$refs.sectionTweets.scrollTop = 0
-        }
         this.isLoading = false
       } catch (err) {
         this.isLoading = false
@@ -92,7 +87,7 @@ export default {
         this.$store.dispatch('isReplyRefresh', false)
         // ...下面可以自行增加頁面刷新function
         const { user_id } = this.$route.params
-        this.fetchUserTweets(user_id, false)
+        this.fetchUserTweets(user_id)
       }
     },
   },
@@ -101,21 +96,10 @@ export default {
 
 <style lang="scss" scoped>
 .section-tweets {
-  height: calc(100vh - 505px);
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
   &__tip {
     margin-top: 1rem;
     font-size: 1.5rem;
     min-width: 225px;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .section-tweets {
-    padding-bottom: 56px;
   }
 }
 </style>

@@ -5,34 +5,36 @@
       :count="currentViewUser.data.id"
       backArrow
     />
-    <UserProfile
-      :user="currentViewUser.data"
-      :isCurrentUser="currentViewUser.isViewCurrentUser"
-      :followingsCount="currentViewUser.followings.length"
-      :followersCount="currentViewUser.followers.length"
-      :initialFollowing="currentViewUser.isFollowed"
-    />
-    <section class="tab-router">
-      <router-link
-        :to="{ name: 'UserAllTweets', params: { user_id: userId } }"
-        class="tab-router__link"
-      >
-        <span class="tab-router__text">推文</span>
-      </router-link>
-      <router-link
-        :to="{ name: 'UserAllReplies', params: { user_id: userId } }"
-        class="tab-router__link"
-      >
-        <span class="tab-router__text">推文與回覆</span>
-      </router-link>
-      <router-link
-        :to="{ name: 'UserAllLike', params: { user_id: userId } }"
-        class="tab-router__link"
-      >
-        <span class="tab-router__text">喜歡的內容</span>
-      </router-link>
-    </section>
-    <router-view />
+    <div class="section-wrapper">
+      <UserProfile
+        :user="currentViewUser.data"
+        :isCurrentUser="currentViewUser.isViewCurrentUser"
+        :followingsCount="currentViewUser.followings.length"
+        :followersCount="currentViewUser.followers.length"
+        :initialFollowing="currentViewUser.isFollowed"
+      />
+      <section class="tab-router">
+        <router-link
+          :to="{ name: 'UserAllTweets', params: { user_id: userId } }"
+          class="tab-router__link"
+        >
+          <span class="tab-router__text">推文</span>
+        </router-link>
+        <router-link
+          :to="{ name: 'UserAllReplies', params: { user_id: userId } }"
+          class="tab-router__link"
+        >
+          <span class="tab-router__text">推文與回覆</span>
+        </router-link>
+        <router-link
+          :to="{ name: 'UserAllLike', params: { user_id: userId } }"
+          class="tab-router__link"
+        >
+          <span class="tab-router__text">喜歡的內容</span>
+        </router-link>
+      </section>
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -112,6 +114,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.section-wrapper {
+  height: calc(100vh - 56px);
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 .tab-router {
   display: flex;
   align-items: center;
@@ -137,6 +146,12 @@ export default {
       color: var(--theme);
       border-bottom: 2px solid var(--theme);
     }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .section-wrapper {
+    padding-bottom: 56px;
   }
 }
 </style>

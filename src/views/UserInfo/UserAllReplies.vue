@@ -1,5 +1,5 @@
 <template>
-  <section class="section-replies" ref="sectionReplies">
+  <section class="section-replies">
     <Spinner v-if="isLoading" />
     <div
       class="section-replies__tip"
@@ -43,15 +43,11 @@ export default {
     next()
   },
   methods: {
-    async fetchUserReplies(userId, scrollTop = true) {
+    async fetchUserReplies(userId) {
       try {
         this.isLoading = true
         const { data } = await usersAPI.getUserReplies({ userId })
         this.replies = data
-        // 回到頂部
-        if (scrollTop && this.$refs.sectionReplies) {
-          this.$refs.sectionReplies.scrollTop = 0
-        }
         this.isLoading = false
       } catch (err) {
         this.isLoading = false
@@ -78,21 +74,10 @@ export default {
 
 <style lang="scss" scoped>
 .section-replies {
-  height: calc(100vh - 505px);
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
   &__tip {
     margin-top: 1rem;
     font-size: 1.5rem;
     min-width: 225px;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .section-tweets {
-    padding-bottom: 56px;
   }
 }
 </style>
