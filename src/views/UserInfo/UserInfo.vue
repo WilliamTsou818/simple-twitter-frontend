@@ -8,7 +8,7 @@
     <UserProfile
       :user="currentViewUser.data"
       :isCurrentUser="currentViewUser.isViewCurrentUser"
-      :followingsCount="followingsCount"
+      :followingsCount="currentViewUser.followings.length"
       :followersCount="followersCount"
       :initialFollowing="currentViewUser.isFollowed"
     />
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 
@@ -61,7 +61,6 @@ export default {
       isLoading: true,
       userId: '',
       userInfo: {},
-      followingsCount: 0,
       followersCount: 0,
       tweetsCount: 0,
       userData: [],
@@ -71,15 +70,11 @@ export default {
   },
   computed: {
     ...mapState(['currentUser']),
-
-    // title() {
-    //   return this.userInfo.name || ''
-    // },
-    // count() {
-    //   return this.tweetsCount || '0'
-    // },
     currentViewUser() {
       return this.$store.getters.getViewUser
+    },
+    followingsCount() {
+      return this.$store.getters.getViewUser.followings.length
     },
   },
   created() {
@@ -95,6 +90,8 @@ export default {
   beforeRouteUpdate(to, from, next) {
     const { user_id: userId } = to.params
     this.fetchUser(userId)
+    this.fetchUserFollowing(userId)
+    this.fetchUserFollower(userId)
     this.$store.dispatch('isViewCurrentUser', userId)
     next()
   },
@@ -123,7 +120,7 @@ export default {
     async fetchUserFollowing(userId) {
       try {
         const { data } = await usersAPI.getUserFollowing({ userId })
-        this.followingsCount = data.length
+        this.$store.dispatch('handleSetViewUserFollowings', data)
       } catch (err) {
         this.isLoading = false
         let message = ''
@@ -138,15 +135,13 @@ export default {
     async fetchUserFollower(userId) {
       try {
         const { data } = await usersAPI.getUserFollower({ userId })
+        this.$store.dispatch('handleSetViewUserFollowers', data)
         this.initialFollowers = data
-        console.log('initialFollowers', this.initialFollowers)
         this.initialFollowers.forEach((item) => {
           if (item.followerId === this.currentUser.id) {
             this.initialFollowing = true
-            console.log(item.followerId)
           }
         })
-        console.log(this.initialFollowing)
         this.followersCount = data.length
       } catch (err) {
         this.isLoading = false

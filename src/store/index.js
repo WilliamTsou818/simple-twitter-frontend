@@ -26,6 +26,8 @@ export default new Vuex.Store({
       isLoading: false,
       isViewCurrentUser: false,
       isFollowed: false,
+      followings: [],
+      followers: [],
     },
     followingUsers: [],
     popular: [],
@@ -91,6 +93,12 @@ export default new Vuex.Store({
     handleSetPopular(context, data) {
       context.commit('setPopular', data)
     },
+    handleSetViewUserFollowings(context, data) {
+      context.commit('setViewUserFollowings', data)
+    },
+    handleSetViewUserFollowers(context, data) {
+      context.commit('setViewUserFollowers', data)
+    },
   },
   mutations: {
     setCurrentUser(state, currentUser) {
@@ -141,9 +149,25 @@ export default new Vuex.Store({
           user.isFollowed = !user.isFollowed
         }
       })
+      state.viewUser.followings.forEach((user) => {
+        if (user.followingId === id - 0) {
+          user.isFollowed = !user.isFollowed
+        }
+      })
+      state.viewUser.followers.forEach((user) => {
+        if (user.followerId === id - 0) {
+          user.isFollowed = !user.isFollowed
+        }
+      })
     },
     setPopular(state, data) {
       state.popular = data
+    },
+    setViewUserFollowings(state, data) {
+      state.viewUser.followings = data
+    },
+    setViewUserFollowers(state, data) {
+      state.viewUser.followers = data
     },
   },
   getters: {
