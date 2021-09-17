@@ -31,12 +31,10 @@ export default {
   },
   created() {
     const { user_id } = this.$route.params
-    console.log('created user_id', user_id)
     this.fetchUserTweets(user_id)
   },
   beforeRouteUpdate(to, from, next) {
     const { user_id } = to.params
-    console.log('beforeRouteUpdate user_id', user_id)
     this.fetchUserTweets(user_id)
     next()
   },
@@ -53,6 +51,7 @@ export default {
         }
         this.isLoading = false
       } catch (err) {
+        this.isLoading = false
         let message = ''
         if (err.response) {
           console.log(err.response.data)
