@@ -72,7 +72,6 @@ export default {
       return this.$store.getters.getViewUser
     },
     tab() {
-      console.log(this.$route.name)
       return this.$route.name
     },
     followList() {
@@ -91,9 +90,8 @@ export default {
     this.fetchUserFollow(user_id)
   },
   beforeRouteUpdate(to, from, next) {
-    const { name } = this.$route
-    console.log(name)
-    this.show = name
+    const { user_id } = to.params
+    this.fetchUserFollow(user_id)
     next()
   },
   methods: {

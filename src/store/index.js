@@ -145,17 +145,17 @@ export default new Vuex.Store({
         state.viewUser.isFollowed = !state.viewUser.isFollowed
       }
       state.popular.forEach((user) => {
-        if (user.id === id - 0) {
+        if (user.id === Number(id)) {
           user.isFollowed = !user.isFollowed
         }
       })
       state.viewUser.followings.forEach((user) => {
-        if (user.followingId === id - 0) {
+        if (user.followingId === Number(id)) {
           user.isFollowed = !user.isFollowed
         }
       })
       state.viewUser.followers.forEach((user) => {
-        if (user.followerId === id - 0) {
+        if (user.followerId === Number(id)) {
           user.isFollowed = !user.isFollowed
         }
       })

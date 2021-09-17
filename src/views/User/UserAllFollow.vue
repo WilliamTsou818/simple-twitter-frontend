@@ -51,6 +51,13 @@ export default {
     this.userId = user_id
     this.fetchUser(user_id)
   },
+  beforeRouteUpdate(to, from, next) {
+    const { name } = this.$route
+    const { user_id: userId } = to.params
+    this.show = name
+    this.fetchUser(userId)
+    next()
+  },
   methods: {
     async fetchUser(userId) {
       try {
