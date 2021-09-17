@@ -33,6 +33,10 @@ export default new Vuex.Store({
     popular: [],
     // 是否驗證
     isAuthenticated: false,
+    // 開關NewPostModal
+    isNewPostModalOpen: false,
+    // 是否新增推文成功需要刷新
+    isNewPostRefresh: false,
     // 回覆的目標推文內容
     replyDetail: {},
     // 開關ReplyModal
@@ -104,6 +108,12 @@ export default new Vuex.Store({
     },
     handleSetViewUserFollowers(context, data) {
       context.commit('setViewUserFollowers', data)
+    },
+    isNewPostModalOpen(context, isOpen) {
+      context.commit('setIsNewPostModalOpen', isOpen)
+    },
+    isNewPostRefresh(context, isRefresh) {
+      context.commit('setIsNewPostRefresh', isRefresh)
     },
     // 設定回覆的目標推文內容
     handleSetReplyDetail(context, data) {
@@ -188,6 +198,14 @@ export default new Vuex.Store({
     },
     setViewUserFollowers(state, data) {
       state.viewUser.followers = data
+    },
+    // 設定NewPostModal開關
+    setIsNewPostModalOpen(state, isOpen) {
+      state.isNewPostModalOpen = isOpen
+    },
+    // 新增推文成功，設定刷新
+    setIsNewPostRefresh(state, isRefresh) {
+      state.isNewPostRefresh = isRefresh
     },
     setReplyDetail(state, data) {
       state.replyDetail = data

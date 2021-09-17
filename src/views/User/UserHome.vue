@@ -56,6 +56,7 @@ import { replyAction } from '@/utils/mixins'
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import UserTweet from '@/components/UserTweet'
+import { newPostAction } from '@/utils/mixins'
 
 export default {
   components: {
@@ -76,7 +77,7 @@ export default {
   computed: {
     ...mapState(['currentUser']),
   },
-  mixins: [replyAction],
+  mixins: [newPostAction, replyAction],
   created() {
     this.fetchTweets()
   },
@@ -163,6 +164,13 @@ export default {
     },
   },
   watch: {
+    isNewPostRefresh(isRefresh) {
+      if (isRefresh) {
+        this.$store.dispatch('isNewPostRefresh', false)
+        // ...下面可以自行增加頁面刷新function
+        this.fetchTweets()
+      }
+    },
     // 回覆成功，刷新
     isReplyRefresh(isRefresh) {
       if (isRefresh) {

@@ -88,7 +88,10 @@
           </svg>
           <span class="nav-left__nav__text">設定</span>
         </router-link>
-        <button class="nav-left__nav__link action-tweet--small">
+        <button
+          class="nav-left__nav__link action-tweet--small"
+          @click.stop.prevent="$emit('new-post')"
+        >
           <svg
             class="nav-left__nav__icon"
             width="24"
@@ -105,6 +108,7 @@
         <button
           class="nav-left__nav__btn-tweet action-tweet--large"
           type="button"
+          @click.stop.prevent="$emit('new-post')"
         >
           推文
         </button>
