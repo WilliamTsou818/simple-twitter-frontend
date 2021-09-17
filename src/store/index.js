@@ -34,7 +34,7 @@ export default new Vuex.Store({
     // 是否驗證
     isAuthenticated: false,
     // 回覆的目標推文內容
-    tweetDetail: {},
+    replyDetail: {},
     // 開關ReplyModal
     isReplyModalOpen: false,
     // 是否回覆成功需要刷新
@@ -106,14 +106,14 @@ export default new Vuex.Store({
       context.commit('setViewUserFollowers', data)
     },
     // 設定回覆的目標推文內容
-    handleSetTweetDetail(context, data) {
-      context.commit('setTweetDetail', data)
+    handleSetReplyDetail(context, data) {
+      context.commit('setReplyDetail', data)
     },
     isReplyModalOpen(context, isOpen) {
       context.commit('setIsReplyModalOpen', isOpen)
       if (!isOpen) {
         // 關閉時同步清空Modal資料
-        context.commit('setTweetDetail', {})
+        context.commit('setReplyDetail', {})
       }
     },
     isReplyRefresh(context, isRefresh) {
@@ -189,8 +189,8 @@ export default new Vuex.Store({
     setViewUserFollowers(state, data) {
       state.viewUser.followers = data
     },
-    setTweetDetail(state, data) {
-      state.tweetDetail = data
+    setReplyDetail(state, data) {
+      state.replyDetail = data
     },
     setIsReplyModalOpen(state, isOpen) {
       state.isReplyModalOpen = isOpen

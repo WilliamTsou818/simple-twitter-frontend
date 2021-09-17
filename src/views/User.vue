@@ -7,7 +7,7 @@
     </main>
     <UserReplyModal
       v-show="isReplyModalOpen"
-      :init-reply="tweetDetail"
+      :init-reply="replyDetail"
       :reply-to="replyTo"
       @close="handleReplyModalClose"
       @reply-success="handleReplySuccess"
@@ -32,10 +32,21 @@ export default {
     UserPopularTop,
   },
   computed: {
-    ...mapState(['isReplyModalOpen', 'tweetDetail']),
+    ...mapState(['isReplyModalOpen', 'replyDetail']),
     replyTo() {
-      return this.tweetDetail.User ? this.tweetDetail.User.account : ''
+      return this.replyDetail.User ? this.replyDetail.User.account : ''
     },
+  },
+  beforeRouteUpdate(to, from, next) {
+    if (this.isReplyModalOpen) {
+      this.$store.dispatch('isReplyModalOpen', false)
+    }
+    next()
+  },
+  beforeDestroy() {
+    if (this.isReplyModalOpen) {
+      this.$store.dispatch('isReplyModalOpen', false)
+    }
   },
   methods: {
     handleReplyModalClose() {

@@ -45,7 +45,7 @@
         <div class="section-tweet__actions">
           <button
             class="section-tweet__actions__button"
-            @click.stop.prevent="handleClickReply(tweetDetail.id)"
+            @click.stop.prevent="handleActionReply(tweetDetail)"
           >
             <img
               class="section-tweet__actions__icon section-tweet__actions__icon--reply"
@@ -85,34 +85,30 @@
         />
       </section>
     </div>
-    <UserReplyModal
-      v-show="isReplyModalOpen"
-      :init-reply="tweetDetail"
-      :reply-to="replyTo"
-      @close="handleReplyModal"
-      @reply-success="handleReplySuccess"
-    />
   </div>
 </template>
 
 <script>
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
-import { timeFormatFilter, altFilter, thousandFilter } from '@/utils/mixins'
+import {
+  timeFormatFilter,
+  altFilter,
+  thousandFilter,
+  replyAction,
+} from '@/utils/mixins'
 
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import UserTweetReply from '@/components/UserTweetReply'
-import UserReplyModal from '@/components/UserReplyModal'
 
 export default {
   components: {
     Head,
     Spinner,
     UserTweetReply,
-    UserReplyModal,
   },
-  mixins: [timeFormatFilter, altFilter, thousandFilter],
+  mixins: [timeFormatFilter, altFilter, thousandFilter, replyAction],
   created() {
     const { tweet_id: tweetId } = this.$route.params
     this.fetchTweetDetail(tweetId)
@@ -217,16 +213,16 @@ export default {
         })
       }
     },
-    handleClickReply(tweetId) {
-      console.log('handleClickReply', tweetId)
-      this.handleReplyModal()
-    },
-    handleReplyModal() {
-      this.isReplyModalOpen = !this.isReplyModalOpen
-    },
-    handleReplySuccess() {
-      const { tweet_id: tweetId } = this.$route.params
-      this.fetchTweetDetail(tweetId)
+  },
+  watch: {
+    // 回覆成功，刷新
+    isReplyRefresh(isRefresh) {
+      if (isRefresh) {
+        this.$store.dispatch('isReplyRefresh', false)
+        // ...下面可以自行增加頁面刷新function
+        const { tweet_id: tweetId } = this.$route.params
+        this.fetchTweetDetail(tweetId)
+      }
     },
   },
 }

@@ -59,13 +59,15 @@ export const altFilter = {
   },
 }
 
+// 回覆相關設定
 export const replyAction = {
   computed: {
-    ...mapState(['tweetDetail', 'isReplyRefresh']),
+    ...mapState(['replyDetail', 'isReplyRefresh']),
   },
   methods: {
-    handleActionReply(tweet) {
-      this.$store.dispatch('handleSetTweetDetail', tweet)
+    // 傳入回覆的推文內容
+    handleActionReply(replyDetail) {
+      this.$store.dispatch('handleSetReplyDetail', replyDetail)
       this.$store.dispatch('isReplyModalOpen', !this.isReplyModalOpen)
     },
   },
