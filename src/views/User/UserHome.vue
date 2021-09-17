@@ -44,13 +44,6 @@
         @action-reply="handleActionReply"
       />
     </section>
-    <UserReplyModal
-      v-show="isReplyModalOpen"
-      :init-reply="tweetDatail"
-      :reply-to="replyTo"
-      @close="handleReplyModal"
-      @reply-success="handleReplySuccess"
-    />
   </div>
 </template>
 
@@ -62,14 +55,12 @@ import { mapState } from 'vuex'
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import UserTweet from '@/components/UserTweet'
-import UserReplyModal from '@/components/UserReplyModal'
 
 export default {
   components: {
     Head,
     Spinner,
     UserTweet,
-    UserReplyModal,
   },
   data() {
     return {
@@ -79,15 +70,11 @@ export default {
       tweets: [],
       description: '',
       descriptionMaxLength: 140,
-      tweetDatail: {},
-      isReplyModalOpen: false,
     }
   },
   computed: {
     ...mapState(['currentUser']),
-    replyTo() {
-      return this.tweetDatail.User ? this.tweetDatail.User.account : ''
-    },
+    ...mapState(['tweetDetail', 'isReplyRefresh']),
   },
   created() {
     this.fetchTweets()
@@ -175,14 +162,17 @@ export default {
       }
     },
     handleActionReply(tweet) {
-      this.tweetDatail = tweet
-      this.handleReplyModal()
+      this.$store.dispatch('handleSetTweetDetail', tweet)
+      this.$store.dispatch('isReplyModalOpen', !this.isReplyModalOpen)
     },
-    handleReplyModal() {
-      this.isReplyModalOpen = !this.isReplyModalOpen
-    },
-    handleReplySuccess() {
-      this.fetchTweets(false)
+  },
+  watch: {
+    // TODO:這個要自己寫。
+    isReplyRefresh(isRefresh) {
+      if (isRefresh) {
+        this.fetchTweets(false)
+        this.$store.dispatch('isReplyRefresh', false)
+      }
     },
   },
 }

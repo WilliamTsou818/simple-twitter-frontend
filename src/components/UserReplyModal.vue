@@ -116,6 +116,7 @@ export default {
   mixins: [fromNowFilter, altFilter],
   methods: {
     handleClose() {
+      this.comment = ''
       this.$emit('close')
     },
     // 驗證
