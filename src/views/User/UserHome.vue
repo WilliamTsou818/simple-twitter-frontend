@@ -44,13 +44,6 @@
         @action-reply="handleActionReply"
       />
     </section>
-    <UserReplyModal
-      v-show="isReplyModalOpen"
-      :init-reply="tweetDatail"
-      :reply-to="replyTo"
-      @close="handleReplyModal"
-      @reply-success="handleReplySuccess"
-    />
   </div>
 </template>
 
@@ -58,11 +51,11 @@
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 import { mapState } from 'vuex'
+import { replyAction } from '@/utils/mixins'
 
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import UserTweet from '@/components/UserTweet'
-import UserReplyModal from '@/components/UserReplyModal'
 import { newPostAction } from '@/utils/mixins'
 
 export default {
@@ -70,7 +63,6 @@ export default {
     Head,
     Spinner,
     UserTweet,
-    UserReplyModal,
   },
   data() {
     return {
@@ -80,17 +72,12 @@ export default {
       tweets: [],
       description: '',
       descriptionMaxLength: 140,
-      tweetDatail: {},
-      isReplyModalOpen: false,
     }
   },
   computed: {
     ...mapState(['currentUser']),
-    replyTo() {
-      return this.tweetDatail.User ? this.tweetDatail.User.account : ''
-    },
   },
-  mixins: [newPostAction],
+  mixins: [newPostAction, replyAction],
   created() {
     this.fetchTweets()
   },
@@ -99,7 +86,6 @@ export default {
       try {
         this.isLoading = true
         const { data } = await usersAPI.tweets.get()
-        console.log('data', data)
         this.tweets = data
         // 回到頂部
         scrollTop && (this.$refs.sectionTweets.scrollTop = 0)
@@ -176,17 +162,6 @@ export default {
         })
       }
     },
-    handleActionReply(tweet) {
-      // replyModal是抓id
-      this.tweetDatail = { ...tweet, id: tweet.TweetId }
-      this.handleReplyModal()
-    },
-    handleReplyModal() {
-      this.isReplyModalOpen = !this.isReplyModalOpen
-    },
-    handleReplySuccess() {
-      this.fetchTweets(false)
-    },
   },
   watch: {
     isNewPostRefresh(isRefresh) {
@@ -194,6 +169,14 @@ export default {
         this.$store.dispatch('isNewPostRefresh', false)
         // ...下面可以自行增加頁面刷新function
         this.fetchTweets()
+      }
+    },
+    // 回覆成功，刷新
+    isReplyRefresh(isRefresh) {
+      if (isRefresh) {
+        this.$store.dispatch('isReplyRefresh', false)
+        // ...下面可以自行增加頁面刷新function
+        this.fetchTweets(false)
       }
     },
   },

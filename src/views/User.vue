@@ -10,6 +10,13 @@
       @close="handleNewPostModalClose"
       @post-success="handleNewPostSuccess"
     />
+    <UserReplyModal
+      v-show="isReplyModalOpen"
+      :init-reply="replyDetail"
+      :reply-to="replyTo"
+      @close="handleReplyModalClose"
+      @reply-success="handleReplySuccess"
+    />
     <UserPopularTop class="sm-d-none" />
   </div>
 </template>
@@ -18,6 +25,7 @@
 import { mapState } from 'vuex'
 import NavBarAdmin from './../components/NavBarAdmin.vue'
 import TabBarAdmin from './../components/TabBarAdmin.vue'
+import UserReplyModal from '@/components/UserReplyModal'
 import UserPopularTop from '@/components/UserPopularTop.vue'
 import UserNewPostModal from '@/components/UserNewPostModal'
 import { newPostAction } from '@/utils/mixins'
@@ -27,22 +35,32 @@ export default {
   components: {
     NavBarAdmin,
     TabBarAdmin,
+    UserReplyModal,
     UserPopularTop,
     UserNewPostModal,
   },
   computed: {
-    ...mapState(['isNewPostModalOpen']),
+    ...mapState(['isNewPostModalOpen', 'isReplyModalOpen', 'replyDetail']),
+    replyTo() {
+      return this.replyDetail.User ? this.replyDetail.User.account : ''
+    },
   },
   mixins: [newPostAction],
   beforeRouteUpdate(to, from, next) {
     if (this.isNewPostModalOpen) {
       this.handleNewPostModalClose()
     }
+    if (this.isReplyModalOpen) {
+      this.$store.dispatch('isReplyModalOpen', false)
+    }
     next()
   },
   beforeDestroy() {
     if (this.isNewPostModalOpen) {
       this.handleNewPostModalClose()
+    }
+    if (this.isReplyModalOpen) {
+      this.$store.dispatch('isReplyModalOpen', false)
     }
   },
   methods: {
@@ -54,6 +72,13 @@ export default {
     handleNewPostSuccess() {
       // 設定需要刷新，需要刷新的頁面必須watch state.isNewPostRefresh的變化
       this.$store.dispatch('isNewPostRefresh', true)
+    },
+    handleReplyModalClose() {
+      this.$store.dispatch('isReplyModalOpen', false)
+    },
+    handleReplySuccess() {
+      // 設定需要刷新，需要刷新的頁面必須watch state.isReplyRefresh的變化
+      this.$store.dispatch('isReplyRefresh', true)
     },
   },
 }

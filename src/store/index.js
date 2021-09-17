@@ -36,7 +36,13 @@ export default new Vuex.Store({
     // 開關NewPostModal
     isNewPostModalOpen: false,
     // 是否新增推文成功需要刷新
-    isNewPostRefresh: false
+    isNewPostRefresh: false,
+    // 回覆的目標推文內容
+    replyDetail: {},
+    // 開關ReplyModal
+    isReplyModalOpen: false,
+    // 是否回覆成功需要刷新
+    isReplyRefresh: false
   },
   actions: {
     async fetchCurrentUser({ commit }) {
@@ -108,6 +114,20 @@ export default new Vuex.Store({
     },
     isNewPostRefresh(context, isRefresh) {
       context.commit('setIsNewPostRefresh', isRefresh)
+    },
+    // 設定回覆的目標推文內容
+    handleSetReplyDetail(context, data) {
+      context.commit('setReplyDetail', data)
+    },
+    isReplyModalOpen(context, isOpen) {
+      context.commit('setIsReplyModalOpen', isOpen)
+      if (!isOpen) {
+        // 關閉時同步清空Modal資料
+        context.commit('setReplyDetail', {})
+      }
+    },
+    isReplyRefresh(context, isRefresh) {
+      context.commit('setIsReplyRefresh', isRefresh)
     }
   },
   mutations: {
@@ -186,6 +206,15 @@ export default new Vuex.Store({
     // 新增推文成功，設定刷新
     setIsNewPostRefresh(state, isRefresh) {
       state.isNewPostRefresh = isRefresh
+    },
+    setReplyDetail(state, data) {
+      state.replyDetail = data
+    },
+    setIsReplyModalOpen(state, isOpen) {
+      state.isReplyModalOpen = isOpen
+    },
+    setIsReplyRefresh(state, isRefresh) {
+      state.isReplyRefresh = isRefresh
     }
   },
   getters: {

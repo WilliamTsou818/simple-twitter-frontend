@@ -80,3 +80,27 @@ export const newPostAction = {
   //   },
   // },
 }
+
+// 回覆相關設定
+export const replyAction = {
+  computed: {
+    ...mapState(['replyDetail', 'isReplyRefresh']),
+  },
+  methods: {
+    // 傳入回覆的推文內容
+    handleActionReply(replyDetail) {
+      this.$store.dispatch('handleSetReplyDetail', replyDetail)
+      this.$store.dispatch('isReplyModalOpen', true)
+    },
+  },
+  // TODO:這個isReplyRefresh要在自己的view裡面寫。
+  // watch: {
+  //   isReplyRefresh(isRefresh) {
+  //     if (isRefresh) {
+  //       this.$store.dispatch('isReplyRefresh', false)
+  //       // ...下面可以自行增加頁面刷新function
+  //     }
+  //   },
+  // },
+}
+
