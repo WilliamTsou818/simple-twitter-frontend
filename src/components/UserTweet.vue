@@ -52,7 +52,7 @@
         :disabled="isProcessing"
       >
         <svg
-          v-if="tweet.isLike === 0"
+          v-if="!tweet.isLike"
           class="atweet__actions__icon atweet__actions__icon--unlike"
           width="15"
           height="15"
@@ -132,11 +132,9 @@ export default {
     async handleClickLike(tweetId) {
       try {
         this.isProcessing = true
-        // FIXME:這邊isLike是會改成true 跟 false嗎?
-        const isLike = this.tweet.isLike === 0
-        console.log('isLike', isLike)
+        const actionIsLike = !this.tweet.isLike
         let response = {}
-        if (isLike) {
+        if (actionIsLike) {
           response = await usersAPI.tweets.like({ tweetId })
         } else {
           response = await usersAPI.tweets.unlike({ tweetId })
@@ -149,8 +147,8 @@ export default {
         this.isProcessing = false
         this.tweet = {
           ...this.tweet,
-          isLike: isLike ? 1 : 0,
-          LikesCount: isLike
+          isLike: actionIsLike,
+          LikesCount: actionIsLike
             ? this.tweet.LikesCount + 1
             : this.tweet.LikesCount - 1,
         }
