@@ -207,6 +207,7 @@ export default {
         console.log(data)
         if (data.status === 'success') {
           this.$store.dispatch('handleInitViewUser', data.user)
+          this.$store.dispatch('fetchCurrentUser')
         }
         if (data.status !== 'success') {
           throw new Error(data.message)
