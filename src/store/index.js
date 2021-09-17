@@ -33,6 +33,12 @@ export default new Vuex.Store({
     popular: [],
     // 是否驗證
     isAuthenticated: false,
+    // 回覆的目標推文內容
+    replyDetail: {},
+    // 開關ReplyModal
+    isReplyModalOpen: false,
+    // 是否回覆成功需要刷新
+    isReplyRefresh: false
   },
   actions: {
     async fetchCurrentUser({ commit }) {
@@ -99,6 +105,20 @@ export default new Vuex.Store({
     handleSetViewUserFollowers(context, data) {
       context.commit('setViewUserFollowers', data)
     },
+    // 設定回覆的目標推文內容
+    handleSetReplyDetail(context, data) {
+      context.commit('setReplyDetail', data)
+    },
+    isReplyModalOpen(context, isOpen) {
+      context.commit('setIsReplyModalOpen', isOpen)
+      if (!isOpen) {
+        // 關閉時同步清空Modal資料
+        context.commit('setReplyDetail', {})
+      }
+    },
+    isReplyRefresh(context, isRefresh) {
+      context.commit('setIsReplyRefresh', isRefresh)
+    }
   },
   mutations: {
     setCurrentUser(state, currentUser) {
@@ -145,17 +165,17 @@ export default new Vuex.Store({
         state.viewUser.isFollowed = !state.viewUser.isFollowed
       }
       state.popular.forEach((user) => {
-        if (user.id === id - 0) {
+        if (user.id === Number(id)) {
           user.isFollowed = !user.isFollowed
         }
       })
       state.viewUser.followings.forEach((user) => {
-        if (user.followingId === id - 0) {
+        if (user.followingId === Number(id)) {
           user.isFollowed = !user.isFollowed
         }
       })
       state.viewUser.followers.forEach((user) => {
-        if (user.followerId === id - 0) {
+        if (user.followerId === Number(id)) {
           user.isFollowed = !user.isFollowed
         }
       })
@@ -169,6 +189,15 @@ export default new Vuex.Store({
     setViewUserFollowers(state, data) {
       state.viewUser.followers = data
     },
+    setReplyDetail(state, data) {
+      state.replyDetail = data
+    },
+    setIsReplyModalOpen(state, isOpen) {
+      state.isReplyModalOpen = isOpen
+    },
+    setIsReplyRefresh(state, isRefresh) {
+      state.isReplyRefresh = isRefresh
+    }
   },
   getters: {
     getCurrentUser(state) {
