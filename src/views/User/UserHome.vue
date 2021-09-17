@@ -51,6 +51,7 @@
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 import { mapState } from 'vuex'
+import { replyAction } from '@/utils/mixins'
 
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
@@ -74,8 +75,8 @@ export default {
   },
   computed: {
     ...mapState(['currentUser']),
-    ...mapState(['tweetDetail', 'isReplyRefresh']),
   },
+  mixins: [replyAction],
   created() {
     this.fetchTweets()
   },
@@ -84,7 +85,6 @@ export default {
       try {
         this.isLoading = true
         const { data } = await usersAPI.tweets.get()
-        console.log('data', data)
         this.tweets = data
         // 回到頂部
         scrollTop && (this.$refs.sectionTweets.scrollTop = 0)
@@ -161,17 +161,14 @@ export default {
         })
       }
     },
-    handleActionReply(tweet) {
-      this.$store.dispatch('handleSetTweetDetail', tweet)
-      this.$store.dispatch('isReplyModalOpen', !this.isReplyModalOpen)
-    },
   },
   watch: {
-    // TODO:這個要自己寫。
+    // 回覆成功，刷新
     isReplyRefresh(isRefresh) {
       if (isRefresh) {
-        this.fetchTweets(false)
         this.$store.dispatch('isReplyRefresh', false)
+        // ...下面可以自行增加頁面刷新function
+        this.fetchTweets(false)
       }
     },
   },

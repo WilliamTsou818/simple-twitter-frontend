@@ -1,3 +1,4 @@
+import { mapState } from 'vuex'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-tw'
@@ -56,4 +57,25 @@ export const altFilter = {
       return '@' + account
     },
   },
+}
+
+export const replyAction = {
+  computed: {
+    ...mapState(['tweetDetail', 'isReplyRefresh']),
+  },
+  methods: {
+    handleActionReply(tweet) {
+      this.$store.dispatch('handleSetTweetDetail', tweet)
+      this.$store.dispatch('isReplyModalOpen', !this.isReplyModalOpen)
+    },
+  },
+  // TODO:這個isReplyRefresh要在自己的view裡面寫。
+  // watch: {
+  //   isReplyRefresh(isRefresh) {
+  //     if (isRefresh) {
+  //       this.$store.dispatch('isReplyRefresh', false)
+  //       // ...下面可以自行增加頁面刷新function
+  //     }
+  //   },
+  // },
 }
