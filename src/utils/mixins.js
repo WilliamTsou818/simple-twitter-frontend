@@ -68,7 +68,7 @@ export const replyAction = {
     // 傳入回覆的推文內容
     handleActionReply(replyDetail) {
       this.$store.dispatch('handleSetReplyDetail', replyDetail)
-      this.$store.dispatch('isReplyModalOpen', !this.isReplyModalOpen)
+      this.$store.dispatch('isReplyModalOpen', true)
     },
   },
   // TODO:這個isReplyRefresh要在自己的view裡面寫。
