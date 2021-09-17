@@ -1,34 +1,35 @@
 <template>
-  <div class="modal" @click.self="handleToggleModal">
-    <div class="modal__mask">
-      <div class="modal__container">
-        <form @submit.stop.prevent="handleSubmit" id="form">
-          <div class="modal__header">
-            <button
-              @click.stop.prevent="handleToggleModal"
-              class="modal__header__close"
-            >
-              <img
-                class="modal__header__close-icon"
-                src="@/assets/images/icon/close_theme.svg"
-                alt="close"
-              />
-            </button>
-            <div class="modal__header__title">
-              編輯個人檔案
-            </div>
-            <button class="modal__header__save" form="form" type="submit">
-              儲存
-            </button>
-          </div>
-          <div class="modal__body">
-            <div class="modal__img">
-              <div
-                class="modal__img__cover"
-                :style="{ backgroundImage: 'url(' + cover + ')' }"
+  <transition name="fade">
+    <div class="modal" @click.self="handleToggleModal">
+      <div class="modal__mask">
+        <div class="modal__container">
+          <form @submit.stop.prevent="handleSubmit" id="form">
+            <div class="modal__header">
+              <button
+                @click.stop.prevent="handleToggleModal"
+                class="modal__header__close"
               >
-                <div>
-                  <label for="cover">
+                <img
+                  class="modal__header__close-icon"
+                  src="@/assets/images/icon/close_theme.svg"
+                  alt="close"
+                />
+              </button>
+              <div class="modal__header__title">
+                編輯個人檔案
+              </div>
+              <button class="modal__header__save" form="form" type="submit">
+                儲存
+              </button>
+            </div>
+            <div class="modal__body">
+              <div class="modal__img">
+                <div
+                  class="modal__img__cover"
+                  :style="{ backgroundImage: 'url(' + cover + ')' }"
+                >
+                  <div>
+                    <!-- <label for="cover">
                     <svg
                       class="modal__img__change"
                       width="24"
@@ -55,15 +56,15 @@
                     accept="image/*"
                     @change="handleCoverChange"
                     hidden
-                  />
+                  /> -->
+                  </div>
                 </div>
-              </div>
-              <div
-                class="modal__img__avatar"
-                :style="{ backgroundImage: 'url(' + avatar + ')' }"
-              >
-                <div>
-                  <label for="avatar">
+                <div
+                  class="modal__img__avatar"
+                  :style="{ backgroundImage: 'url(' + avatar + ')' }"
+                >
+                  <div>
+                    <!-- <label for="avatar">
                     <svg
                       class="modal__img__change"
                       width="24"
@@ -90,53 +91,54 @@
                     accept="image/*"
                     @change="handleAvatarChange"
                     hidden
-                  />
+                  /> -->
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="modal__name">
-            <div class="form__name">
-              <input
-                class="form__name__input"
-                id="name"
-                v-model="name"
-                name="name"
-                type="text"
-                required
-                maxlength="50"
-              />
-              <label for="name" class="form__name__label">
-                名稱
-              </label>
+            <div class="modal__name">
+              <div class="form__name">
+                <input
+                  class="form__name__input"
+                  id="name"
+                  v-model="name"
+                  name="name"
+                  type="text"
+                  required
+                  maxlength="50"
+                />
+                <label for="name" class="form__name__label">
+                  名稱
+                </label>
+              </div>
+              <div class="modal__name__length">
+                {{ name ? name.length : '0' }}/50
+              </div>
             </div>
-            <div class="modal__name__length">
-              {{ name ? name.length : '0' }}/50
+            <div class="modal__introduction">
+              <div class="form__introduction">
+                <textarea
+                  v-model.trim="introduction"
+                  class="form__introduction__textarea"
+                  name="introduction"
+                  id="introduction"
+                  cols="40"
+                  rows="8"
+                  maxlength="160"
+                ></textarea>
+                <label for="introduction" class="form__introduction__label">
+                  自我介紹
+                </label>
+              </div>
+              <div class="modal__introduction__length">
+                {{ introduction ? introduction.length : '0' }}/160
+              </div>
             </div>
-          </div>
-          <div class="modal__introduction">
-            <div class="form__introduction">
-              <textarea
-                v-model="introduction"
-                class="form__introduction__textarea"
-                name="introduction"
-                id="introduction"
-                cols="40"
-                rows="8"
-                maxlength="160"
-              ></textarea>
-              <label for="introduction" class="form__introduction__label">
-                自我介紹
-              </label>
-            </div>
-            <div class="modal__introduction__length">
-              {{ introduction ? introduction.length : '0' }}/160
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -167,6 +169,7 @@ export default {
     this.userId = this.$store.getters.getCurrentUser.id
   },
   methods: {
+    closeModal() {},
     // 處理 avatar 預覽圖片
     handleAvatarChange(e) {
       const files = e.target.files
@@ -192,20 +195,19 @@ export default {
           requestData[key] = value
         }
         this.isProcessing = true
-        // console.log('requestData', requestData)
         const { data } = await usersAPI.setting({
           userId: this.userId,
           requestData,
         })
+        console.log(data)
+        if (data.status === 'success') {
+          this.$store.dispatch('handleInitViewUser', data.user)
+        }
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
         console.log(data)
         this.isProcessing = false
-        // console.log('data', data)
-        // 更新vuex的state
-        // const { account, name, email } = data.user
-        // this.$store.commit('setCurrentUser', { account, name, email })
         Toast.fire({
           icon: 'success',
           title: `資料更新成功！\n ${data.message}`,
