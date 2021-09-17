@@ -9,7 +9,7 @@
       :user="currentViewUser.data"
       :isCurrentUser="currentViewUser.isViewCurrentUser"
       :followingsCount="currentViewUser.followings.length"
-      :followersCount="followersCount"
+      :followersCount="currentViewUser.followers.length"
       :initialFollowing="currentViewUser.isFollowed"
     />
     <section class="tab-router">
@@ -60,21 +60,13 @@ export default {
     return {
       isLoading: true,
       userId: '',
-      userInfo: {},
-      followersCount: 0,
       tweetsCount: 0,
-      userData: [],
-      initialFollowers: [],
-      initialFollowing: false,
     }
   },
   computed: {
     ...mapState(['currentUser']),
     currentViewUser() {
       return this.$store.getters.getViewUser
-    },
-    followingsCount() {
-      return this.$store.getters.getViewUser.followings.length
     },
   },
   created() {
@@ -100,7 +92,6 @@ export default {
       try {
         this.isLoading = true
         const { data } = await usersAPI.getUser({ userId })
-        this.userInfo = data
         this.$store.dispatch('handleInitViewUser', data)
         this.isLoading = false
       } catch (err) {
@@ -136,13 +127,6 @@ export default {
       try {
         const { data } = await usersAPI.getUserFollower({ userId })
         this.$store.dispatch('handleSetViewUserFollowers', data)
-        this.initialFollowers = data
-        this.initialFollowers.forEach((item) => {
-          if (item.followerId === this.currentUser.id) {
-            this.initialFollowing = true
-          }
-        })
-        this.followersCount = data.length
       } catch (err) {
         this.isLoading = false
         let message = ''
