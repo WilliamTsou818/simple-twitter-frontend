@@ -22,6 +22,9 @@ export default new Vuex.Store({
     viewUser: {
       data: {
         id: -1,
+        TweetsCount: 0,
+        FollowersCount: 0,
+        FollowingsCount: 0,
       },
       isLoading: false,
       isViewCurrentUser: false,
@@ -42,7 +45,7 @@ export default new Vuex.Store({
     // 開關ReplyModal
     isReplyModalOpen: false,
     // 是否回覆成功需要刷新
-    isReplyRefresh: false
+    isReplyRefresh: false,
   },
   actions: {
     async fetchCurrentUser({ commit }) {
@@ -128,7 +131,7 @@ export default new Vuex.Store({
     },
     isReplyRefresh(context, isRefresh) {
       context.commit('setIsReplyRefresh', isRefresh)
-    }
+    },
   },
   mutations: {
     setCurrentUser(state, currentUser) {
@@ -173,10 +176,22 @@ export default new Vuex.Store({
     setFollowed(state, id) {
       if (state.viewUser.data.id === id) {
         state.viewUser.isFollowed = !state.viewUser.isFollowed
+        if (state.viewUser.isFollowed) {
+          state.viewUser.data.FollowersCount++
+        } else {
+          state.viewUser.data.FollowersCount--
+        }
       }
       state.popular.forEach((user) => {
         if (user.id === Number(id)) {
           user.isFollowed = !user.isFollowed
+          if (state.viewUser.isViewCurrentUser) {
+            if (user.isFollowed) {
+              state.viewUser.data.FollowingsCount++
+            } else {
+              state.viewUser.data.FollowingsCount--
+            }
+          }
         }
       })
       state.viewUser.followings.forEach((user) => {
@@ -215,7 +230,7 @@ export default new Vuex.Store({
     },
     setIsReplyRefresh(state, isRefresh) {
       state.isReplyRefresh = isRefresh
-    }
+    },
   },
   getters: {
     getCurrentUser(state) {
