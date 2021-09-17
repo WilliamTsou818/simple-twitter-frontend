@@ -72,7 +72,6 @@ export default {
       return this.$store.getters.getViewUser
     },
     tab() {
-      console.log(this.$route.name)
       return this.$route.name
     },
     followList() {
