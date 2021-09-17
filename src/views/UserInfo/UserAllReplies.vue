@@ -22,6 +22,7 @@ import Spinner from '@/components/Spinner'
 import UserTweetReply from '@/components/UserTweetReply'
 
 export default {
+  name: 'UserAllReplies',
   components: {
     Spinner,
     UserTweetReply,

@@ -19,6 +19,7 @@ import Spinner from '@/components/Spinner'
 import UserTweet from '@/components/UserTweet'
 
 export default {
+  name: 'UserAllTweets',
   components: {
     Spinner,
     UserTweet,

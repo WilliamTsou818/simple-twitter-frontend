@@ -1,11 +1,95 @@
 <template>
-  <div>
-    hello like
-  </div>
+  <section class="section-tweets" ref="sectionTweets">
+    <Spinner v-if="isLoading" />
+    <div class="section-tweets__tip" v-show="!isLoading && tweets.length === 0">
+      目前沒有喜歡的推文
+    </div>
+    <UserTweet
+      v-for="tweet in tweets"
+      :key="tweet.TweetId"
+      :init-tweet="tweet"
+    />
+  </section>
 </template>
 
 <script>
-export default {}
+import usersAPI from '@/apis/users'
+import { Toast } from '@/utils/helpers'
+import Spinner from '@/components/Spinner'
+import UserTweet from '@/components/UserTweet'
+
+export default {
+  name: 'UserAllLike',
+  components: {
+    Spinner,
+    UserTweet,
+  },
+  data() {
+    return {
+      isLoading: true,
+      tweets: [],
+    }
+  },
+  created() {
+    const { user_id } = this.$route.params
+    this.fetchUserLikes(user_id)
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { user_id } = to.params
+    this.fetchUserLikes(user_id)
+    next()
+  },
+  methods: {
+    async fetchUserLikes(userId, scrollTop = true) {
+      try {
+        this.isLoading = true
+        const { data } = await usersAPI.getUserLikes({ userId })
+        this.tweets = data
+        // 回到頂部
+        if (scrollTop && this.$refs.sectionTweets) {
+          this.$refs.sectionTweets.scrollTop = 0
+        }
+        this.isLoading = false
+      } catch (err) {
+        this.isLoading = false
+        let message = ''
+        if (err.response) {
+          console.log(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+        // FIXME:希望後端改回傳success & 空陣列
+        if (message !== 'No tweets found') {
+          Toast.fire({
+            icon: 'error',
+            title: `獲取喜歡的推文列表失敗！\n ${message}`,
+          })
+        }
+      }
+    },
+  },
+}
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.section-tweets {
+  height: calc(100vh - 505px);
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &__tip {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    min-width: 225px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .section-tweets {
+    padding-bottom: 56px;
+  }
+}
+</style>
