@@ -28,7 +28,7 @@
               v-show="!user.isFollowed"
               class="popular__user-list__follow"
             >
-              追隨
+              跟隨
             </div>
             <div
               @click.stop.prevent="removeFollowing(user.id)"

@@ -124,6 +124,26 @@ const routes = [
         ],
       },
       {
+        path: '/user/:user_id',
+        name: 'UserAllFollow',
+        component: () => import('../views/User/UserAllFollow.vue'),
+        beforeEnter: checkUserAuthorize,
+        children: [
+          {
+            path: 'followings',
+            name: 'UserFollowings',
+            component: () => import('../views/User/UserFollowList.vue'),
+            beforeEnter: checkUserAuthorize,
+          },
+          {
+            path: 'followers',
+            name: 'UserFollowers',
+            component: () => import('../views/User/UserFollowList.vue'),
+            beforeEnter: checkUserAuthorize,
+          },
+        ],
+      },
+      {
         // 推文詳細資訊頁面
         path: '/user/tweets/:tweet_id',
         name: 'UserTweetDetail',
