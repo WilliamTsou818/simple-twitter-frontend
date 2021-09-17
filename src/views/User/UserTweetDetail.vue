@@ -144,18 +144,6 @@ export default {
       try {
         this.isLoading = true
         const { data } = await usersAPI.tweets.getDetail({ tweetId })
-        console.log('data', data)
-
-        // FIXME:已通知後端希望更改status為error
-        if (data.message === 'No tweet found') {
-          Toast.fire({
-            icon: 'error',
-            title: `獲取推文資訊失敗！\n ${data.message}`,
-          })
-          this.$router.back()
-          return
-        }
-
         this.tweetDetail = data
         this.isLoading = false
       } catch (err) {
