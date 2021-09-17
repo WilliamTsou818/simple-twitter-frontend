@@ -70,17 +70,28 @@
       <div class="user-profile__detail__intro">
         {{ user.introduction }}
       </div>
+
       <div class="user-profile__detail__follow">
-        <span
-          ><span class="user-profile__detail__count"
-            >{{ followingsCount }}個</span
-          >跟隨中</span
+        <router-link
+          :to="{ name: 'UserFollowings', params: { user_id: user.id } }"
+          class="user-profile__detail__link"
         >
-        <span
-          ><span class="user-profile__detail__count"
-            >{{ followersCount }}位</span
-          >跟隨者</span
+          <span
+            ><span class="user-profile__detail__count"
+              >{{ followingsCount }}個</span
+            >跟隨中</span
+          >
+        </router-link>
+        <router-link
+          :to="{ name: 'UserFollowers', params: { user_id: user.id } }"
+          class="user-profile__detail__link"
         >
+          <span
+            ><span class="user-profile__detail__count"
+              >{{ followersCount }}位</span
+            >跟隨者</span
+          >
+        </router-link>
       </div>
     </div>
   </div>
@@ -89,6 +100,7 @@
 <script>
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
+import { mapState } from 'vuex'
 import { altFilter, thousandFilter } from './../utils/mixins'
 import UserEditModal from '@/components/UserEditModal.vue'
 export default {
@@ -104,7 +116,7 @@ export default {
       type: Object,
     },
     followingsCount: {
-      type: Number,
+      type: Number || String,
       default: 0,
     },
     followersCount: {
@@ -121,6 +133,9 @@ export default {
       isModalOpen: false,
       isNotify: false,
     }
+  },
+  computed: {
+    ...mapState(['currentUser']),
   },
   watch: {
     initialFollowing(newValue) {
@@ -266,6 +281,12 @@ export default {
       gap: 5px;
       font-size: 14px;
       color: var(--gray-500);
+    }
+    &__link {
+      color: var(--gray-500);
+      &:hover {
+        text-decoration: underline;
+      }
     }
     &__count {
       font-weight: 500;
