@@ -3,7 +3,8 @@ const ghpages = require('gh-pages');
 
 const options = {
   branch: 'gh-pages',
-  repo: 'https://github.com/WilliamTsou818/simple-twitter-frontend.git' // project github repo
+  repo: 'https://github.com/WilliamTsou818/simple-twitter-frontend.git', // project github repo
+  message: 'deploy commit'
 };
 
 const callback = err => {
