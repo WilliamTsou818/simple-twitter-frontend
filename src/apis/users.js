@@ -39,6 +39,14 @@ export default {
   getUserTweets({ userId }) {
     return apiHelper.get(`/users/${userId}/tweets`)
   },
+  //取得 user的回覆清單
+  getUserReplies({ userId }) {
+    return apiHelper.get(`/users/${userId}/replied_tweets`)
+  },
+  //取得 user的喜歡清單
+  getUserLikes({ userId }) {
+    return apiHelper.get(`/users/${userId}/likes`)
+  },
   // 編輯使用者帳戶資料
   editUserProfile({ userId, formData }) {
     return apiHelper.put(`/users/${userId}`, formData)
