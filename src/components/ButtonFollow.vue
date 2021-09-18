@@ -1,7 +1,10 @@
 <template>
   <button
     class="button-follow"
-    :class="{ 'button-follow-small': small }"
+    :class="{
+      'button-follow-small': small,
+      'button-follow-wait': isProcessing,
+    }"
     :disabled="isProcessing"
   >
     <div
@@ -10,7 +13,7 @@
       v-show="!user.isFollowed"
     >
       <div v-show="!isProcessing">跟隨</div>
-      <div v-show="isProcessing">load</div>
+      <div v-show="isProcessing" class="button-follow__follow__spinner"></div>
     </div>
     <div
       @click.stop.prevent="handleClickFollow(userId)"
@@ -18,7 +21,10 @@
       v-show="user.isFollowed"
     >
       <div v-show="!isProcessing">正在跟隨</div>
-      <div v-show="isProcessing">load</div>
+      <div
+        v-show="isProcessing"
+        class="button-follow__following__spinner"
+      ></div>
     </div>
   </button>
 </template>
@@ -79,6 +85,10 @@ export default {
 
 <style lang="scss" scoped>
 .button-follow {
+  pointer-events: all !important;
+  &-wait {
+    cursor: wait;
+  }
   &__follow,
   &__following {
     font-family: Noto Sans TC;
@@ -96,10 +106,31 @@ export default {
     &:hover {
       background-color: var(--theme-200);
     }
+    &__spinner {
+      width: 24px;
+      height: 24px;
+      border-top: 4px solid var(--theme);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      border-radius: 100%;
+      animation: spin 0.6s ease-out infinite;
+    }
   }
   &__following {
     background-color: var(--theme);
     color: var(--white);
+    &__spinner {
+      width: 24px;
+      height: 24px;
+      border-top: 4px solid var(--white);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      border-radius: 100%;
+      cursor: wait;
+      animation: spin 0.6s ease-out infinite;
+    }
     &:hover {
       background-color: var(--theme-600);
     }
@@ -109,6 +140,11 @@ export default {
   > .button-follow__follow,
   > .button-follow__following {
     line-height: 15px;
+  }
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

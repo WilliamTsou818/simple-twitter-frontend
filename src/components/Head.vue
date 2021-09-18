@@ -50,7 +50,7 @@ export default {
   height: 56px;
   text-align: left;
   background-color: var(--white);
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--blue-gray-600);
   font-weight: bold;
   padding: 0 12px;
   cursor: pointer;
