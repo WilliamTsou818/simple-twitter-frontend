@@ -1,6 +1,8 @@
 <template>
   <div class="container container--user">
+    <Head v-show="isLoading" title="loading" count="0" backArrow />
     <Head
+      v-show="!isLoading"
       :title="currentViewUser.data.name"
       :count="currentViewUser.data.TweetsCount"
       backArrow
@@ -9,8 +11,6 @@
       <UserProfile
         :user="currentViewUser.data"
         :isCurrentUser="currentViewUser.isViewCurrentUser"
-        :followingsCount="currentViewUser.followings.length"
-        :followersCount="currentViewUser.followers.length"
         :initialFollowing="currentViewUser.isFollowed"
         :isLoading="this.isLoading"
       />

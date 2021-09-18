@@ -7,14 +7,20 @@
       <button
         class="atweet__detail__avatar"
         v-bind:style="{ backgroundImage: 'url(' + tweet.User.avatar + ')' }"
-        @click.stop.prevent="handleClickAvatar(tweet.User.id)"
+        @click.stop.prevent="handleClickUser(tweet.User.id)"
       ></button>
       <div class="atweet__detail__right">
         <div class="atweet__detail__user">
-          <span class="atweet__detail__name">{{ tweet.User.name }}</span>
-          <span class="atweet__detail__account">{{
-            tweet.User.account | altFilter
-          }}</span>
+          <span
+            @click.stop.prevent="handleClickUser(tweet.User.id)"
+            class="atweet__detail__name"
+            >{{ tweet.User.name }}</span
+          >
+          <span
+            @click.stop.prevent="handleClickUser(tweet.User.id)"
+            class="atweet__detail__account"
+            >{{ tweet.User.account | altFilter }}</span
+          >
           <span class="atweet__detail__date"
             >・{{ tweet.updatedAt | fromNowFilter }}</span
           >
@@ -116,7 +122,7 @@ export default {
   },
   mixins: [fromNowFilter, altFilter, thousandFilter],
   methods: {
-    handleClickAvatar(user_id) {
+    handleClickUser(user_id) {
       this.$router.push({ name: 'UserInfo', params: { user_id } })
     },
     handleClickDetail(tweet_id) {
@@ -194,9 +200,6 @@ export default {
       background-repeat: no-repeat;
       background-size: cover;
       transition: 0.25s;
-      &:hover {
-        transform: scale(103%);
-      }
     }
     &__right {
       flex: 1;

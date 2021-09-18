@@ -4,28 +4,32 @@
     <Spinner v-if="isLoading" />
     <div v-else class="wrapper">
       <section v-if="tweetDetail.User" class="section-tweet">
-        <router-link
-          :to="{
-            name: 'UserAllTweets',
-            params: { user_id: tweetDetail.User.id },
-          }"
-          class="section-tweet__user"
-        >
-          <div
+        <div class="section-tweet__user">
+          <router-link
+            :to="{
+              name: 'UserAllTweets',
+              params: { user_id: tweetDetail.User.id },
+            }"
             class="section-tweet__user__avatar"
             v-bind:style="{
               backgroundImage: 'url(' + tweetDetail.User.avatar + ')',
             }"
-          ></div>
-          <div class="section-tweet__user__right">
+          ></router-link>
+          <router-link
+            :to="{
+              name: 'UserAllTweets',
+              params: { user_id: tweetDetail.User.id },
+            }"
+            class="section-tweet__user__right"
+          >
             <div class="section-tweet__user__name">
               {{ tweetDetail.User.name }}
             </div>
             <div class="section-tweet__user__account">
               {{ tweetDetail.User.account | altFilter }}
             </div>
-          </div>
-        </router-link>
+          </router-link>
+        </div>
         <div class="section-tweet__content">
           {{ tweetDetail.description }}
         </div>

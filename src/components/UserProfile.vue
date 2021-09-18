@@ -63,16 +63,21 @@
     </div>
     <div class="user-profile__detail">
       <div>
-        <div class="user-profile__detail__name">{{ user.name }}</div>
+        <div class="user-profile__detail__name">
+          <div v-show="!isLoading">{{ user.name }}</div>
+          <div v-show="isLoading">--</div>
+        </div>
         <div class="user-profile__detail__account">
-          {{ user.account | altFilter }}
+          <div v-show="!isLoading">{{ user.account | altFilter }}</div>
+          <div v-show="isLoading">--</div>
         </div>
       </div>
       <div class="user-profile__detail__intro">
-        {{ user.introduction | introFilter }}
+        <div v-show="!isLoading">{{ user.introduction | introFilter }}</div>
+        <div v-show="isLoading">--</div>
       </div>
-
-      <div class="user-profile__detail__follow">
+      <div v-show="isLoading" class="user-profile__detail__follow">--</div>
+      <div v-show="!isLoading" class="user-profile__detail__follow">
         <router-link
           :to="{ name: 'UserFollowings', params: { user_id: user.id } }"
           class="user-profile__detail__link"
