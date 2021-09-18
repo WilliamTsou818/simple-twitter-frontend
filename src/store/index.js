@@ -25,10 +25,10 @@ export default new Vuex.Store({
         TweetsCount: 0,
         FollowersCount: 0,
         FollowingsCount: 0,
+        isFollowed: false,
       },
       isLoading: false,
       isViewCurrentUser: false,
-      isFollowed: false,
       followings: [],
       followers: [],
     },
@@ -155,16 +155,6 @@ export default new Vuex.Store({
     },
     setInitViewUser(state, data) {
       state.viewUser.data = data
-      //加上是否追蹤此用戶
-      if (
-        state.followingUsers.find(
-          (user) => user.followingId === state.viewUser.data.id
-        )
-      ) {
-        state.viewUser.isFollowed = true
-      } else {
-        state.viewUser.isFollowed = false
-      }
     },
     setIsViewCurrentUser(state, id) {
       if (state.currentUser.id === id - 0) {
@@ -175,8 +165,8 @@ export default new Vuex.Store({
     },
     setFollowed(state, id) {
       if (state.viewUser.data.id === id) {
-        state.viewUser.isFollowed = !state.viewUser.isFollowed
-        if (state.viewUser.isFollowed) {
+        state.viewUser.data.isFollowed = !state.viewUser.data.isFollowed
+        if (state.viewUser.data.isFollowed) {
           state.viewUser.data.FollowersCount++
         } else {
           state.viewUser.data.FollowersCount--
