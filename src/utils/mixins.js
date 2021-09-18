@@ -49,10 +49,7 @@ export const thousandFilter = {
 export const altFilter = {
   filters: {
     altFilter(account) {
-      if (!account) {
-        return '@'
-      }
-      return '@' + account
+      return account ? '@' + account : '@'
     },
   },
 }
