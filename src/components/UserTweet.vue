@@ -177,6 +177,11 @@ export default {
   padding-bottom: 0;
   text-align: left;
   border-bottom: 1px solid var(--blue-gray-600);
+  cursor: pointer;
+  transition: 0.25s;
+  &:hover {
+    background-color: var(--gray-300);
+  }
   &__detail {
     display: flex;
     &__avatar {
@@ -188,6 +193,10 @@ export default {
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
+      transition: 0.25s;
+      &:hover {
+        transform: scale(103%);
+      }
     }
     &__right {
       flex: 1;
