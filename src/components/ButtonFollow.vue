@@ -89,16 +89,21 @@ export default {
   &-wait {
     cursor: wait;
   }
+  &-small {
+    height: 32px;
+  }
   &__follow,
   &__following {
+    display: flex;
+    align-items: center;
+    height: 40px;
     font-family: Noto Sans TC;
     font-size: 15px;
     border-radius: 20px;
-    padding: 8px 16px;
+    box-sizing: border-box;
+    padding: 0px 16px;
     font-weight: 900;
-  }
-  &__small {
-    line-height: 15px;
+    border: 1px solid var(--theme);
   }
   &__follow {
     color: var(--theme);
@@ -121,8 +126,8 @@ export default {
     background-color: var(--theme);
     color: var(--white);
     &__spinner {
-      width: 24px;
-      height: 24px;
+      width: 23px;
+      height: 23px;
       border-top: 4px solid var(--white);
       border-left: 4px solid transparent;
       border-right: 4px solid transparent;
@@ -140,6 +145,7 @@ export default {
   > .button-follow__follow,
   > .button-follow__following {
     line-height: 15px;
+    height: 30px;
   }
 }
 @keyframes spin {
