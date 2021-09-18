@@ -22,22 +22,7 @@
               {{ user.account | altFilter }}
             </div>
           </div>
-          <button class="popular__user-list__action">
-            <div
-              @click.stop.prevent="addFollowing(user.id)"
-              v-show="!user.isFollowed"
-              class="popular__user-list__follow"
-            >
-              跟隨
-            </div>
-            <div
-              @click.stop.prevent="removeFollowing(user.id)"
-              v-show="user.isFollowed"
-              class="popular__user-list__following"
-            >
-              正在跟隨
-            </div>
-          </button>
+          <ButtonFollow :user="user" :userId="user.id" />
         </router-link>
       </div>
     </div>
@@ -50,11 +35,13 @@ import { Toast } from '@/utils/helpers'
 import { altFilter } from './../utils/mixins'
 
 import Spinner from '@/components/Spinner'
+import ButtonFollow from '@/components/ButtonFollow.vue'
 
 export default {
   name: 'UserPopularTop.vue',
   components: {
     Spinner,
+    ButtonFollow,
   },
   mixins: [altFilter],
   data() {
@@ -82,47 +69,6 @@ export default {
         Toast.fire({
           icon: 'error',
           title: 'PopularTop讀取失敗',
-        })
-      }
-    },
-    async addFollowing(userId) {
-      try {
-        const { data } = await usersAPI.addFollowShip({ id: userId })
-        this.$store.dispatch('handleSetFollowed', userId)
-        Toast.fire({
-          icon: 'success',
-          title: `${data.message}`,
-        })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-        this.isFollowing = true
-      } catch (e) {
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: '新增追蹤失敗',
-        })
-      }
-    },
-    async removeFollowing(userId) {
-      try {
-        const { data } = await usersAPI.removeFollowShip({ userId })
-        this.$store.dispatch('handleSetFollowed', userId)
-        Toast.fire({
-          icon: 'success',
-          title: `${data.message}`,
-        })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-        this.isFollowing = false
-        // this.$emit('update-following', userId)
-      } catch (e) {
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: '取消追蹤失敗',
         })
       }
     },
@@ -185,28 +131,6 @@ export default {
     &__account {
       color: var(--gray-500);
       margin-top: 2px;
-    }
-    &__follow,
-    &__following {
-      font-family: Noto Sans TC;
-      font-size: 15px;
-      border-radius: 20px;
-      padding: 8px 16px;
-      font-weight: 900;
-    }
-    &__follow {
-      color: var(--theme);
-      border: 1px solid var(--theme);
-      &:hover {
-        background-color: var(--theme-200);
-      }
-    }
-    &__following {
-      background-color: var(--theme);
-      color: var(--white);
-      &:hover {
-        background-color: var(--theme-600);
-      }
     }
   }
 }
