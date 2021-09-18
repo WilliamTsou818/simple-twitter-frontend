@@ -13,11 +13,9 @@ export const fromNowFilter = {
       const now = dayjs()
       const fromNowTime = now.diff(dateTime, 'hour')
       //如果時間間隔小於 24 小時，顯示M月DD日
-      if (fromNowTime > 24) {
-        return dayjs(dateTime).format('M月DD日')
-      } else {
-        return dayjs(dateTime).fromNow(true)
-      }
+      return fromNowTime > 24
+        ? dayjs(dateTime).format('M月DD日')
+        : dayjs(dateTime).fromNow(true)
     },
   },
 }
@@ -29,7 +27,7 @@ export const timeFormatFilter = {
         return '-'
       }
       const prefix = dayjs(dateTime).hour() > 12 ? '下午' : '上午'
-      return prefix + dayjs(dateTime).format(" hh:mm・YYYY年M月DD日")
+      return prefix + dayjs(dateTime).format(' hh:mm・YYYY年M月DD日')
     },
   },
 }
@@ -103,4 +101,3 @@ export const replyAction = {
   //   },
   // },
 }
-
