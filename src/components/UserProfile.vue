@@ -42,7 +42,7 @@
             alt="noti_active"
           />
         </button>
-        <ButtonFollow :user="user" />
+        <ButtonFollow :user="user" :userId="user.id" />
       </div>
     </div>
     <div class="user-profile__detail">

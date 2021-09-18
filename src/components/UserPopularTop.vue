@@ -22,7 +22,7 @@
               {{ user.account | altFilter }}
             </div>
           </div>
-          <ButtonFollow :user="user" />
+          <ButtonFollow :user="user" :userId="user.id" />
         </router-link>
       </div>
     </div>

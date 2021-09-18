@@ -4,11 +4,7 @@
       <h3>You don’t have any followers yet</h3>
       <p>When someone follows you, you’ll see them here.</p>
     </div>
-    <div
-      v-for="user in followList"
-      :key="user.followingId"
-      class="follow__list"
-    >
+    <div v-for="user in followList" :key="user.account" class="follow__list">
       <div
         class="follow__list__avatar"
         :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
@@ -21,27 +17,12 @@
               {{ user.account | altFilter }}
             </div>
           </div>
-          <button
-            v-if="
-              currentUser.id !== user.followerId &&
-                currentUser.id !== user.followeringId
-            "
-            @click="
-              handleClickFollow(
-                user.followingId,
-                user.followerId,
-                user.isFollowed
-              )
-            "
-            class="follow__list__action"
-          >
-            <div v-show="!user.isFollowed" class="follow__list__follow">
-              跟隨
-            </div>
-            <div v-show="user.isFollowed" class="follow__list__following">
-              正在跟隨
-            </div>
-          </button>
+          <div v-if="user.followerId && user.followerId !== currentUser.id">
+            <ButtonFollow :user="user" :userId="user.followerId" small />
+          </div>
+          <div v-if="user.followingId && user.followingId !== currentUser.id">
+            <ButtonFollow :user="user" :userId="user.followingId" small />
+          </div>
         </div>
         <div class="follow__list__intro">
           {{ user.introduction }}
@@ -57,9 +38,15 @@ import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 import { altFilter } from '@/utils/mixins'
 
+import Spinner from '@/components/Spinner'
+import ButtonFollow from '@/components/ButtonFollow.vue'
+
 export default {
   name: 'UserFollowList',
   mixins: [altFilter],
+  components: {
+    ButtonFollow,
+  },
   data() {
     return {
       isLoading: false,
@@ -118,30 +105,6 @@ export default {
         console.log(message)
       }
     },
-    async handleClickFollow(followingId, followerId, isFollowed) {
-      try {
-        const userId = followingId || followerId
-        console.log(userId)
-        let response = isFollowed
-          ? await usersAPI.removeFollowShip({ userId })
-          : await usersAPI.addFollowShip({ id: userId })
-        const { data } = response
-        this.$store.dispatch('handleSetFollowed', userId)
-        Toast.fire({
-          icon: 'success',
-          title: `${data.message}`,
-        })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-      } catch (e) {
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: '更新失敗',
-        })
-      }
-    },
   },
 }
 </script>
@@ -196,29 +159,6 @@ export default {
       color: var(--gray-500);
       margin-top: 5px;
       font-weight: 500;
-    }
-    &__follow,
-    &__following {
-      font-family: Noto Sans TC;
-      font-size: 15px;
-      line-height: 15px;
-      border-radius: 20px;
-      padding: 8px 16px;
-      font-weight: 900;
-    }
-    &__follow {
-      color: var(--theme);
-      border: 1px solid var(--theme);
-      &:hover {
-        background-color: var(--theme-200);
-      }
-    }
-    &__following {
-      background-color: var(--theme);
-      color: var(--white);
-      &:hover {
-        background-color: var(--theme-600);
-      }
     }
     &__intro {
       color: var(--text);
