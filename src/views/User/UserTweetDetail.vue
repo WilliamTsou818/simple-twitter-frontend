@@ -4,7 +4,13 @@
     <Spinner v-if="isLoading" />
     <div v-else class="wrapper">
       <section v-if="tweetDetail.User" class="section-tweet">
-        <div class="section-tweet__user">
+        <router-link
+          :to="{
+            name: 'UserAllTweets',
+            params: { user_id: tweetDetail.User.id },
+          }"
+          class="section-tweet__user"
+        >
           <div
             class="section-tweet__user__avatar"
             v-bind:style="{
@@ -19,7 +25,7 @@
               {{ tweetDetail.User.account | altFilter }}
             </div>
           </div>
-        </div>
+        </router-link>
         <div class="section-tweet__content">
           {{ tweetDetail.description }}
         </div>
