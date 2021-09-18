@@ -54,6 +54,14 @@ export const altFilter = {
   },
 }
 
+export const introFilter = {
+  filters: {
+    introFilter(intro) {
+      return intro ? intro : 'Hello World'
+    },
+  },
+}
+
 // 側邊攔新增推文相關設定
 export const newPostAction = {
   computed: {

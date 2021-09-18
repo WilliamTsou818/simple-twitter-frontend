@@ -68,7 +68,7 @@
         </div>
       </div>
       <div class="user-profile__detail__intro">
-        {{ user.introduction }}
+        {{ user.introduction | introFilter }}
       </div>
 
       <div class="user-profile__detail__follow">
@@ -78,7 +78,7 @@
         >
           <span
             ><span class="user-profile__detail__count"
-              >{{ user.FollowingsCount }}個</span
+              >{{ user.FollowingsCount | thousandFilter }}個</span
             >跟隨中</span
           >
         </router-link>
@@ -88,7 +88,7 @@
         >
           <span
             ><span class="user-profile__detail__count"
-              >{{ (user.FollowersCount + 1200) | thousandFilter }}位</span
+              >{{ user.FollowersCount | thousandFilter }}位</span
             >跟隨者</span
           >
         </router-link>
@@ -101,7 +101,7 @@
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 import { mapState } from 'vuex'
-import { altFilter, thousandFilter } from './../utils/mixins'
+import { altFilter, thousandFilter, introFilter } from './../utils/mixins'
 import UserEditModal from '@/components/UserEditModal.vue'
 export default {
   components: {
@@ -116,7 +116,7 @@ export default {
       type: Object,
     },
   },
-  mixins: [altFilter, thousandFilter],
+  mixins: [altFilter, thousandFilter, introFilter],
   data() {
     return {
       isModalOpen: false,
@@ -127,9 +127,11 @@ export default {
     ...mapState(['currentUser']),
   },
   methods: {
+    //小鈴鐺按鈕
     handleClickNotify() {
       this.isNotify = !this.isNotify
     },
+    //打開編輯個人資料 Modal
     handleToggleModal() {
       this.isModalOpen = !this.isModalOpen
     },
