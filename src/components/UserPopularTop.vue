@@ -146,4 +146,11 @@ export default {
   color: var(--gray-400);
   margin: 20px 20px;
 }
+
+@media screen and (max-width: 1200px) {
+  .popular {
+    width: 300px;
+    margin: 0 24px;
+  }
+}
 </style>
