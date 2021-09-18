@@ -12,6 +12,7 @@
         :followingsCount="currentViewUser.followings.length"
         :followersCount="currentViewUser.followers.length"
         :initialFollowing="currentViewUser.isFollowed"
+        :isLoading="this.isLoading"
       />
       <section class="tab-router">
         <router-link

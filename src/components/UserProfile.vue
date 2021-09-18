@@ -6,10 +6,26 @@
     />
     <div class="user-profile__img">
       <div
+        v-show="isLoading"
+        class="user-profile__img__cover"
+        :class="{
+          'bg-skeleton': isLoading,
+        }"
+      ></div>
+      <div
+        v-show="!isLoading"
         class="user-profile__img__cover"
         :style="{ backgroundImage: 'url(' + user.cover + ')' }"
       ></div>
       <div
+        v-show="isLoading"
+        class="user-profile__img__avatar"
+        :class="{
+          'bg-skeleton': isLoading,
+        }"
+      ></div>
+      <div
+        v-show="!isLoading"
         class="user-profile__img__avatar"
         :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
       ></div>
@@ -100,6 +116,10 @@ export default {
     user: {
       type: Object,
     },
+    isLoading: {
+      type: Boolean,
+      default: false,
+    },
   },
   mixins: [altFilter, thousandFilter, introFilter],
   data() {
@@ -139,7 +159,7 @@ export default {
     &__cover {
       width: 100%;
       height: 200px;
-      background-color: #999;
+      background-color: var(--blue-gray-600);
     }
     &__avatar {
       position: absolute;
@@ -147,7 +167,7 @@ export default {
       top: 124px;
       width: 140px;
       height: 140px;
-      background-color: #999;
+      background-color: var(--blue-gray-900);
       border: 4px solid var(--white);
       border-radius: 70px;
     }
@@ -209,6 +229,24 @@ export default {
       font-weight: 500;
       color: var(--black);
     }
+  }
+}
+.bg-skeleton {
+  background-image: linear-gradient(
+    90deg,
+    rgba(#fff, 0),
+    rgba(#fff, 0.5),
+    rgba(#fff, 0)
+  );
+  background-size: 40px 100%; // width of the shine
+  background-repeat: no-repeat; // No need to repeat the shine effect
+  background-position: left -40px top 0; // Place shine on the left side, with offset on the left based on the width of the shine - see background-size
+  animation: shine 1s ease infinite; // increase animation time to see effect in 'slow-mo'
+}
+@keyframes shine {
+  to {
+    // Move shine from left to right, with offset on the right based on the width of the shine - see background-size
+    background-position: right -40px top 0;
   }
 }
 </style>
