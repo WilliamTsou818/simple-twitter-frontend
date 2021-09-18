@@ -96,13 +96,10 @@ export default {
         )
       } catch (err) {
         this.isLoading = false
-        let message = ''
-        if (err.response) {
-          message = err.response.data.message
-        } else {
-          message = err.message
-        }
-        console.log(message)
+        Toast.fire({
+          icon: 'error',
+          title: `${err.message}`,
+        })
       }
     },
   },
