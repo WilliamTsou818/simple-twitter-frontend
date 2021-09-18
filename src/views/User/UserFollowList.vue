@@ -1,33 +1,45 @@
 <template>
   <div class="follow">
-    <div v-if="emptyState" class="follow__empty-hint">
-      <h3>You don’t have any followers yet</h3>
-      <p>When someone follows you, you’ll see them here.</p>
-    </div>
-    <div v-for="user in followList" :key="user.account" class="follow__list">
-      <div
-        class="follow__list__avatar"
-        :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
-      ></div>
-      <div class="follow__list__detail">
-        <div class="follow__list__social">
-          <div class="follow__list__info">
-            <div class="follow__list__name">{{ user.name }}</div>
-            <div class="follow__list__account">
-              {{ user.account | altFilter }}
+    <Spinner v-if="isLoading" />
+    <div v-if="!isLoading">
+      <div v-if="emptyState" class="follow__empty-hint">
+        <h3>You don’t have any followers yet</h3>
+        <p>When someone follows you, you’ll see them here.</p>
+      </div>
+
+      <router-link
+        :to="{
+          name: 'UserAllTweets',
+          params: { user_id: user.followerId || user.followingId },
+        }"
+        v-for="user in followList"
+        :key="user.account"
+        class="follow__list"
+      >
+        <div
+          class="follow__list__avatar"
+          :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
+        ></div>
+        <div class="follow__list__detail">
+          <div class="follow__list__social">
+            <div class="follow__list__info">
+              <div class="follow__list__name">{{ user.name }}</div>
+              <div class="follow__list__account">
+                {{ user.account | altFilter }}
+              </div>
+            </div>
+            <div v-if="user.followerId && user.followerId !== currentUser.id">
+              <ButtonFollow :user="user" :userId="user.followerId" small />
+            </div>
+            <div v-if="user.followingId && user.followingId !== currentUser.id">
+              <ButtonFollow :user="user" :userId="user.followingId" small />
             </div>
           </div>
-          <div v-if="user.followerId && user.followerId !== currentUser.id">
-            <ButtonFollow :user="user" :userId="user.followerId" small />
-          </div>
-          <div v-if="user.followingId && user.followingId !== currentUser.id">
-            <ButtonFollow :user="user" :userId="user.followingId" small />
+          <div class="follow__list__intro">
+            {{ user.introduction }}
           </div>
         </div>
-        <div class="follow__list__intro">
-          {{ user.introduction }}
-        </div>
-      </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -46,6 +58,7 @@ export default {
   mixins: [altFilter],
   components: {
     ButtonFollow,
+    Spinner,
   },
   data() {
     return {
@@ -84,6 +97,7 @@ export default {
   methods: {
     async fetchUserFollow(userId) {
       try {
+        this.isLoading = true
         const responseFollowing = await usersAPI.getUserFollowing({ userId })
         this.$store.dispatch(
           'handleSetViewUserFollowings',
@@ -94,6 +108,7 @@ export default {
           'handleSetViewUserFollowers',
           responseFollowers.data
         )
+        this.isLoading = false
       } catch (err) {
         this.isLoading = false
         Toast.fire({
