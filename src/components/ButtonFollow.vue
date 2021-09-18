@@ -1,5 +1,5 @@
 <template>
-  <button class="button-follow">
+  <button class="button-follow" :disabled="isProcessing">
     <div
       @click.stop.prevent="addFollowing(user.id)"
       class="button-follow__follow"
