@@ -88,7 +88,7 @@
         >
           <span
             ><span class="user-profile__detail__count"
-              >{{ user.FollowersCount }}位</span
+              >{{ (user.FollowersCount + 1200) | thousandFilter }}位</span
             >跟隨者</span
           >
         </router-link>
@@ -115,11 +115,8 @@ export default {
     user: {
       type: Object,
     },
-    initialFollowing: {
-      type: Boolean,
-    },
   },
-  mixins: [altFilter],
+  mixins: [altFilter, thousandFilter],
   data() {
     return {
       isModalOpen: false,
@@ -128,11 +125,6 @@ export default {
   },
   computed: {
     ...mapState(['currentUser']),
-  },
-  watch: {
-    initialFollowing(newValue) {
-      this.isFollowing = newValue
-    },
   },
   methods: {
     handleClickNotify() {
@@ -165,7 +157,6 @@ export default {
           throw new Error(data.message)
         }
         this.$store.dispatch('handleSetFollowed', userId)
-        // this.$emit('update-following', userId)
       } catch (e) {
         console.log(e)
         Toast.fire({
