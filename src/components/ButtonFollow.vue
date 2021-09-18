@@ -73,52 +73,6 @@ export default {
         })
       }
     },
-    // 增加追蹤
-    async addFollowing(userId) {
-      try {
-        this.isProcessing = true
-        const { data } = await usersAPI.addFollowShip({ id: userId })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-        this.$store.dispatch('handleSetFollowed', userId)
-        this.isProcessing = false
-        Toast.fire({
-          icon: 'success',
-          title: `${data.message}`,
-        })
-      } catch (e) {
-        this.isProcessing = false
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: '新增追蹤失敗',
-        })
-      }
-    },
-    // 取消追蹤
-    async removeFollowing(userId) {
-      try {
-        this.isProcessing = true
-        const { data } = await usersAPI.removeFollowShip({ userId })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-        this.$store.dispatch('handleSetFollowed', userId)
-        this.isProcessing = false
-        Toast.fire({
-          icon: 'success',
-          title: `${data.message}`,
-        })
-      } catch (e) {
-        this.isProcessing = false
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: '取消追蹤失敗',
-        })
-      }
-    },
   },
 }
 </script>
