@@ -42,22 +42,7 @@
             alt="noti_active"
           />
         </button>
-        <button class="user-profile__action__button">
-          <div
-            @click.stop.prevent="addFollowing(user.id)"
-            class="user-profile__action__follow"
-            v-show="!user.isFollowed"
-          >
-            跟隨
-          </div>
-          <div
-            @click.stop.prevent="removeFollowing(user.id)"
-            class="user-profile__action__following"
-            v-show="user.isFollowed"
-          >
-            正在跟隨
-          </div>
-        </button>
+        <ButtonFollow :user="user" />
       </div>
     </div>
     <div class="user-profile__detail">
@@ -98,14 +83,14 @@
 </template>
 
 <script>
-import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
 import { mapState } from 'vuex'
 import { altFilter, thousandFilter, introFilter } from './../utils/mixins'
 import UserEditModal from '@/components/UserEditModal.vue'
+import ButtonFollow from '@/components/ButtonFollow.vue'
 export default {
   components: {
     UserEditModal,
+    ButtonFollow,
   },
   props: {
     isCurrentUser: {
@@ -121,6 +106,7 @@ export default {
     return {
       isModalOpen: false,
       isNotify: false,
+      isProcessing: false,
     }
   },
   computed: {
@@ -134,38 +120,6 @@ export default {
     //打開編輯個人資料 Modal
     handleToggleModal() {
       this.isModalOpen = !this.isModalOpen
-    },
-    // 增加追蹤
-    async addFollowing(userId) {
-      try {
-        const { data } = await usersAPI.addFollowShip({ id: userId })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-        this.$store.dispatch('handleSetFollowed', userId)
-      } catch (e) {
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: '新增追蹤失敗',
-        })
-      }
-    },
-    // 取消追蹤
-    async removeFollowing(userId) {
-      try {
-        const { data } = await usersAPI.removeFollowShip({ userId })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-        this.$store.dispatch('handleSetFollowed', userId)
-      } catch (e) {
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: '取消追蹤失敗',
-        })
-      }
     },
   },
 }
@@ -217,28 +171,6 @@ export default {
       border-radius: 50px;
       &:hover {
         background-color: var(--theme-200);
-      }
-    }
-    &__follow,
-    &__following {
-      font-family: Noto Sans TC;
-      font-size: 15px;
-      border-radius: 20px;
-      padding: 8px 16px;
-      font-weight: 900;
-    }
-    &__follow {
-      color: var(--theme);
-      border: 1px solid var(--theme);
-      &:hover {
-        background-color: var(--theme-200);
-      }
-    }
-    &__following {
-      background-color: var(--theme);
-      color: var(--white);
-      &:hover {
-        background-color: var(--theme-600);
       }
     }
   }
