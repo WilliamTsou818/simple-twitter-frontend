@@ -17,7 +17,7 @@
       @close="handleReplyModalClose"
       @reply-success="handleReplySuccess"
     />
-    <UserPopularTop class="sm-d-none" />
+    <UserPopularTop class="md-d-none" />
   </div>
 </template>
 
@@ -95,6 +95,11 @@ main {
 }
 @media screen and (max-width: 600px) {
   .sm-d-none {
+    display: none;
+  }
+}
+@media screen and (max-width: 768px) {
+  .md-d-none {
     display: none;
   }
 }

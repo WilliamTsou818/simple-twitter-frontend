@@ -11,7 +11,7 @@ export default {}
   display: inline-block;
   width: 50px;
   height: 50px;
-  margin-top: 40px;
+  margin: 32px 0;
   border: 3px solid var(--theme-200);
   border-radius: 50%;
   border-top-color: var(--theme);

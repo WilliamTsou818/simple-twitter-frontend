@@ -26,6 +26,7 @@
         </router-link>
       </div>
     </div>
+    <p class="more">© 2021 WHAP</p>
   </div>
 </template>
 
@@ -79,9 +80,14 @@ export default {
 <style scoped lang="scss">
 .popular {
   width: 350px;
-  margin-top: 15px;
+  height: 100vh;
+  overflow-y: scroll;
+  padding-top: 15px;
   margin-left: 30px;
   margin-right: 82px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   &__container {
     background-color: var(--blue-gray-500);
     border-radius: 14px;
@@ -132,6 +138,19 @@ export default {
       color: var(--gray-500);
       margin-top: 2px;
     }
+  }
+}
+.more {
+  font-size: 12px;
+  text-align: left;
+  color: var(--gray-400);
+  margin: 20px 20px;
+}
+
+@media screen and (max-width: 1200px) {
+  .popular {
+    width: 300px;
+    margin: 0 24px;
   }
 }
 </style>
