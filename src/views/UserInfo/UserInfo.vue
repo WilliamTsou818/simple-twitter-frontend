@@ -115,6 +115,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixin.scss';
 .section-wrapper {
   height: calc(100vh - 56px);
   overflow-y: scroll;
@@ -136,10 +137,8 @@ export default {
     min-width: 90px;
     max-width: 130px;
     height: 100%;
-    font-size: 15px;
-    font-weight: bold;
     border-bottom: 2px solid var(--white);
-    color: var(--gray-500);
+    @include font-setting(15px, bold, var(--gray-500));
     &:hover {
       color: var(--theme);
     }

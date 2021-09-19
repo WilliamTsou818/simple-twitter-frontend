@@ -196,6 +196,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixin.scss';
 .form {
   width: 100%;
   max-width: 90vw;
@@ -212,9 +213,7 @@ export default {
       position: absolute;
       top: 5px;
       left: 10px;
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--gray-500);
+      @include font-setting(15px, 500, var(--gray-500));
     }
     &__input {
       width: 100%;
@@ -223,9 +222,7 @@ export default {
       padding-top: 20px;
       background-color: var(--input-bg);
       border: none;
-      font-size: 19px;
-      font-weight: 500;
-      color: var(--black);
+      @include font-setting(19px, 500, var(--black));
     }
   }
   &__submit {
@@ -234,9 +231,7 @@ export default {
     height: 50px;
     background-color: var(--theme);
     border-radius: 50px;
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--white);
+    @include font-setting(18px, bold, var(--white));
     &:disabled {
       background-color: var(--theme-dark);
     }
@@ -251,9 +246,7 @@ export default {
   &__cancel-link {
     display: inline-block;
     margin-top: 20px;
-    color: var(--blue-light);
-    font-size: 18px;
-    font-weight: bold;
+    @include font-setting(18px, bold, var(--blue-light));
     text-decoration: underline;
   }
 }

@@ -151,6 +151,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixin.scss';
 .user-profile {
   &__img {
     position: relative;
@@ -181,9 +182,7 @@ export default {
     padding: 10px 15px 20px 0;
     text-align: right;
     &__edit {
-      color: var(--theme);
-      font-size: 15px;
-      font-weight: bold;
+      @include font-setting(15px, bold, var(--theme));
       border: 1px solid var(--theme);
       border-radius: 24px;
       padding: 12px 16px;
@@ -204,9 +203,7 @@ export default {
     padding-right: 15px;
     text-align: left;
     &__name {
-      font-weight: 900;
-      color: var(--text);
-      font-size: 19px;
+      @include font-setting(19px, 900, var(--text));
     }
     &__account {
       color: var(--gray-500);

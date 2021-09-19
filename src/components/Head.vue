@@ -41,6 +41,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixin.scss';
 .head {
   position: sticky;
   top: 0;
@@ -78,14 +79,11 @@ export default {
     flex-direction: column;
     margin-left: 16px;
     &__title {
-      font-size: 18px;
-      font-weight: 900;
+      @include font-setting(18px, 900, var(--text));
     }
     &__count {
-      font-size: 13px;
       line-height: 13px;
-      color: var(--gray-500);
-      font-weight: 500;
+      @include font-setting(13px, 500, var(--gray-500));
     }
   }
 }

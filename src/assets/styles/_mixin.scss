@@ -1,0 +1,6 @@
+// 設定font
+@mixin font-setting($size, $weight, $color) {
+  font-size: $size;
+  font-weight: $weight;
+  color: $color;
+}

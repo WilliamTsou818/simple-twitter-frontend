@@ -134,6 +134,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixin.scss';
 .modal {
   &__mask {
     position: fixed;
@@ -204,9 +205,7 @@ export default {
         top: 11px;
         left: 60px;
         right: 15px;
-        color: var(--text);
-        font-weight: 500;
-        font-size: 18px;
+        @include font-setting(18px, 500, var(--text));
         border: none;
         resize: none;
         &::-webkit-scrollbar {
@@ -224,9 +223,7 @@ export default {
         height: 38px;
         background-color: var(--theme);
         border-radius: 50px;
-        font-size: 18px;
-        font-weight: 500;
-        color: var(--white);
+        @include font-setting(18px, 500, var(--white));
         &:disabled {
           background-color: var(--theme-dark);
         }

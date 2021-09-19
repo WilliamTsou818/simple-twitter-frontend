@@ -66,6 +66,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixin.scss';
 .logo {
   margin: 60px auto 20px auto;
   width: 50px;
@@ -74,9 +75,7 @@ export default {
 }
 .title {
   margin-bottom: 40px;
-  font-size: 23px;
-  font-weight: bold;
-  color: var(--text);
+  @include font-setting(23px, bold, var(--text));
 }
 .section-form {
   margin: 0 auto;

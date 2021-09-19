@@ -64,6 +64,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixin.scss';
 .reply {
   padding: 15px;
   text-align: left;
@@ -104,9 +105,7 @@ export default {
     &__content {
       word-break: break-all;
       margin-top: 5px;
-      font-weight: normal;
-      font-size: 15px;
-      color: var(--text);
+      @include font-setting(15px, normal, var(--text));
     }
   }
 }

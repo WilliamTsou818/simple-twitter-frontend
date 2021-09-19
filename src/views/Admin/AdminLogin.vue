@@ -31,6 +31,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixin.scss';
 .logo {
   margin: 60px auto 20px auto;
   width: 50px;
@@ -45,9 +46,7 @@ export default {
   text-align: end;
   &__link {
     text-decoration: underline;
-    color: var(--blue-light);
-    font-size: 18px;
-    font-weight: bold;
+    @include font-setting(18px, bold, var(--blue-light));
   }
 }
 </style>
