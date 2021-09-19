@@ -209,8 +209,8 @@ export default {
       background-color: var(--theme);
       border-radius: 50px;
       @include font-setting(18px, 500, var(--white));
-      &:disabled {
-        background-color: var(--theme-dark);
+      &:hover {
+        background-color: var(--theme-600);
       }
     }
   }

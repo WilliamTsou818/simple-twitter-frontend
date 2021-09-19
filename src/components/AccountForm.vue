@@ -230,6 +230,9 @@ export default {
     background-color: var(--theme);
     border-radius: 50px;
     @include font-setting(18px, bold, var(--white));
+    &:hover {
+      background-color: var(--theme-600);
+    }
     &__spinner {
       @include spinner(35px, var(--white));
       margin: 0 auto;
