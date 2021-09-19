@@ -4,19 +4,28 @@
       <button
         class="reply__detail__avatar"
         v-bind:style="{ backgroundImage: 'url(' + reply.User.avatar + ')' }"
-        @click.stop.prevent="handleClickAvatar(reply.User.id)"
+        @click.stop.prevent="handleClickUser(reply.User.id)"
       ></button>
       <div class="reply__detail__right">
         <div class="reply__detail__user">
-          <span class="reply__detail__name">{{ reply.User.name }}</span>
-          <span class="reply__detail__account">{{
-            reply.User.account | altFilter
-          }}</span>
+          <span
+            @click.stop.prevent="handleClickUser(reply.User.id)"
+            class="reply__detail__name"
+            >{{ reply.User.name }}</span
+          >
+          <span
+            @click.stop.prevent="handleClickUser(reply.User.id)"
+            class="reply__detail__account"
+            >{{ reply.User.account | altFilter }}</span
+          >
           <span class="reply__detail__date"
             >・{{ reply.createdAt | fromNowFilter }}</span
           >
         </div>
-        <div class="reply__detail__reply">
+        <div
+          @click.stop.prevent="handleClickUser(replyToUserId)"
+          class="reply__detail__reply"
+        >
           <span class="reply__detail__reply--text">回覆</span>
           {{ replyToAccount | altFilter }}
         </div>
@@ -42,6 +51,10 @@ export default {
       type: String,
       default: '',
     },
+    replyToId: {
+      type: Number,
+      default: -1,
+    },
   },
   data() {
     return {
@@ -53,10 +66,13 @@ export default {
     replyToAccount() {
       return this.reply.Tweet ? this.reply.Tweet.User.account : this.replyTo
     },
+    replyToUserId() {
+      return this.reply.Tweet ? this.reply.Tweet.User.id : this.replyToId
+    },
   },
   mixins: [fromNowFilter, altFilter],
   methods: {
-    handleClickAvatar(user_id) {
+    handleClickUser(user_id) {
       this.$router.push({ name: 'UserInfo', params: { user_id } })
     },
   },
@@ -68,6 +84,10 @@ export default {
   padding: 15px;
   text-align: left;
   border-bottom: 1px solid var(--blue-gray-600);
+  transition: 0.25s;
+  &:hover {
+    background-color: var(--gray-300);
+  }
   &__detail {
     display: flex;
     &__avatar {
@@ -88,8 +108,12 @@ export default {
       font-weight: bold;
       padding-right: 5px;
       color: var(--text);
+      cursor: pointer;
     }
-    &__account,
+    &__account {
+      color: var(--gray-500);
+      cursor: pointer;
+    }
     &__date {
       color: var(--gray-500);
     }
@@ -97,6 +121,7 @@ export default {
       font-weight: 500;
       margin-top: 4px;
       color: var(--theme);
+      cursor: pointer;
       &--text {
         color: var(--gray-500);
       }
