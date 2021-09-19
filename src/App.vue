@@ -8,6 +8,6 @@
 #app {
   font-family: Noto Sans TC, Helvetica, Arial, sans-serif;
   text-align: center;
-  color: #2c3e50;
+  color: var(--text);
 }
 </style>

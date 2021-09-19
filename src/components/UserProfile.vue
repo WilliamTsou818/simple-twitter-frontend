@@ -213,6 +213,7 @@ export default {
       font-size: 15px;
     }
     &__intro {
+      color: var(--black);
       font-size: 14px;
       margin: 14px 0;
     }
