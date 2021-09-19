@@ -6,6 +6,35 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
+// 設定NavigationDuplicated不提示
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return new Promise((resolve, reject) => {
+    originalPush.call(
+      this,
+      location,
+      () => {
+        // on complete
+        resolve(this.currentRoute)
+      },
+      (error) => {
+        // on abort
+        // only ignore NavigationDuplicated error
+        if (
+          error.name === 'NavigationDuplicated' ||
+          error.message.includes(
+            'Avoided redundant navigation to current location'
+          )
+        ) {
+          resolve(this.currentRoute)
+        } else {
+          reject(error)
+        }
+      }
+    )
+  })
+}
+
 // 檢查頁面權限
 const checkAuthorize = (to, from, next, role) => {
   const currentUser = store.state.currentUser
