@@ -11,6 +11,7 @@
         :maxlength="accountMaxLength"
         required
       />
+      <div class="form__account__border"></div>
       <label for="form__account__input" class="form__account__label">
         帳號
       </label>
@@ -25,6 +26,7 @@
         :maxlength="nameMaxLength"
         required
       />
+      <div class="form__name__border"></div>
       <label for="form__name__input" class="form__name__label">
         名稱
       </label>
@@ -38,6 +40,7 @@
         type="email"
         required
       />
+      <div class="form__email__border"></div>
       <label for="form__email__input" class="form__email__label">
         Email
       </label>
@@ -53,6 +56,7 @@
         :maxlength="passwordMaxLength"
         required
       />
+      <div class="form__password__border"></div>
       <label for="form__password__input" class="form__password__label">
         密碼
       </label>
@@ -68,6 +72,7 @@
         :maxlength="passwordMaxLength"
         required
       />
+      <div class="form__checkPassword__border"></div>
       <label
         for="form__checkPassword__input"
         class="form__checkPassword__label"
@@ -206,8 +211,6 @@ export default {
   &__checkPassword {
     position: relative;
     margin-top: 30px;
-    border-radius: 4px;
-    border-bottom: 2px solid var(--gray-500);
     &__label {
       position: absolute;
       top: 5px;
@@ -226,6 +229,19 @@ export default {
       font-size: 19px;
       font-weight: 500;
       color: var(--black);
+    }
+    &__border {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      border-radius: 0 0 4px 4px;
+      background-color: var(--gray-500);
+    }
+    &__input:hover ~ &__border,
+    &__input:focus ~ &__border {
+      border-bottom: 2px solid var(--input-hover-border);
     }
   }
   &__submit {
