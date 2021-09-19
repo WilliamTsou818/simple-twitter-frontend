@@ -84,6 +84,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixin.scss';
 .button-follow {
   pointer-events: all !important;
   &-wait {
@@ -112,29 +113,14 @@ export default {
       background-color: var(--theme-200);
     }
     &__spinner {
-      width: 24px;
-      height: 24px;
-      border-top: 4px solid var(--theme);
-      border-left: 4px solid transparent;
-      border-right: 4px solid transparent;
-      border-bottom: 4px solid transparent;
-      border-radius: 100%;
-      animation: spin 0.6s ease-out infinite;
+      @include spinner(24px, var(--theme));
     }
   }
   &__following {
     background-color: var(--theme);
     color: var(--white);
     &__spinner {
-      width: 23px;
-      height: 23px;
-      border-top: 4px solid var(--white);
-      border-left: 4px solid transparent;
-      border-right: 4px solid transparent;
-      border-bottom: 4px solid transparent;
-      border-radius: 100%;
-      cursor: wait;
-      animation: spin 0.6s ease-out infinite;
+      @include spinner(23px, var(--white));
     }
     &:hover {
       background-color: var(--theme-600);
@@ -146,11 +132,6 @@ export default {
   > .button-follow__following {
     line-height: 15px;
     height: 30px;
-  }
-}
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
   }
 }
 </style>
