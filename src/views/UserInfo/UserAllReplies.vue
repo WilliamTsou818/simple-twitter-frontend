@@ -7,11 +7,13 @@
     >
       目前沒有回覆
     </div>
-    <UserTweetReply
-      v-for="reply in replies"
-      :key="reply.id"
-      :init-reply="reply"
-    />
+    <div v-if="!isLoading">
+      <UserTweetReply
+        v-for="reply in replies"
+        :key="reply.id"
+        :init-reply="reply"
+      />
+    </div>
   </section>
 </template>
 

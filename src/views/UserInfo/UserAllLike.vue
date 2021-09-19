@@ -4,12 +4,14 @@
     <div class="section-tweets__tip" v-show="!isLoading && tweets.length === 0">
       目前沒有喜歡的推文
     </div>
-    <UserTweet
-      v-for="tweet in tweets"
-      :key="tweet.TweetId"
-      :init-tweet="tweet"
-      @action-reply="handleActionReply"
-    />
+    <div v-if="!isLoading">
+      <UserTweet
+        v-for="tweet in tweets"
+        :key="tweet.TweetId"
+        :init-tweet="tweet"
+        @action-reply="handleActionReply"
+      />
+    </div>
   </section>
 </template>
 

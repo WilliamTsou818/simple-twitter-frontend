@@ -154,7 +154,11 @@ export default new Vuex.Store({
       state.followingUsers = data
     },
     setInitViewUser(state, data) {
-      state.viewUser.data = data
+      //編輯個人資料 先暫時用解構賦值解決
+      state.viewUser.data = {
+        ...state.viewUser.data,
+        ...data,
+      }
     },
     setIsViewCurrentUser(state, id) {
       if (state.currentUser.id === id - 0) {

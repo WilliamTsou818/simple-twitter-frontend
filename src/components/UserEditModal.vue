@@ -204,15 +204,14 @@ export default {
           userId: this.userId,
           formData,
         })
-        console.log(data)
         if (data.status === 'success') {
-          this.$store.dispatch('handleInitViewUser', data.user)
           this.$store.dispatch('fetchCurrentUser')
+          //編輯一名ID相符使用者回傳的並沒有追蹤數量
+          this.$store.dispatch('handleInitViewUser', data.user)
         }
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        console.log(data)
         this.isProcessing = false
         Toast.fire({
           icon: 'success',

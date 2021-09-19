@@ -1,8 +1,8 @@
 <template>
   <div class="nav-left">
-    <div class="nav-left__logo">
+    <router-link to="/user/home" class="nav-left__logo">
       <img src="@/assets/images/logo.svg" alt="logo" />
-    </div>
+    </router-link>
     <nav class="nav-left__nav">
       <template v-if="currentUser.role === 'admin'">
         <router-link to="/admin/tweets" class="nav-left__nav__link">
