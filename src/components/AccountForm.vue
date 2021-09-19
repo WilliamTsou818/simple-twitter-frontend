@@ -76,20 +76,18 @@
       </label>
     </div>
     <template v-if="$route.name === 'UserRegister'">
-      <button class="form__submit" type="submit" :disabled="isProcessing">
-        註冊
+      <button class="form__submit" type="submit">
+        <div v-show="!isProcessing">註冊</div>
+        <div v-show="isProcessing" class="form__submit__spinner"></div>
       </button>
       <router-link class="form__cancel-link" to="/user/login">
         取消
       </router-link>
     </template>
     <div v-else class="form__submit__wrapper">
-      <button
-        class="form__submit form__submit--setting"
-        type="submit"
-        :disabled="isProcessing"
-      >
-        儲存
+      <button class="form__submit form__submit--setting" type="submit">
+        <div v-show="!isProcessing">儲存</div>
+        <div v-show="isProcessing" class="form__submit__spinner"></div>
       </button>
     </div>
   </form>
@@ -232,8 +230,9 @@ export default {
     background-color: var(--theme);
     border-radius: 50px;
     @include font-setting(18px, bold, var(--white));
-    &:disabled {
-      background-color: var(--theme-dark);
+    &__spinner {
+      @include spinner(35px, var(--white));
+      margin: 0 auto;
     }
     &--setting {
       width: 122px;

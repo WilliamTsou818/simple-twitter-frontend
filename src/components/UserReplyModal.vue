@@ -67,7 +67,11 @@
               @click.prevent.stop="handleNewReply"
               :disabled="isProcessing"
             >
-              回覆
+              <div v-show="!isProcessing">回覆</div>
+              <div
+                v-show="isProcessing"
+                class="section-action__btn-reply__spinner"
+              ></div>
             </button>
           </section>
         </div>
@@ -319,8 +323,9 @@ export default {
         background-color: var(--theme);
         border-radius: 50px;
         @include font-setting(18px, 500, var(--white));
-        &:disabled {
-          background-color: var(--theme-dark);
+        &__spinner {
+          @include spinner(24px, var(--white));
+          margin: 0 auto;
         }
       }
     }

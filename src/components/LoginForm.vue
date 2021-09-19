@@ -27,8 +27,9 @@
         密碼
       </label>
     </div>
-    <button class="form__submit" type="submit" :disabled="isProcessing">
-      登入
+    <button class="form__submit" type="submit">
+      <div v-show="!isProcessing">登入</div>
+      <div v-show="isProcessing" class="form__submit__spinner"></div>
     </button>
   </form>
 </template>
@@ -141,8 +142,9 @@ export default {
     background-color: var(--theme);
     border-radius: 50px;
     @include font-setting(18px, bold, var(--white));
-    &:disabled {
-      background-color: var(--theme-dark);
+    &__spinner {
+      @include spinner(35px, var(--white));
+      margin: 0 auto;
     }
   }
 }
