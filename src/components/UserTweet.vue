@@ -176,6 +176,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixin.scss';
 .atweet {
   min-height: 101px;
   max-height: 145px;
@@ -218,9 +219,7 @@ export default {
       margin-top: 6px;
       min-height: 22px;
       max-height: 66px;
-      font-weight: 500;
-      font-size: 15px;
-      color: var(--text);
+      @include font-setting(15px, 500, var(--text));
       // 多行省略
       overflow: hidden;
       text-overflow: ellipsis;

@@ -239,6 +239,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixin.scss';
 .form {
   width: 100%;
   &__name {
@@ -249,9 +250,7 @@ export default {
       position: absolute;
       top: 5px;
       left: 10px;
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--gray-500);
+      @include font-setting(15px, 500, var(--gray-500));
     }
     &__input {
       width: 100%;
@@ -260,9 +259,7 @@ export default {
       padding-top: 20px;
       background-color: var(--input-bg);
       border: none;
-      font-size: 19px;
-      font-weight: 500;
-      color: var(--black);
+      @include font-setting(19px, 500, var(--black));
     }
   }
   &__introduction {
@@ -271,9 +268,7 @@ export default {
       position: absolute;
       top: 5px;
       left: 10px;
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--gray-500);
+      @include font-setting(15px, 500, var(--gray-500));
     }
     &__textarea {
       resize: none;
@@ -285,9 +280,7 @@ export default {
       border: none;
       border-radius: 4px;
       border-bottom: 2px solid var(--gray-500);
-      font-size: 19px;
-      font-weight: 500;
-      color: var(--black);
+      @include font-setting(19px, 500, var(--black));
     }
   }
 }
@@ -331,9 +324,8 @@ export default {
     &__title {
       flex: 1;
       text-align: left;
-      font-size: 19px;
-      font-weight: 900;
       padding-left: 40px;
+      @include font-setting(19px, 900, var(--text));
     }
     &__save,
     &__save--wait {

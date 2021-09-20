@@ -78,6 +78,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '../assets/styles/mixin.scss';
 .popular {
   width: 350px;
   height: 100vh;
@@ -95,11 +96,9 @@ export default {
     padding-bottom: 8px;
   }
   &__title {
-    font-size: 18px;
+    @include font-setting(18px, bold, var(--text));
     text-align: left;
     padding: 10px 15px;
-    font-weight: bold;
-    color: var(--text);
     border-bottom: 1px solid var(--blue-gray-600);
   }
   &__user-list {

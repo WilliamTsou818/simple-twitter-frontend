@@ -1,0 +1,25 @@
+// 設定font
+@mixin font-setting($size, $weight, $color) {
+  font-size: $size;
+  font-weight: $weight;
+  color: $color;
+}
+
+// 設定spinner
+@mixin spinner($size, $color) {
+  width: $size;
+  height: $size;
+  border-top: 4px solid $color;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-radius: 100%;
+  cursor: wait;
+  animation: spin 0.6s ease-out infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

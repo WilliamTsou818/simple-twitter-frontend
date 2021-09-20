@@ -226,6 +226,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixin.scss';
 .wrapper {
   height: calc(100vh - 56px);
   overflow-y: scroll;
@@ -267,27 +268,20 @@ export default {
   &__content {
     word-break: break-all;
     margin-top: 15px;
-    font-weight: 500;
-    font-size: 23px;
-    color: var(--text);
+    @include font-setting(23px, 500, var(--text));
   }
   &__date {
     margin: 15px 0;
-    font-weight: 500;
-    font-size: 15px;
-    color: var(--gray-500);
+    @include font-setting(15px, 500, var(--gray-500));
   }
   &__count {
     display: flex;
     margin: 20px 5px;
     align-items: center;
-    font-weight: bold;
-    font-weight: 500;
-    color: var(--gray-500);
     line-height: 28px;
+    @include font-setting(19px, 500, var(--gray-500));
     &__text {
-      font-size: 19px;
-      color: var(--black);
+      @include font-setting(19px, bold, var(--black));
       margin-right: 5px;
     }
     &__reply {

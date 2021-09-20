@@ -156,6 +156,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixin.scss';
 .nav-left {
   display: flex;
   flex-direction: column;
@@ -183,9 +184,7 @@ export default {
       padding: 8px 12px;
       margin: 8px 0;
       border-radius: 20rem;
-      font-size: 18px;
-      font-weight: bold;
-      color: var(--text);
+      @include font-setting(18px, bold, var(--text));
       &:hover {
         background-color: var(--theme-200);
         color: var(--theme);
@@ -209,11 +208,9 @@ export default {
       height: 38px;
       background-color: var(--theme);
       border-radius: 50px;
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--white);
-      &:disabled {
-        background-color: var(--theme-dark);
+      @include font-setting(18px, 500, var(--white));
+      &:hover {
+        background-color: var(--theme-600);
       }
     }
   }

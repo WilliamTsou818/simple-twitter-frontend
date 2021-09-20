@@ -169,6 +169,16 @@ export default {
     &__icon {
       fill: var(--black);
     }
+    &:hover {
+      background-color: var(--theme-200);
+    }
+    &:hover > a > .tab-bar__tab__icon,
+    &:hover > button > .tab-bar__tab__icon {
+      fill: var(--theme);
+    }
+    &:hover > button > .tab-bar__tab__icon--left {
+      stroke: var(--theme);
+    }
     > .router-link-active {
       > .tab-bar__tab__icon {
         fill: var(--theme);
