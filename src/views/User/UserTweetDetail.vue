@@ -92,6 +92,7 @@
           :key="reply.id"
           :init-reply="reply"
           :reply-to="replyTo"
+          :reply-to-id="tweetDetail.User.id"
         />
       </section>
     </div>

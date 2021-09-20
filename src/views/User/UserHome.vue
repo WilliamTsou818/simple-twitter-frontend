@@ -29,8 +29,8 @@
       </button>
     </section>
     <div class="divider"></div>
-    <Spinner v-if="isLoading" />
     <section class="section-tweets" ref="sectionTweets">
+      <Spinner v-if="isLoading" />
       <div
         class="section-tweets__tip"
         v-show="!isLoading && tweets.length === 0"
