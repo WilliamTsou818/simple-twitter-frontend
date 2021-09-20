@@ -56,11 +56,10 @@
               v-model.trim="comment"
               name="comment"
               rows="7"
-              minlength="1"
-              :maxlength="commentMaxLength"
               placeholder="推你的回覆"
               required
             ></textarea>
+            <span class="section-action__tip">{{ commentTip }}</span>
             <button
               class="section-action__btn-reply"
               type="button"
@@ -100,6 +99,8 @@ export default {
       isProcessing: false,
       comment: '',
       commentMaxLength: 140,
+      // 驗證提示訊息
+      commentTip: '',
     }
   },
   watch: {
@@ -107,6 +108,13 @@ export default {
       this.reply = {
         ...this.reply,
         ...newValue,
+      }
+    },
+    comment() {
+      if (this.comment.length > this.commentMaxLength) {
+        this.commentTip = `字數不可超過 ${this.commentMaxLength} 字`
+      } else {
+        this.commentTip = ''
       }
     },
   },
@@ -121,16 +129,13 @@ export default {
     },
     // 驗證
     validation() {
-      let toastTip = ''
       if (!this.comment || this.comment.length === 0) {
-        toastTip = '內容不可空白'
-      } else if (this.comment.length > this.commentMaxLength) {
-        toastTip = `內容上限 ${this.commentMaxLength} 字`
+        this.commentTip = '內容不可空白'
       }
-      if (toastTip.length !== 0) {
+      if (this.commentTip.length > 0) {
         Toast.fire({
           icon: 'warning',
-          title: toastTip,
+          title: '請填寫正確回覆內容',
         })
         return false
       }
@@ -327,6 +332,15 @@ export default {
         &:disabled {
           background-color: var(--theme-dark);
         }
+      }
+      &__tip {
+        text-align: right;
+        position: absolute;
+        right: 86px;
+        bottom: 10px;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--input-error-border);
       }
     }
   }
