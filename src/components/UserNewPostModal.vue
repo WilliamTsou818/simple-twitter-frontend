@@ -27,11 +27,10 @@
               v-model.trim="description"
               name="description"
               rows="6"
-              minlength="1"
-              :maxlength="descriptionMaxLength"
               placeholder="有什麼新鮮事？"
               required
             ></textarea>
+            <span class="section-post__tip">{{ postTip }}</span>
             <button
               class="section-post__btn-tweet"
               type="button"
@@ -62,6 +61,8 @@ export default {
       isProcessing: false,
       description: '',
       descriptionMaxLength: 140,
+      // 驗證提示訊息
+      postTip: '',
     }
   },
   computed: {
@@ -74,16 +75,13 @@ export default {
     },
     // 驗證
     validation() {
-      let toastTip = ''
       if (!this.description || this.description.length === 0) {
-        toastTip = '內容不可空白'
-      } else if (this.description.length > this.descriptionMaxLength) {
-        toastTip = `內容上限 ${this.descriptionMaxLength} 字`
+        this.postTip = '內容不可空白'
       }
-      if (toastTip.length !== 0) {
+      if (this.postTip.length > 0) {
         Toast.fire({
           icon: 'warning',
-          title: toastTip,
+          title: '請填寫正確推文內容',
         })
         return false
       }
@@ -130,6 +128,15 @@ export default {
           icon: 'error',
           title: `推文失敗！\n ${message}`,
         })
+      }
+    },
+  },
+  watch: {
+    description() {
+      if (this.description.length > this.descriptionMaxLength) {
+        this.postTip = `字數不可超過 ${this.descriptionMaxLength} 字`
+      } else {
+        this.postTip = ''
       }
     },
   },
@@ -234,6 +241,15 @@ export default {
           @include spinner(24px, var(--white));
           margin: 0 auto;
         }
+      }
+      &__tip {
+        text-align: right;
+        position: absolute;
+        right: 86px;
+        bottom: 10px;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--input-error-border);
       }
     }
   }

@@ -32,8 +32,6 @@ export default {
     async handleAfterSubmit(requestData) {
       try {
         this.isProcessing = true
-        console.log('requestData', requestData)
-
         const { data } = await usersAPI.signUp(requestData)
         if (data.status !== 'success') {
           throw new Error(data.message)

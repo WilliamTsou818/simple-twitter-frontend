@@ -10,6 +10,7 @@
         type="text"
         required
       />
+      <div class="form__account__border"></div>
       <label for="form__account__input" class="form__account__label">
         帳號
       </label>
@@ -23,6 +24,7 @@
         type="password"
         required
       />
+      <div class="form__password__border"></div>
       <label for="form__password__input" class="form__password__label">
         密碼
       </label>
@@ -117,8 +119,6 @@ export default {
   &__password {
     position: relative;
     margin-top: 30px;
-    border-radius: 4px;
-    border-bottom: 2px solid var(--gray-500);
     &__label {
       position: absolute;
       top: 5px;
@@ -133,6 +133,19 @@ export default {
       background-color: var(--input-bg);
       border: none;
       @include font-setting(19px, 500, var(--black));
+    }
+    &__border {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      border-radius: 0 0 4px 4px;
+      background-color: var(--gray-500);
+    }
+    &__input:hover ~ &__border,
+    &__input:focus ~ &__border {
+      border-bottom: 2px solid var(--input-hover-border);
     }
   }
   &__submit {
