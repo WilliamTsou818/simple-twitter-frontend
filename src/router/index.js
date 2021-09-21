@@ -38,14 +38,14 @@ VueRouter.prototype.push = function push(location) {
 const checkAuthorize = (to, from, next, role) => {
   const currentUser = store.state.currentUser
   if (currentUser && currentUser.role !== role) {
-    console.log(`checkAuthorize ${role} fail`)
+    // console.log(`checkAuthorize ${role} fail`)
     Toast.fire({
       icon: 'error',
       title: '權限不足，無法訪問！',
     })
     return
   }
-  console.log(`checkAuthorize ${role} success`)
+  // console.log(`checkAuthorize ${role} success`)
   next()
 }
 
@@ -201,7 +201,7 @@ router.beforeEach(async (to, from, next) => {
   if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore) {
     // 取得驗證成功與否
     isAuthenticated = await store.dispatch('fetchCurrentUser')
-    console.log('isAuthenticated', isAuthenticated)
+    // console.log('isAuthenticated', isAuthenticated)
   }
 
   // 設定不需要驗證 token 的頁面

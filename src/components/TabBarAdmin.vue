@@ -139,7 +139,6 @@ export default {
       const role =
         this.$store.state.currentUser.role === 'user' ? 'user' : 'admin'
       this.$store.commit('revokeAuthentication')
-      console.log(`handleLogout /${role}/login`)
       this.$router.push(`/${role}/login`)
     },
   },
