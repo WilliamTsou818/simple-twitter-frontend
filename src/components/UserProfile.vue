@@ -202,6 +202,7 @@ export default {
     padding-left: 15px;
     padding-right: 15px;
     text-align: left;
+    max-width: 100%;
     &__name {
       @include font-setting(19px, 900, var(--text));
     }
@@ -213,6 +214,7 @@ export default {
       color: var(--black);
       font-size: 14px;
       margin: 14px 0;
+      word-break: break-all;
     }
     &__follow {
       display: inline-flex;
