@@ -100,6 +100,8 @@
                     />
                   </div>
                 </div>
+                <div class="modal__img__tip">{{ coverTip }}</div>
+                <div class="modal__img__tip">{{ avatarTip }}</div>
               </div>
             </div>
             <div class="modal__name">
@@ -176,8 +178,16 @@ export default {
       //modal顯示的cover
       modalCover: '',
       coverRemoveBtn: false,
+      coverTip: '',
+      coverFileType: '',
+      coverSize: 0,
+      coverMaxSize: '1000000',
       modalAvatar: '',
       avatarRemoveBtn: false,
+      avatarTip: '',
+      avatarFileType: '',
+      avatarSize: 0,
+      avatarMaxSize: '1000000',
       name: '',
       nameTip: '',
       nameMaxLength: 50,
@@ -204,9 +214,30 @@ export default {
   watch: {
     modalCover() {
       this.coverRemoveBtn = this.modalCover === this.cover ? false : true
+      if (this.coverFileType && this.coverFileType !== 'image') {
+        this.coverTip = '封面照格式錯誤，請選擇 JPG PNG GIF 等圖檔'
+      } else {
+        this.coverTip = ''
+      }
+      if (this.coverSize > this.coverMaxSize) {
+        this.coverTip = '封面大小限制為1MB以下'
+      } else {
+        this.coverTip = ''
+      }
     },
     modalAvatar() {
       this.avatarRemoveBtn = this.modalAvatar === this.avatar ? false : true
+      if (this.avatarFileType && this.avatarFileType !== 'image') {
+        this.avatarTip = '頭像格式錯誤，請選擇 JPG PNG GIF 等圖檔'
+      } else {
+        this.avatarTip = ''
+      }
+      if (this.avatarSize > this.avatarMaxSize) {
+        console.log(this.avatarSize, this.avatarMaxSize)
+        this.avatarTip = '頭像大小限制為1MB以下'
+      } else {
+        this.avatarTip = ''
+      }
     },
     name() {
       if (!this.name) {
@@ -241,19 +272,6 @@ export default {
       this.introduction = this.$store.getters.getCurrentUser.introduction
       this.handleToggleModal()
     },
-    // 處理 avatar 預覽圖片
-    handleAvatarUpload() {
-      this.$refs.avatar.click()
-    },
-    handleAvatarChange() {
-      const { files } = this.$refs.avatar
-      const imageURL = window.URL.createObjectURL(files[0])
-      this.modalAvatar = imageURL
-    },
-    handleAvatarRemove() {
-      this.modalAvatar = this.$store.getters.getCurrentUser.avatar
-      this.$refs.avatar.value = ''
-    },
     // 處理 cover 預覽圖片
     handleCoverUpload() {
       this.$refs.cover.click()
@@ -261,14 +279,41 @@ export default {
     handleCoverRemove() {
       this.modalCover = this.$store.getters.getCurrentUser.cover
       this.$refs.cover.value = ''
+      this.coverFileType = ''
+      this.coverSize = 0
+      console.log(this.coverSize)
     },
     handleCoverChange() {
       const { files } = this.$refs.cover
+      this.coverFileType = files[0].type.split('/')[0]
+      this.coverSize = files[0].size
       const imageURL = window.URL.createObjectURL(files[0])
       this.modalCover = imageURL
     },
+    // 處理 avatar 預覽圖片
+    handleAvatarUpload() {
+      this.$refs.avatar.click()
+    },
+    handleAvatarRemove() {
+      this.modalAvatar = this.$store.getters.getCurrentUser.avatar
+      this.$refs.avatar.value = ''
+      this.avatarFileType = ''
+      this.avatarSize = 0
+    },
+    handleAvatarChange() {
+      const { files } = this.$refs.avatar
+      this.avatarFileType = files[0].type.split('/')[0]
+      this.avatarSize = files[0].size
+      const imageURL = window.URL.createObjectURL(files[0])
+      this.modalAvatar = imageURL
+    },
     formValidation() {
-      if (this.nameTip.length > 0 || this.introductionTip.length > 0) {
+      if (
+        this.nameTip.length > 0 ||
+        this.introductionTip.length > 0 ||
+        this.coverTip.length > 0 ||
+        this.avatarTip.length > 0
+      ) {
         Toast.fire({
           icon: 'warning',
           title: '請正確填寫所有資料',
@@ -311,7 +356,7 @@ export default {
           console.log(err.response.data)
           message = err.response.data.message
           errType = err.response.data.errType
-          //TODO: 無法處理多個錯誤
+          //TODO: 無法處理多個回傳錯誤訊息
           if (errType === 'NameExistsError') {
             this.nameTip = '名稱已被使用'
           }
@@ -491,6 +536,11 @@ export default {
   &__img {
     position: relative;
     height: 200px;
+    &__tip {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--input-error-border);
+    }
     &__label {
       display: flex;
       padding: 20px;
