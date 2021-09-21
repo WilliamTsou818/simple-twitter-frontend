@@ -6,6 +6,7 @@ const baseURL = 'https://wahp-simeple-twitter-api.herokuapp.com/api'
 
 const axiosInstance = axios.create({
   baseURL,
+  timeout: 30000,
 })
 
 axiosInstance.interceptors.request.use(
@@ -19,6 +20,20 @@ axiosInstance.interceptors.request.use(
     return config
   },
   (err) => Promise.reject(err)
+)
+
+axiosInstance.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    if (error.message.includes('timeout')) {
+      console.log("網路超時", error);
+      alert("網路超時，請稍後在試");
+      return Promise.reject(error);
+    }
+    return Promise.reject(error);
+  }
 )
 
 export const apiHelper = axiosInstance
