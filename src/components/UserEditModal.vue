@@ -124,8 +124,11 @@
                 </label>
                 <span class="form__name__tip">{{ nameTip }}</span>
               </div>
-              <div class="modal__name__length">
-                {{ name ? name.length : '0' }}/50
+              <div
+                class="modal__name__length"
+                :class="{ error: name.length > nameMaxLength }"
+              >
+                {{ name ? name.length : '0' }}/{{ nameMaxLength }}
               </div>
             </div>
             <div class="modal__introduction">
@@ -150,8 +153,13 @@
                   introductionTip
                 }}</span>
               </div>
-              <div class="modal__introduction__length">
-                {{ introduction ? introduction.length : '0' }}/160
+              <div
+                class="modal__introduction__length"
+                :class="{ error: introduction.length > introductionMaxLength }"
+              >
+                {{ introduction ? introduction.length : '0' }}/{{
+                  introductionMaxLength
+                }}
               </div>
             </div>
           </form>
@@ -380,6 +388,7 @@ export default {
   &__name {
     position: relative;
     border-radius: 4px;
+
     &__label {
       position: absolute;
       top: 5px;
@@ -586,6 +595,9 @@ export default {
       text-align: right;
       font-size: 15px;
       color: var(--gray-500);
+      &.error {
+        color: var(--input-error-border);
+      }
     }
   }
   &__introduction {
@@ -596,6 +608,9 @@ export default {
       text-align: right;
       font-size: 15px;
       color: var(--gray-500);
+      &.error {
+        color: var(--input-error-border);
+      }
     }
   }
 }
