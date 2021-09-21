@@ -26,7 +26,7 @@
         </router-link>
       </div>
     </div>
-    <p class="more">© 2021 WHAP</p>
+    <p class="more">© 2021 WAHP</p>
   </div>
 </template>
 
