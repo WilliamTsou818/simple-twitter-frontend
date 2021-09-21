@@ -233,7 +233,6 @@ export default {
         this.avatarTip = ''
       }
       if (this.avatarSize > this.avatarMaxSize) {
-        console.log(this.avatarSize, this.avatarMaxSize)
         this.avatarTip = '頭像大小限制為1MB以下'
       } else {
         this.avatarTip = ''
@@ -281,7 +280,6 @@ export default {
       this.$refs.cover.value = ''
       this.coverFileType = ''
       this.coverSize = 0
-      console.log(this.coverSize)
     },
     handleCoverChange() {
       const { files } = this.$refs.cover
