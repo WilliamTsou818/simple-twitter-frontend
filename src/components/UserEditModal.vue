@@ -250,14 +250,14 @@ export default {
       if (!this.name) {
         this.nameTip = '請填寫名稱'
       } else if (this.name.length > this.nameMaxLength) {
-        this.nameTip = `名稱上限 ${this.nameMaxLength} 字`
+        this.nameTip = `名稱字數超出上限 ${this.nameMaxLength} 字`
       } else {
         this.nameTip = ''
       }
     },
     introduction() {
       if (this.introduction.length > this.introductionMaxLength) {
-        this.introductionTip = `介紹上限 ${this.introductionMaxLength} 字`
+        this.introductionTip = `介紹字數超出上限 ${this.introductionMaxLength} 字`
       } else {
         this.introductionTip = ''
       }
