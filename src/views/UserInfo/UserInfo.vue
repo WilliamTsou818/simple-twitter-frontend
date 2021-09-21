@@ -90,7 +90,6 @@ export default {
   methods: {
     async fetchUser(userId) {
       try {
-        console.log('fetchUser')
         this.isLoading = true
         const { data } = await usersAPI.getUser({ userId })
         this.$store.dispatch('handleInitViewUser', data)

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './../store'
 import { Toast } from '@/utils/helpers'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -39,14 +38,14 @@ VueRouter.prototype.push = function push(location) {
 const checkAuthorize = (to, from, next, role) => {
   const currentUser = store.state.currentUser
   if (currentUser && currentUser.role !== role) {
-    console.log(`checkAuthorize ${role} fail`)
+    // console.log(`checkAuthorize ${role} fail`)
     Toast.fire({
       icon: 'error',
       title: '權限不足，無法訪問！',
     })
     return
   }
-  console.log(`checkAuthorize ${role} success`)
+  // console.log(`checkAuthorize ${role} success`)
   next()
 }
 
@@ -61,8 +60,15 @@ const checkAdminAuthorize = (to, from, next) => {
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    // 檢查目前權限是進入前台or後台
+    beforeEnter: (to, from, next) => {
+      const currentUser = store.state.currentUser
+      if (currentUser && currentUser.role === 'admin') {
+        next('/admin/login')
+      } else {
+        next('/user/login')
+      }
+    }
   },
   //後台登入路由
   {
@@ -129,7 +135,6 @@ const routes = [
         name: 'UserInfo',
         redirect: '/user/:user_id/tweets',
         component: () => import('../views/UserInfo/UserInfo.vue'),
-        //TODO:不確定還需不需要這行
         beforeEnter: checkUserAuthorize,
         children: [
           {
@@ -196,21 +201,19 @@ router.beforeEach(async (to, from, next) => {
   if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore) {
     // 取得驗證成功與否
     isAuthenticated = await store.dispatch('fetchCurrentUser')
-    console.log('isAuthenticated', isAuthenticated)
+    // console.log('isAuthenticated', isAuthenticated)
   }
 
   // 設定不需要驗證 token 的頁面
   const pathsWithoutAuthentication = ['UserLogin', 'UserRegister', 'AdminLogin']
 
-  // TODO:開發中使用 (to.name !== 'Home')
   // token 無效，轉址到登入頁
   if (
     !isAuthenticated &&
-    !pathsWithoutAuthentication.includes(to.name) &&
-    to.name !== 'Home'
+    !pathsWithoutAuthentication.includes(to.name)
   ) {
-    console.log('to.name', to.name)
-    console.log('token 無效，轉址到指定登入頁')
+    // console.log('to.name', to.name)
+    // console.log('token 無效，轉址到指定登入頁')
     switch (to.name) {
       case 'AdminAllTweets':
       case 'AdminAllUsers':
@@ -224,8 +227,8 @@ router.beforeEach(async (to, from, next) => {
 
   // token 有效，轉址到/admin
   if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
-    console.log('to.name', to.name)
-    console.log('token 有效，轉址到指定開始頁面')
+    // console.log('to.name', to.name)
+    // console.log('token 有效，轉址到指定開始頁面')
     switch (to.name) {
       case 'AdminLogin':
         next('/admin')
