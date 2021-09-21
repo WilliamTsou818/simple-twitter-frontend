@@ -212,8 +212,8 @@ router.beforeEach(async (to, from, next) => {
     !isAuthenticated &&
     !pathsWithoutAuthentication.includes(to.name)
   ) {
-    console.log('to.name', to.name)
-    console.log('token 無效，轉址到指定登入頁')
+    // console.log('to.name', to.name)
+    // console.log('token 無效，轉址到指定登入頁')
     switch (to.name) {
       case 'AdminAllTweets':
       case 'AdminAllUsers':
@@ -227,8 +227,8 @@ router.beforeEach(async (to, from, next) => {
 
   // token 有效，轉址到/admin
   if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
-    console.log('to.name', to.name)
-    console.log('token 有效，轉址到指定開始頁面')
+    // console.log('to.name', to.name)
+    // console.log('token 有效，轉址到指定開始頁面')
     switch (to.name) {
       case 'AdminLogin':
         next('/admin')
