@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './../store'
 import { Toast } from '@/utils/helpers'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -61,8 +60,15 @@ const checkAdminAuthorize = (to, from, next) => {
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    // 檢查目前權限是進入前台or後台
+    beforeEnter: (to, from, next) => {
+      const currentUser = store.state.currentUser
+      if (currentUser && currentUser.role === 'admin') {
+        next('/admin/login')
+      } else {
+        next('/user/login')
+      }
+    }
   },
   //後台登入路由
   {
@@ -129,7 +135,6 @@ const routes = [
         name: 'UserInfo',
         redirect: '/user/:user_id/tweets',
         component: () => import('../views/UserInfo/UserInfo.vue'),
-        //TODO:不確定還需不需要這行
         beforeEnter: checkUserAuthorize,
         children: [
           {
@@ -202,12 +207,10 @@ router.beforeEach(async (to, from, next) => {
   // 設定不需要驗證 token 的頁面
   const pathsWithoutAuthentication = ['UserLogin', 'UserRegister', 'AdminLogin']
 
-  // TODO:開發中使用 (to.name !== 'Home')
   // token 無效，轉址到登入頁
   if (
     !isAuthenticated &&
-    !pathsWithoutAuthentication.includes(to.name) &&
-    to.name !== 'Home'
+    !pathsWithoutAuthentication.includes(to.name)
   ) {
     console.log('to.name', to.name)
     console.log('token 無效，轉址到指定登入頁')
