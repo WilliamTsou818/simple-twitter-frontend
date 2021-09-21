@@ -61,13 +61,10 @@ export default {
           console.log(err)
           message = err.message
         }
-        // FIXME:希望後端改回傳success & 空陣列
-        if (message !== 'No tweets found') {
-          Toast.fire({
-            icon: 'error',
-            title: `獲取回覆列表失敗！\n ${message}`,
-          })
-        }
+        Toast.fire({
+          icon: 'error',
+          title: `獲取回覆列表失敗！\n ${message}`,
+        })
       }
     },
   },
