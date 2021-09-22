@@ -17,7 +17,6 @@
 
 <script>
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
 import Spinner from '@/components/Spinner'
 import UserTweet from '@/components/UserTweet'
 import { replyAction, Toastification } from '@/utils/mixins'
