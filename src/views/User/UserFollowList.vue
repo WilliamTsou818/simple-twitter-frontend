@@ -69,7 +69,10 @@ export default {
   computed: {
     ...mapState(['currentUser']),
     currentViewUser() {
+      // const isViewCurrentUser = this.$store.getters.getViewUser
       return this.$store.getters.getViewUser
+      // ? this.$store.getters.getCurrentUser
+      // : this.$store.getters.getViewUser
     },
     tab() {
       return this.$route.name
@@ -90,8 +93,9 @@ export default {
     this.fetchUserFollow(user_id)
   },
   beforeRouteUpdate(to, from, next) {
+    console.log('usrFollowList')
     const { user_id } = to.params
-    this.fetchUserFollow(user_id)
+    // this.fetchUserFollow(user_id)
     next()
   },
   methods: {

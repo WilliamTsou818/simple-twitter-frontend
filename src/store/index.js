@@ -18,6 +18,8 @@ export default new Vuex.Store({
       cover: '',
       introduction: '',
       role: '',
+      followings: [],
+      followers: [],
     },
     viewUser: {
       data: {
@@ -82,11 +84,38 @@ export default new Vuex.Store({
         return false
       }
     },
-    async handleInitFollowing(context) {
+    // async fetchCurrentUserFollowings(context) {
+    //   try {
+    //     const userId = context.state.currentUser.id
+    //     const { data } = await usersAPI.getUserFollowing({ userId })
+    //     context.commit('setInitFollowing', data)
+    //   } catch (error) {
+    //     console.log('error', error)
+    //   }
+    // },
+    // async fetchCurrentUserFollowers(context) {
+    //   try {
+    //     const userId = context.state.currentUser.id
+    //     const { data } = await usersAPI.getUserFollower({ userId })
+    //     context.commit('setInitFollower', data)
+    //   } catch (error) {
+    //     console.log('error', error)
+    //   }
+    // },
+    async fetchViewUserFollowings(context) {
       try {
-        const userId = context.state.currentUser.id
+        const userId = context.state.viewUser.data.id
         const { data } = await usersAPI.getUserFollowing({ userId })
-        context.commit('setInitFollowing', data)
+        context.commit('setViewUserFollowings', data)
+      } catch (error) {
+        console.log('error', error)
+      }
+    },
+    async fetchViewUserFollowers(context) {
+      try {
+        const userId = context.state.viewUser.data.id
+        const { data } = await usersAPI.getUserFollower({ userId })
+        context.commit('setViewUserFollowers', data)
       } catch (error) {
         console.log('error', error)
       }
@@ -151,7 +180,10 @@ export default new Vuex.Store({
       localStorage.removeItem('token')
     },
     setInitFollowing(state, data) {
-      state.followingUsers = data
+      state.currentUser.followings = data
+    },
+    setInitFollower(state, data) {
+      state.currentUser.followers = data
     },
     setInitViewUser(state, data) {
       //編輯個人資料 先暫時用解構賦值解決

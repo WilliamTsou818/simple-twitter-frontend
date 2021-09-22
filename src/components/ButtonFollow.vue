@@ -51,6 +51,11 @@ export default {
       isProcessing: false,
     }
   },
+  computed: {
+    isViewCurrentUser() {
+      return this.$store.getters.getViewUser.isViewCurrentUser
+    },
+  },
   methods: {
     async handleClickFollow(userId) {
       try {
@@ -63,6 +68,13 @@ export default {
           throw new Error(data.message)
         }
         this.$store.dispatch('handleSetFollowed', userId)
+        if (!this.isViewCurrentUser) {
+          this.$store.dispatch('fetchViewUserFollowings')
+          this.$store.dispatch('fetchViewUserFollowers')
+        } else if (this.user.isFollowed) {
+          this.$store.dispatch('fetchViewUserFollowings')
+          this.$store.dispatch('fetchViewUserFollowers')
+        }
         this.isProcessing = false
         Toast.fire({
           icon: 'success',
