@@ -119,6 +119,7 @@ const routes = [
     path: '/user/setting',
     name: 'UserSetting',
     component: () => import('../views/User/UserSetting.vue'),
+    beforeEnter: checkUserAuthorize,
   },
   //前台路由
   {
