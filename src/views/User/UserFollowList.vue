@@ -49,7 +49,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import usersAPI from '@/apis/users'
 import { altFilter, Toastification } from '@/utils/mixins'
 
 import Spinner from '@/components/Spinner'
@@ -64,7 +63,6 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
       show: 'followings',
     }
   },
@@ -75,6 +73,9 @@ export default {
     },
     tab() {
       return this.$route.name
+    },
+    isLoading() {
+      return this.$store.getters.getViewUser.isLoading
     },
     followList() {
       return this.tab === 'UserFollowings'
@@ -92,7 +93,7 @@ export default {
     const { user_id } = this.$route.params
     const { name } = this.$route
     this.show = name
-    this.fetchUserFollow(user_id)
+    // this.fetchUserFollow(user_id)
   },
   beforeRouteUpdate(to, from, next) {
     const { user_id } = to.params
@@ -100,27 +101,27 @@ export default {
     next()
   },
   methods: {
-    async fetchUserFollow(userId) {
-      try {
-        this.isLoading = true
-        const responseFollowing = await usersAPI.getUserFollowing({ userId })
-        this.$store.dispatch(
-          'handleSetViewUserFollowings',
-          responseFollowing.data
-        )
-        const responseFollowers = await usersAPI.getUserFollower({ userId })
-        this.$store.dispatch(
-          'handleSetViewUserFollowers',
-          responseFollowers.data
-        )
-        this.isLoading = false
-      } catch (err) {
-        this.isLoading = false
-        this.ToastError({
-          title: err.message,
-        })
-      }
-    },
+    // async fetchUserFollow(userId) {
+    //   try {
+    //     this.isLoading = true
+    //     const responseFollowing = await usersAPI.getUserFollowing({ userId })
+    //     this.$store.dispatch(
+    //       'handleSetViewUserFollowings',
+    //       responseFollowing.data
+    //     )
+    //     const responseFollowers = await usersAPI.getUserFollower({ userId })
+    //     this.$store.dispatch(
+    //       'handleSetViewUserFollowers',
+    //       responseFollowers.data
+    //     )
+    //     this.isLoading = false
+    //   } catch (err) {
+    //     this.isLoading = false
+    //     this.ToastError({
+    //       title: err.message,
+    //     })
+    //   }
+    // },
   },
 }
 </script>

@@ -52,12 +52,16 @@ export default {
   created() {
     const { user_id } = this.$route.params
     this.userId = user_id
+    this.fetchUser(user_id)
     this.$store.dispatch('fetchViewUserFollowings')
     this.$store.dispatch('fetchViewUserFollowers')
   },
   beforeRouteUpdate(to, from, next) {
     const { name } = this.$route
     this.show = name
+    const { user_id } = this.$route.params
+    this.userId = user_id
+    this.fetchUser(user_id)
     this.$store.dispatch('fetchViewUserFollowings')
     this.$store.dispatch('fetchViewUserFollowers')
     next()

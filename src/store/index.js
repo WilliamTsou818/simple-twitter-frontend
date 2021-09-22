@@ -86,18 +86,24 @@ export default new Vuex.Store({
     },
     async fetchViewUserFollowings(context) {
       try {
+        context.state.viewUser.isLoading = true
         const { user_id } = router.currentRoute.params
-        const { data } = await usersAPI.getUserFollowing({ user_id })
+        const userId = user_id
+        const { data } = await usersAPI.getUserFollowing({ userId })
         context.commit('setViewUserFollowings', data)
+        context.state.viewUser.isLoading = false
       } catch (error) {
         console.log('error', error)
       }
     },
     async fetchViewUserFollowers(context) {
       try {
+        context.state.viewUser.isLoading = true
         const { user_id } = router.currentRoute.params
-        const { data } = await usersAPI.getUserFollower({ user_id })
+        const userId = user_id
+        const { data } = await usersAPI.getUserFollower({ userId })
         context.commit('setViewUserFollowers', data)
+        context.state.viewUser.isLoading = false
       } catch (error) {
         console.log('error', error)
       }
@@ -160,12 +166,6 @@ export default new Vuex.Store({
       state.isAuthenticated = false
       state.token = ''
       localStorage.removeItem('token')
-    },
-    setInitFollowing(state, data) {
-      state.currentUser.followings = data
-    },
-    setInitFollower(state, data) {
-      state.currentUser.followers = data
     },
     setInitViewUser(state, data) {
       //編輯個人資料 先暫時用解構賦值解決
