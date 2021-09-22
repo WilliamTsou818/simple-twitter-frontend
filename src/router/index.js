@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './../store'
-import { Toast } from '@/utils/helpers'
+import CustomToast from '../components/CustomToast.vue'
 
 Vue.use(VueRouter)
 
@@ -39,10 +39,15 @@ const checkAuthorize = (to, from, next, role) => {
   const currentUser = store.state.currentUser
   if (currentUser && currentUser.role !== role) {
     // console.log(`checkAuthorize ${role} fail`)
-    Toast.fire({
-      icon: 'error',
-      title: '權限不足，無法訪問！',
+    Vue.$toast({
+      component: CustomToast,
+      props: {
+        icon: 'error',
+        title: '權限不足，無法訪問！',
+        description: ''
+      }
     })
+    next(from)
     return
   }
   // console.log(`checkAuthorize ${role} success`)
@@ -114,6 +119,7 @@ const routes = [
     path: '/user/setting',
     name: 'UserSetting',
     component: () => import('../views/User/UserSetting.vue'),
+    beforeEnter: checkUserAuthorize,
   },
   //前台路由
   {

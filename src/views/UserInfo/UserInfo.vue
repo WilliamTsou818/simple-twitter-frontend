@@ -42,7 +42,7 @@
 <script>
 import { mapState } from 'vuex'
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
+import { Toastification } from './../../utils/mixins'
 
 import NavBarAdmin from '@/components/NavBarAdmin.vue'
 import TabBarAdmin from '@/components/TabBarAdmin.vue'
@@ -52,6 +52,7 @@ import UserProfile from '@/components/UserProfile.vue'
 
 export default {
   name: 'UserInfo',
+  mixins: [Toastification],
   components: {
     NavBarAdmin,
     TabBarAdmin,
@@ -102,9 +103,9 @@ export default {
         } else {
           message = err.message
         }
-        Toast.fire({
-          icon: 'error',
-          title: `取得使用者資訊失敗！\n ${message}`,
+        this.ToastError({
+          title: '取得使用者資訊失敗！',
+          description: message,
         })
         this.$router.back()
       }

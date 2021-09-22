@@ -32,8 +32,7 @@
 
 <script>
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
-import { altFilter } from './../utils/mixins'
+import { altFilter, Toastification } from './../utils/mixins'
 
 import Spinner from '@/components/Spinner'
 import ButtonFollow from '@/components/ButtonFollow.vue'
@@ -44,7 +43,7 @@ export default {
     Spinner,
     ButtonFollow,
   },
-  mixins: [altFilter],
+  mixins: [altFilter, Toastification],
   data() {
     return {
       isLoading: true,
@@ -67,9 +66,15 @@ export default {
         this.isLoading = false
       } catch (err) {
         console.log(err)
-        Toast.fire({
-          icon: 'error',
-          title: 'PopularTop讀取失敗',
+        let message = ''
+        if (err.response) {
+          message = err.response.data.message
+        } else {
+          message = err.message
+        }
+        this.ToastError({
+          title: 'PopularTop讀取失敗！',
+          description: message,
         })
       }
     },

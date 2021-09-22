@@ -101,12 +101,12 @@
 
 <script>
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
 import {
   timeFormatFilter,
   altFilter,
   thousandFilter,
   replyAction,
+  Toastification,
 } from '@/utils/mixins'
 
 import Spinner from '@/components/Spinner'
@@ -119,7 +119,13 @@ export default {
     Spinner,
     UserTweetReply,
   },
-  mixins: [timeFormatFilter, altFilter, thousandFilter, replyAction],
+  mixins: [
+    timeFormatFilter,
+    altFilter,
+    thousandFilter,
+    replyAction,
+    Toastification,
+  ],
   created() {
     const { tweet_id: tweetId } = this.$route.params
     this.fetchTweetDetail(tweetId)
@@ -167,9 +173,9 @@ export default {
           message = err.message
         }
 
-        Toast.fire({
-          icon: 'error',
-          title: `獲取推文資訊失敗！\n ${message}`,
+        this.ToastError({
+          title: '獲取推文資訊失敗！',
+          description: message,
         })
         this.$router.back()
       }
@@ -197,16 +203,14 @@ export default {
             ? this.tweetDetail.LikesCount + 1
             : this.tweetDetail.LikesCount - 1,
         }
-        Toast.fire({
-          icon: 'success',
-          title: `${data.message}`,
+        this.ToastSuccess({
+          title: data.message,
         })
       } catch (err) {
         this.isProcessing = false
         console.log(err)
-        Toast.fire({
-          icon: 'error',
-          title: `${err.message}`,
+        this.ToastError({
+          description: err.message,
         })
       }
     },

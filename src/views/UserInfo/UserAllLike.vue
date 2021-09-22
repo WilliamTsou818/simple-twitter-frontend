@@ -17,10 +17,9 @@
 
 <script>
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
 import Spinner from '@/components/Spinner'
 import UserTweet from '@/components/UserTweet'
-import { replyAction } from '@/utils/mixins'
+import { replyAction, Toastification } from '@/utils/mixins'
 
 export default {
   name: 'UserAllLike',
@@ -34,7 +33,7 @@ export default {
       tweets: [],
     }
   },
-  mixins: [replyAction],
+  mixins: [replyAction, Toastification],
   created() {
     const { user_id } = this.$route.params
     this.fetchUserLikes(user_id)
@@ -61,9 +60,9 @@ export default {
           console.log(err)
           message = err.message
         }
-        Toast.fire({
-          icon: 'error',
-          title: `獲取喜歡的推文列表失敗！\n ${message}`,
+        this.ToastError({
+          title: '獲取喜歡的推文列表失敗！',
+          description: message,
         })
       }
     },

@@ -95,8 +95,12 @@
 
 <script>
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
-import { fromNowFilter, altFilter, thousandFilter } from './../utils/mixins'
+import {
+  fromNowFilter,
+  altFilter,
+  thousandFilter,
+  Toastification,
+} from './../utils/mixins'
 
 export default {
   name: 'UserTweet',
@@ -120,7 +124,7 @@ export default {
       }
     },
   },
-  mixins: [fromNowFilter, altFilter, thousandFilter],
+  mixins: [fromNowFilter, altFilter, thousandFilter, Toastification],
   methods: {
     handleClickUser(user_id) {
       this.$router.push({ name: 'UserInfo', params: { user_id } })
@@ -158,16 +162,14 @@ export default {
             ? this.tweet.LikesCount + 1
             : this.tweet.LikesCount - 1,
         }
-        Toast.fire({
-          icon: 'success',
-          title: `${data.message}`,
+        this.ToastSuccess({
+          title: data.message,
         })
       } catch (err) {
         this.isProcessing = false
         console.log(err)
-        Toast.fire({
-          icon: 'error',
-          title: `${err.message}`,
+        this.ToastError({
+          description: err.message,
         })
       }
     },

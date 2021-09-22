@@ -126,7 +126,7 @@
               </div>
               <div
                 class="modal__name__length"
-                :class="{ error: name.length > nameMaxLength }"
+                :class="{ error: name ? name.length > nameMaxLength : false }"
               >
                 {{ name ? name.length : '0' }}/{{ nameMaxLength }}
               </div>
@@ -155,7 +155,11 @@
               </div>
               <div
                 class="modal__introduction__length"
-                :class="{ error: introduction.length > introductionMaxLength }"
+                :class="{
+                  error: introduction
+                    ? introduction.length > introductionMaxLength
+                    : false,
+                }"
               >
                 {{ introduction ? introduction.length : '0' }}/{{
                   introductionMaxLength
@@ -170,11 +174,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
+import { Toastification } from '@/utils/mixins'
 export default {
   name: 'UserEditModal',
+  mixins: [Toastification],
   props: {
     handleToggleModal: {
       type: Function,
@@ -257,10 +261,12 @@ export default {
       }
     },
     introduction() {
-      if (this.introduction.length > this.introductionMaxLength) {
-        this.introductionTip = `介紹字數超出上限 ${this.introductionMaxLength} 字`
-      } else {
-        this.introductionTip = ''
+      if (this.introduction) {
+        if (this.introduction.length > this.introductionMaxLength) {
+          this.introductionTip = `介紹字數超出上限 ${this.introductionMaxLength} 字`
+        } else {
+          this.introductionTip = ''
+        }
       }
     },
   },
@@ -269,10 +275,10 @@ export default {
       'handleInitViewUser',
       this.$store.getters.getCurrentUser
     )
-    this.modalCover = this.$store.getters.getCurrentUser.cover
-    this.modalAvatar = this.$store.getters.getCurrentUser.avatar
-    this.name = this.$store.getters.getCurrentUser.name
-    this.introduction = this.$store.getters.getCurrentUser.introduction
+    this.modalCover = this.$store.getters.getCurrentUser.cover || ''
+    this.modalAvatar = this.$store.getters.getCurrentUser.avatar || ''
+    this.name = this.$store.getters.getCurrentUser.name || ''
+    this.introduction = this.$store.getters.getCurrentUser.introduction || ''
     this.userId = this.$store.getters.getCurrentUser.id
   },
   methods: {
@@ -281,7 +287,7 @@ export default {
       this.handleCoverRemove()
       this.handleAvatarRemove()
       this.name = this.$store.getters.getCurrentUser.name
-      this.introduction = this.$store.getters.getCurrentUser.introduction
+      this.introduction = this.$store.getters.getCurrentUser.introduction || ''
       this.handleToggleModal()
     },
     // 處理 cover 預覽圖片
@@ -325,8 +331,7 @@ export default {
         this.coverTip.length > 0 ||
         this.avatarTip.length > 0
       ) {
-        Toast.fire({
-          icon: 'warning',
+        this.ToastError({
           title: '請正確填寫所有資料',
         })
         return false
@@ -355,9 +360,9 @@ export default {
           throw new Error(data.message)
         }
         this.isProcessing = false
-        Toast.fire({
-          icon: 'success',
-          title: `資料更新成功！\n ${data.message}`,
+        this.ToastSuccess({
+          title: '資料更新成功！',
+          description: data.message,
         })
       } catch (err) {
         this.isProcessing = false
@@ -376,9 +381,9 @@ export default {
           message = err.message
         }
 
-        Toast.fire({
-          icon: 'error',
-          title: `資料更新失敗！\n ${message}`,
+        this.ToastError({
+          title: '資料更新失敗！',
+          description: message,
         })
       }
     },

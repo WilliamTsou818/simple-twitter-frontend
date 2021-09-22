@@ -26,12 +26,13 @@
 <script>
 import { mapState } from 'vuex'
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
+import { Toastification } from './../../utils/mixins'
 
 import Head from '@/components/Head'
 
 export default {
   name: 'UserAllFollow',
+  mixins: [Toastification],
   components: {
     Head,
   },
@@ -77,10 +78,11 @@ export default {
         } else {
           message = err.message
         }
-        Toast.fire({
-          icon: 'error',
-          title: `請稍後重整！\n ${message}`,
+        this.ToastError({
+          title: '取得使用者資訊失敗！',
+          description: message,
         })
+        this.$router.back()
       }
     },
   },
