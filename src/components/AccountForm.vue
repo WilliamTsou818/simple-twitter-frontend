@@ -130,13 +130,14 @@
 </template>
 
 <script>
+import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 export default {
   name: 'AccountForm',
   props: {
-    initIsProcessing: {
-      type: Boolean,
-      default: false,
+    page: {
+      type: String,
+      default: 'signUp',
     },
     initAccount: {
       type: String,
@@ -188,9 +189,6 @@ export default {
     },
   },
   watch: {
-    initIsProcessing() {
-      this.isProcessing = this.initIsProcessing
-    },
     account() {
       if (!this.account) {
         this.accountTip = '請填寫帳號'
@@ -266,13 +264,139 @@ export default {
         // 驗證失敗
         return
       }
+      this.accountTip = ''
+      this.nameTip = ''
+      this.emailTip = ''
+      this.passwordTip = ''
+      this.checkPasswordTip = ''
       this.isProcessing = true
       const formData = new FormData(e.target)
       const requestData = {}
       for (let [key, value] of formData.entries()) {
         requestData[key] = value
       }
-      this.$emit('after-submit', requestData)
+      if (this.page === 'signUp') {
+        this.handleSignUpSubmit(requestData)
+      } else if (this.page === 'setting') {
+        this.handleSettingSubmit(requestData)
+      }
+    },
+    // 註冊
+    async handleSignUpSubmit(requestData) {
+      try {
+        this.isProcessing = true
+        const { data } = await usersAPI.signUp(requestData)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+        Toast.fire({
+          icon: 'success',
+          title: `帳號註冊成功！\n ${data.message}`,
+        })
+        this.$router.push({ name: 'UserLogin' })
+      } catch (err) {
+        this.isProcessing = false
+        let message = ''
+        if (err.response) {
+          this.handleError(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
+        Toast.fire({
+          icon: 'error',
+          title: `帳號註冊失敗！\n ${message}`,
+        })
+      }
+    },
+    // 設定帳戶資料
+    async handleSettingSubmit(requestData) {
+      try {
+        this.isProcessing = true
+        const { data } = await usersAPI.setting({
+          userId: this.$store.getters.getCurrentUser.id,
+          requestData,
+        })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.isProcessing = false
+        // 更新vuex的state
+        const { account, name, email } = data.user
+        this.$store.commit('setCurrentUser', { account, name, email })
+        Toast.fire({
+          icon: 'success',
+          title: `帳戶設定成功！\n ${data.message}`,
+        })
+      } catch (err) {
+        this.isProcessing = false
+        let message = ''
+        if (err.response) {
+          this.handleError(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
+        Toast.fire({
+          icon: 'error',
+          title: `帳戶設定失敗！\n ${message}`,
+        })
+      }
+    },
+    // 錯誤提示處理
+    handleError(errorData) {
+      // console.log(errorData)
+      if (
+        errorData.errType === 'UserSingnUpError' ||
+        errorData.errType === 'PutUserFormatError'
+      ) {
+        const messageArr = errorData.message.split('|')
+        // console.log('messageArr', messageArr)
+        messageArr.forEach((message) => {
+          if (message.includes('account cannot be blank')) {
+            this.accountTip += '請填寫帳號 '
+          } else if (message.includes('account should not exceed')) {
+            this.accountTip += '帳號上限 50 字 '
+          } else if (message.includes('account should only include')) {
+            this.accountTip += '帳號只能為英文、數字與_ '
+          } else if (message.includes('name cannot be blank')) {
+            this.nameTip += '請填寫名稱 '
+          } else if (message.includes('name should not exceed')) {
+            this.nameTip += '名稱上限 50 字 '
+          } else if (message.includes('email cannot be blank')) {
+            this.emailTip += '請填寫Email '
+          } else if (message.includes('Email must be a valid email')) {
+            this.emailTip += '請填寫正確的Email '
+          } else if (message.includes('password cannot be blank')) {
+            this.passwordTip += '請填寫密碼 '
+          } else if (message.includes('password should not exceed')) {
+            this.passwordTip += '密碼上限 50 字 '
+          } else if (message.includes('at least 4 characters')) {
+            this.passwordTip += '密碼至少 4 個字 '
+          } else if (message.includes('is not equal to checkPassword')) {
+            this.checkPasswordTip += '密碼輸入不一致 '
+          }
+        })
+      } else {
+        switch (errorData.errType) {
+          case 'AccountExistsError':
+            this.accountTip = '帳號已被使用'
+            break
+          case 'NameExistsError':
+            this.nameTip = '名稱已被使用'
+            break
+          case 'EmailExistsError':
+            this.emailTip = 'Email已被使用'
+            break
+          default:
+            break
+        }
+      }
     },
   },
 }
