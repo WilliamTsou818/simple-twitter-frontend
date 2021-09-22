@@ -131,9 +131,10 @@
 
 <script>
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
+import { Toastification } from './../utils/mixins'
 export default {
   name: 'AccountForm',
+  mixins: [Toastification],
   props: {
     page: {
       type: String,
@@ -251,8 +252,7 @@ export default {
         this.passwordTip.length > 0 ||
         this.checkPasswordTip.length > 0
       ) {
-        Toast.fire({
-          icon: 'warning',
+        this.ToastError({
           title: '請正確填寫所有資料',
         })
         return false
@@ -290,26 +290,22 @@ export default {
           throw new Error(data.message)
         }
 
-        Toast.fire({
-          icon: 'success',
-          title: `帳號註冊成功！\n ${data.message}`,
+        this.ToastSuccess({
+          title: '帳號註冊成功！',
+          description: data.message,
         })
         this.$router.push({ name: 'UserLogin' })
       } catch (err) {
         this.isProcessing = false
-        let message = ''
         if (err.response) {
           this.handleError(err.response.data)
-          message = err.response.data.message
         } else {
           console.log(err)
-          message = err.message
+          this.ToastError({
+            title: '帳號註冊失敗！',
+            description: err.message,
+          })
         }
-
-        Toast.fire({
-          icon: 'error',
-          title: `帳號註冊失敗！\n ${message}`,
-        })
       }
     },
     // 設定帳戶資料
@@ -327,30 +323,27 @@ export default {
         // 更新vuex的state
         const { account, name, email } = data.user
         this.$store.commit('setCurrentUser', { account, name, email })
-        Toast.fire({
-          icon: 'success',
-          title: `帳戶設定成功！\n ${data.message}`,
+        this.ToastSuccess({
+          title: '帳戶設定成功！',
+          description: data.message,
         })
       } catch (err) {
         this.isProcessing = false
-        let message = ''
         if (err.response) {
           this.handleError(err.response.data)
-          message = err.response.data.message
         } else {
           console.log(err)
-          message = err.message
+          this.ToastError({
+            title: '帳戶設定失敗！',
+            description: err.message,
+          })
         }
-
-        Toast.fire({
-          icon: 'error',
-          title: `帳戶設定失敗！\n ${message}`,
-        })
       }
     },
     // 錯誤提示處理
     handleError(errorData) {
       // console.log(errorData)
+      const title = this.page === 'signUp' ? '帳號註冊失敗！' : '帳戶設定失敗！'
       if (
         errorData.errType === 'UserSingnUpError' ||
         errorData.errType === 'PutUserFormatError'
@@ -381,6 +374,10 @@ export default {
           } else if (message.includes('is not equal to checkPassword')) {
             this.checkPasswordTip += '密碼輸入不一致 '
           }
+          this.ToastError({
+            title: title,
+            description: message,
+          })
         })
       } else {
         switch (errorData.errType) {
@@ -396,6 +393,10 @@ export default {
           default:
             break
         }
+        this.ToastError({
+          title: title,
+          description: errorData.message,
+        })
       }
     },
   },

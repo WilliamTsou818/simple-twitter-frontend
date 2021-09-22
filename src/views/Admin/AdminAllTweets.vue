@@ -15,13 +15,14 @@
 
 <script>
 import adminAPI from '@/apis/admin'
-import { Toast } from './../../utils/helpers'
+import { Toastification } from '@/utils/mixins'
 
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import AdminTweet from '@/components/AdminTweet'
 
 export default {
+  mixins: [Toastification],
   components: {
     Spinner,
     Head,
@@ -55,9 +56,9 @@ export default {
           throw new Error(data.message)
         }
         this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
-        Toast.fire({
-          icon: 'success',
-          title: `The tweet id ${tweetId} deleted successfully`,
+        this.ToastSuccess({
+          title: '刪除推文成功！',
+          description: `The tweet id ${tweetId} deleted successfully`,
         })
       } catch (err) {
         console.log(err)

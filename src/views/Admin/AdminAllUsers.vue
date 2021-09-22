@@ -12,13 +12,14 @@
 
 <script>
 import adminAPI from '@/apis/admin'
-import { Toast } from './../../utils/helpers'
+import { Toastification } from '@/utils/mixins'
 
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import AdminUserCard from '@/components/AdminUserCard'
 
 export default {
+  mixins: [Toastification],
   components: {
     Spinner,
     Head,
@@ -42,9 +43,9 @@ export default {
         this.isLoading = false
       } catch (error) {
         console.log('error', error)
-        Toast.fire({
-          icon: 'error',
-          title: '目前無法讀取所有使用者，請稍後再試',
+        this.ToastError({
+          title: '列表載入失敗！',
+          description: `目前無法讀取所有使用者，請稍後再試`,
         })
       }
     },

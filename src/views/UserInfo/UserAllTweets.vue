@@ -20,7 +20,7 @@ import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 import Spinner from '@/components/Spinner'
 import UserTweet from '@/components/UserTweet'
-import { newPostAction, replyAction } from '@/utils/mixins'
+import { newPostAction, replyAction, Toastification } from '@/utils/mixins'
 
 export default {
   name: 'UserAllTweets',
@@ -35,7 +35,7 @@ export default {
       tweets: [],
     }
   },
-  mixins: [newPostAction, replyAction],
+  mixins: [newPostAction, replyAction, Toastification],
   created() {
     this.currentUserId = this.$store.getters.getCurrentUser.id
     const { user_id } = this.$route.params
@@ -64,9 +64,9 @@ export default {
           message = err.message
         }
 
-        Toast.fire({
-          icon: 'error',
-          title: `獲取推文列表失敗！\n ${message}`,
+        this.ToastError({
+          title: '獲取推文列表失敗！',
+          description: message,
         })
       }
     },

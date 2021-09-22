@@ -51,11 +51,12 @@
 
 <script>
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
+import { Toastification } from './../utils/mixins'
 import { mapState } from 'vuex'
 
 export default {
   name: 'UserNewPostModal',
+  mixins: [Toastification],
   data() {
     return {
       isProcessing: false,
@@ -79,8 +80,7 @@ export default {
         this.postTip = '內容不可空白'
       }
       if (this.postTip.length > 0) {
-        Toast.fire({
-          icon: 'warning',
+        this.ToastError({
           title: '請填寫正確推文內容',
         })
         return false
@@ -108,9 +108,9 @@ export default {
         this.handleClose()
         // 處理資料刷新
         this.$emit('post-success')
-        Toast.fire({
-          icon: 'success',
-          title: `推文成功！\n ${data.message}`,
+        this.ToastSuccess({
+          title: '推文成功！',
+          description: data.message,
         })
       } catch (err) {
         this.description = ''
@@ -124,9 +124,9 @@ export default {
           message = err.message
         }
 
-        Toast.fire({
-          icon: 'error',
-          title: `推文失敗！\n ${message}`,
+        this.ToastError({
+          title: '推文失敗！',
+          description: message,
         })
       }
     },

@@ -47,15 +47,14 @@
 <script>
 import { mapState } from 'vuex'
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
-import { altFilter } from '@/utils/mixins'
+import { altFilter, Toastification } from '@/utils/mixins'
 
 import Spinner from '@/components/Spinner'
 import ButtonFollow from '@/components/ButtonFollow.vue'
 
 export default {
   name: 'UserFollowList',
-  mixins: [altFilter],
+  mixins: [altFilter, Toastification],
   components: {
     ButtonFollow,
     Spinner,
@@ -111,9 +110,8 @@ export default {
         this.isLoading = false
       } catch (err) {
         this.isLoading = false
-        Toast.fire({
-          icon: 'error',
-          title: `${err.message}`,
+        this.ToastError({
+          title: err.message,
         })
       }
     },

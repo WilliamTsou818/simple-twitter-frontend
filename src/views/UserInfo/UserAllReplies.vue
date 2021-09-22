@@ -19,12 +19,13 @@
 
 <script>
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
+import { Toastification } from './../../utils/mixins'
 import Spinner from '@/components/Spinner'
 import UserTweetReply from '@/components/UserTweetReply'
 
 export default {
   name: 'UserAllReplies',
+  mixins: [Toastification],
   components: {
     Spinner,
     UserTweetReply,
@@ -61,9 +62,9 @@ export default {
           console.log(err)
           message = err.message
         }
-        Toast.fire({
-          icon: 'error',
-          title: `獲取回覆列表失敗！\n ${message}`,
+        this.ToastError({
+          title: '獲取回覆列表失敗！',
+          description: message,
         })
       }
     },

@@ -51,7 +51,7 @@
 
 <script>
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
+import { Toastification } from './../../utils/mixins'
 import { mapState } from 'vuex'
 import { newPostAction, replyAction } from '@/utils/mixins'
 
@@ -80,7 +80,7 @@ export default {
   computed: {
     ...mapState(['currentUser']),
   },
-  mixins: [newPostAction, replyAction],
+  mixins: [newPostAction, replyAction, Toastification],
   created() {
     this.fetchTweets()
   },
@@ -105,9 +105,9 @@ export default {
           message = err.message
         }
 
-        Toast.fire({
-          icon: 'error',
-          title: `獲取推文失敗！\n ${message}`,
+        this.ToastError({
+          title: '獲取推文失敗！',
+          description: message,
         })
       }
     },
@@ -117,8 +117,7 @@ export default {
         this.postTip = '內容不可空白'
       }
       if (this.postTip.length > 0) {
-        Toast.fire({
-          icon: 'warning',
+        this.ToastError({
           title: '請填寫正確推文內容',
         })
         return false
@@ -141,9 +140,9 @@ export default {
 
         this.description = ''
         this.isProcessing = false
-        Toast.fire({
-          icon: 'success',
-          title: `推文成功！\n ${data.message}`,
+        this.ToastSuccess({
+          title: '推文成功！',
+          description: data.message,
         })
         this.fetchTweets()
       } catch (err) {
@@ -157,9 +156,9 @@ export default {
           message = err.message
         }
 
-        Toast.fire({
-          icon: 'error',
-          title: `推文失敗！\n ${message}`,
+        this.ToastError({
+          title: '推文失敗！',
+          description: message,
         })
       }
     },
