@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-tw'
 dayjs.extend(relativeTime).locale('zh-tw')
+import CustomToast from '../components/CustomToast.vue'
 
 export const fromNowFilter = {
   filters: {
@@ -108,3 +109,30 @@ export const replyAction = {
   //   },
   // },
 }
+
+// Toast
+export const Toastification = {
+  methods: {
+    ToastSuccess({ title = '', description = '' }) {
+      this.$toast({
+        component: CustomToast,
+        props: {
+          icon: 'success',
+          title,
+          description
+        }
+      })
+    },
+    ToastError({ title = '', description = '' }) {
+      this.$toast({
+        component: CustomToast,
+        props: {
+          icon: 'error',
+          title,
+          description
+        }
+      })
+    }
+  }
+}
+
