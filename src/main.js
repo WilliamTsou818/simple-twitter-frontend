@@ -18,7 +18,7 @@ const options = {
   showCloseButtonOnHover: false,
   closeButton: false,
   icon: false,
-  transition: "Vue-Toastification__bounce",
+  transition: "Vue-Toastification__fade",
   maxToasts: 20,
   newestOnTop: false,
   toastClassName: "custom-toast",
