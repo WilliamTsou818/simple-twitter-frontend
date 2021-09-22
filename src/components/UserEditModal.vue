@@ -170,6 +170,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 export default {
@@ -264,6 +265,10 @@ export default {
     },
   },
   created() {
+    this.$store.dispatch(
+      'handleInitViewUser',
+      this.$store.getters.getCurrentUser
+    )
     this.modalCover = this.$store.getters.getCurrentUser.cover
     this.modalAvatar = this.$store.getters.getCurrentUser.avatar
     this.name = this.$store.getters.getCurrentUser.name
