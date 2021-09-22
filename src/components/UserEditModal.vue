@@ -175,9 +175,10 @@
 
 <script>
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
+import { Toastification } from '@/utils/mixins'
 export default {
   name: 'UserEditModal',
+  mixins: [Toastification],
   props: {
     handleToggleModal: {
       type: Function,
@@ -330,8 +331,7 @@ export default {
         this.coverTip.length > 0 ||
         this.avatarTip.length > 0
       ) {
-        Toast.fire({
-          icon: 'warning',
+        this.ToastError({
           title: '請正確填寫所有資料',
         })
         return false
@@ -360,9 +360,9 @@ export default {
           throw new Error(data.message)
         }
         this.isProcessing = false
-        Toast.fire({
-          icon: 'success',
-          title: `資料更新成功！\n ${data.message}`,
+        this.ToastSuccess({
+          title: '資料更新成功！',
+          description: data.message,
         })
       } catch (err) {
         this.isProcessing = false
@@ -381,9 +381,9 @@ export default {
           message = err.message
         }
 
-        Toast.fire({
-          icon: 'error',
-          title: `資料更新失敗！\n ${message}`,
+        this.ToastError({
+          title: '資料更新失敗！',
+          description: message,
         })
       }
     },
