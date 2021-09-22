@@ -8,12 +8,16 @@
         id="account"
         name="account"
         type="text"
+        pattern="[a-zA-Z0-9_]+"
         required
       />
-      <div class="form__account__border"></div>
+      <div
+        :class="['form__account__border', { error: accountTip.length > 0 }]"
+      ></div>
       <label for="form__account__input" class="form__account__label">
         帳號
       </label>
+      <span class="form__account__tip">{{ accountTip }}</span>
     </div>
     <div class="form__password">
       <input
@@ -24,10 +28,13 @@
         type="password"
         required
       />
-      <div class="form__password__border"></div>
+      <div
+        :class="['form__password__border', { error: passwordTip.length > 0 }]"
+      ></div>
       <label for="form__password__input" class="form__password__label">
         密碼
       </label>
+      <span class="form__password__tip">{{ passwordTip }}</span>
     </div>
     <button class="form__submit" type="submit">
       <div v-show="!isProcessing">登入</div>
@@ -58,22 +65,64 @@ export default {
   },
   data() {
     return {
+      isProcessing: false,
       account: '',
       password: '',
-      isProcessing: false,
+      // 字數上限
+      accountMaxLength: 50,
+      passwordMinLength: 4,
+      passwordMaxLength: 50,
+      // 帳號格式
+      regex: /^[a-zA-Z0-9_-]+$/,
+      // 驗證提示訊息
+      accountTip: '',
+      passwordTip: '',
     }
   },
+  watch: {
+    account() {
+      if (!this.account) {
+        this.accountTip = '請填寫帳號'
+      } else if (this.account.length > this.accountMaxLength) {
+        this.accountTip = `帳號上限 ${this.accountMaxLength} 字`
+      } else if (!this.regex.test(this.account)) {
+        this.accountTip = '帳號只能為英文、數字與_ '
+      } else {
+        this.accountTip = ''
+      }
+    },
+    password() {
+      if (!this.password) {
+        this.passwordTip = '請填寫密碼'
+      } else if (this.password.length > this.passwordMaxLength) {
+        this.passwordTip = `密碼上限 ${this.passwordMaxLength} 字`
+      } else if (this.password.length < this.passwordMinLength) {
+        this.passwordTip = `密碼至少 ${this.passwordMinLength} 個字`
+      } else {
+        this.passwordTip = ''
+      }
+    },
+  },
   methods: {
+    // 表單驗證
+    formValidation() {
+      if (this.accountTip.length > 0 || this.passwordTip.length > 0) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請正確填寫帳號和密碼',
+        })
+        return false
+      }
+      return true
+    },
     async handleSubmit() {
       try {
-        if (!this.account || !this.password) {
-          Toast.fire({
-            icon: 'warning',
-            title: '請填入帳號和密碼',
-          })
+        if (!this.formValidation()) {
+          // 驗證失敗
           return
         }
-
+        this.accountTip = ''
+        this.passwordTip = ''
         this.isProcessing = true
 
         // 是哪種登入
@@ -94,11 +143,53 @@ export default {
         this.$router.push(this.path)
       } catch (err) {
         this.isProcessing = false
-        this.password = ''
+        let message = ''
+        if (err.response) {
+          this.handleError(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
         Toast.fire({
           icon: 'warning',
-          title: '輸入的帳號密碼有誤',
+          title: `登入失敗！\n ${message}`,
         })
+      }
+    },
+    // 錯誤提示處理
+    handleError(errorData) {
+      // console.log(errorData)
+      if (errorData.errType === 'UserSingInFormatError') {
+        const messageArr = errorData.message.split('|')
+        // console.log('messageArr', messageArr)
+        messageArr.forEach((message) => {
+          if (message.includes('account cannot be blank')) {
+            this.accountTip += '請填寫帳號 '
+          } else if (message.includes('account should not exceed')) {
+            this.accountTip += '帳號上限 50 字 '
+          } else if (message.includes('account should only include')) {
+            this.accountTip += '帳號只能為英文、數字與_ '
+          } else if (message.includes('password cannot be blank')) {
+            this.passwordTip += '請填寫密碼 '
+          } else if (message.includes('password should not exceed')) {
+            this.passwordTip += '密碼上限 50 字 '
+          } else if (message.includes('at least 4 characters')) {
+            this.passwordTip += '密碼至少 4 個字 '
+          }
+        })
+      } else {
+        switch (errorData.errType) {
+          case 'UserSingInError':
+          case 'UserSingInRoleError':
+            this.accountTip = '帳號不存在'
+            break
+          case 'UserSingInPasswordError':
+            this.passwordTip = '密碼輸入錯誤'
+            break
+          default:
+            break
+        }
       }
     },
   },
@@ -142,10 +233,21 @@ export default {
       height: 2px;
       border-radius: 0 0 4px 4px;
       background-color: var(--gray-500);
+      &.error {
+        border-bottom: 2px solid var(--input-error-border);
+      }
     }
-    &__input:hover ~ &__border,
-    &__input:focus ~ &__border {
+    &__input:hover ~ &__border:not(.error),
+    &__input:focus ~ &__border:not(.error) {
       border-bottom: 2px solid var(--input-hover-border);
+    }
+    &__tip {
+      position: absolute;
+      top: 52px;
+      left: 0;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--input-error-border);
     }
   }
   &__submit {
