@@ -6,40 +6,43 @@
         <h3>You don’t have any followers yet</h3>
         <p>When someone follows you, you’ll see them here.</p>
       </div>
-
-      <router-link
-        :to="{
-          name: 'UserAllTweets',
-          params: { user_id: user.followerId || user.followingId },
-        }"
-        v-for="user in followList"
-        :key="user.account"
-        class="follow__list"
-      >
-        <div
-          class="follow__list__avatar"
-          :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
-        ></div>
-        <div class="follow__list__detail">
-          <div class="follow__list__social">
-            <div class="follow__list__info">
-              <div class="follow__list__name">{{ user.name }}</div>
-              <div class="follow__list__account">
-                {{ user.account | altFilter }}
+      <transition-group name="fade">
+        <router-link
+          :to="{
+            name: 'UserAllTweets',
+            params: { user_id: user.followerId || user.followingId },
+          }"
+          v-for="user in followList"
+          :key="user.account"
+          class="follow__list"
+        >
+          <div
+            class="follow__list__avatar"
+            :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
+          ></div>
+          <div class="follow__list__detail">
+            <div class="follow__list__social">
+              <div class="follow__list__info">
+                <div class="follow__list__name">{{ user.name }}</div>
+                <div class="follow__list__account">
+                  {{ user.account | altFilter }}
+                </div>
+              </div>
+              <div v-if="user.followerId && user.followerId !== currentUserId">
+                <ButtonFollow :user="user" :userId="user.followerId" small />
+              </div>
+              <div
+                v-if="user.followingId && user.followingId !== currentUserId"
+              >
+                <ButtonFollow :user="user" :userId="user.followingId" small />
               </div>
             </div>
-            <div v-if="user.followerId && user.followerId !== currentUser.id">
-              <ButtonFollow :user="user" :userId="user.followerId" small />
-            </div>
-            <div v-if="user.followingId && user.followingId !== currentUser.id">
-              <ButtonFollow :user="user" :userId="user.followingId" small />
+            <div class="follow__list__intro">
+              {{ user.introduction }}
             </div>
           </div>
-          <div class="follow__list__intro">
-            {{ user.introduction }}
-          </div>
-        </div>
-      </router-link>
+        </router-link>
+      </transition-group>
     </div>
   </div>
 </template>
@@ -68,10 +71,7 @@ export default {
   computed: {
     ...mapState(['currentUser']),
     currentViewUser() {
-      // const isViewCurrentUser = this.$store.getters.getViewUser
       return this.$store.getters.getViewUser
-      // ? this.$store.getters.getCurrentUser
-      // : this.$store.getters.getViewUser
     },
     tab() {
       return this.$route.name
@@ -83,6 +83,9 @@ export default {
     },
     emptyState() {
       return !this.followList.length
+    },
+    currentUserId() {
+      return this.$store.getters.getCurrentUser.id
     },
   },
   created() {
@@ -182,5 +185,12 @@ export default {
       word-break: break-all;
     }
   }
+}
+.fade-enter-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter {
+  opacity: 0;
 }
 </style>

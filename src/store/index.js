@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import router from '@/router'
 import usersAPI from './../apis/users'
 
 Vue.use(Vuex)
@@ -53,7 +54,6 @@ export default new Vuex.Store({
     async fetchCurrentUser({ commit }) {
       try {
         const { data } = await usersAPI.getCurrentUser()
-        // console.log('fechCurrentUser')
         const {
           id,
           account,
@@ -84,28 +84,10 @@ export default new Vuex.Store({
         return false
       }
     },
-    // async fetchCurrentUserFollowings(context) {
-    //   try {
-    //     const userId = context.state.currentUser.id
-    //     const { data } = await usersAPI.getUserFollowing({ userId })
-    //     context.commit('setInitFollowing', data)
-    //   } catch (error) {
-    //     console.log('error', error)
-    //   }
-    // },
-    // async fetchCurrentUserFollowers(context) {
-    //   try {
-    //     const userId = context.state.currentUser.id
-    //     const { data } = await usersAPI.getUserFollower({ userId })
-    //     context.commit('setInitFollower', data)
-    //   } catch (error) {
-    //     console.log('error', error)
-    //   }
-    // },
     async fetchViewUserFollowings(context) {
       try {
-        const userId = context.state.viewUser.data.id
-        const { data } = await usersAPI.getUserFollowing({ userId })
+        const { user_id } = router.currentRoute.params
+        const { data } = await usersAPI.getUserFollowing({ user_id })
         context.commit('setViewUserFollowings', data)
       } catch (error) {
         console.log('error', error)
@@ -113,8 +95,8 @@ export default new Vuex.Store({
     },
     async fetchViewUserFollowers(context) {
       try {
-        const userId = context.state.viewUser.data.id
-        const { data } = await usersAPI.getUserFollower({ userId })
+        const { user_id } = router.currentRoute.params
+        const { data } = await usersAPI.getUserFollower({ user_id })
         context.commit('setViewUserFollowers', data)
       } catch (error) {
         console.log('error', error)
@@ -193,7 +175,7 @@ export default new Vuex.Store({
       }
     },
     setIsViewCurrentUser(state, id) {
-      if (state.currentUser.id === id - 0) {
+      if (state.currentUser.id === Number(id)) {
         state.viewUser.isViewCurrentUser = true
       } else {
         state.viewUser.isViewCurrentUser = false
