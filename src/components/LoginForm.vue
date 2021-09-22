@@ -45,10 +45,11 @@
 
 <script>
 import authorizationAPI from '@/apis/authorization'
-import { Toast } from '@/utils/helpers'
+import { Toastification } from './../utils/mixins'
 
 export default {
   name: 'LoginForm',
+  mixins: [Toastification],
   props: {
     role: {
       type: String,
@@ -107,8 +108,7 @@ export default {
     // 表單驗證
     formValidation() {
       if (this.accountTip.length > 0 || this.passwordTip.length > 0) {
-        Toast.fire({
-          icon: 'warning',
+        this.ToastError({
           title: '請正確填寫帳號和密碼',
         })
         return false
@@ -141,20 +141,21 @@ export default {
 
         //authorization 登入成功轉去指定頁面
         this.$router.push(this.path)
+        this.ToastSuccess({
+          title: '登入成功！',
+          description: data.message,
+        })
       } catch (err) {
         this.isProcessing = false
-        let message = ''
         if (err.response) {
           this.handleError(err.response.data)
-          message = err.response.data.message
         } else {
           console.log(err)
-          message = err.message
+          this.ToastError({
+            title: '登入失敗！',
+            description: err.message,
+          })
         }
-        Toast.fire({
-          icon: 'warning',
-          title: `登入失敗！\n ${message}`,
-        })
       }
     },
     // 錯誤提示處理
@@ -177,6 +178,10 @@ export default {
           } else if (message.includes('at least 4 characters')) {
             this.passwordTip += '密碼至少 4 個字 '
           }
+          this.ToastError({
+            title: '登入失敗！',
+            description: message,
+          })
         })
       } else {
         switch (errorData.errType) {
@@ -190,6 +195,10 @@ export default {
           default:
             break
         }
+        this.ToastError({
+          title: '登入失敗！',
+          description: errorData.message,
+        })
       }
     },
   },
