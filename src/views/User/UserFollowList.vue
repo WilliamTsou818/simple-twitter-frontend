@@ -178,6 +178,7 @@ export default {
       font-weight: 500;
       line-height: 22px;
       padding-top: 5px;
+      word-break: break-all;
     }
   }
 }
