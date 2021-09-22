@@ -5,18 +5,13 @@
     </div>
     <div class="title">建立你的帳號</div>
     <section class="section-form">
-      <AccountForm
-        :init-is-processing="isProcessing"
-        @after-submit="handleAfterSubmit"
-      />
+      <AccountForm :page="page" />
     </section>
   </div>
 </template>
 
 <script>
 import AccountForm from '@/components/AccountForm'
-import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
 
 export default {
   name: 'UserRegister',
@@ -25,40 +20,8 @@ export default {
   },
   data() {
     return {
-      isProcessing: false,
+      page: 'signUp',
     }
-  },
-  methods: {
-    async handleAfterSubmit(requestData) {
-      try {
-        this.isProcessing = true
-        const { data } = await usersAPI.signUp(requestData)
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-
-        Toast.fire({
-          icon: 'success',
-          title: `帳號註冊成功！\n ${data.message}`,
-        })
-        this.$router.push({ name: 'UserLogin' })
-      } catch (err) {
-        this.isProcessing = false
-        let message = ''
-        if (err.response) {
-          console.log(err.response.data)
-          message = err.response.data.message
-        } else {
-          console.log(err)
-          message = err.message
-        }
-
-        Toast.fire({
-          icon: 'error',
-          title: `帳號註冊失敗！\n ${message}`,
-        })
-      }
-    },
   },
 }
 </script>

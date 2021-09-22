@@ -7,11 +7,10 @@
         <Head :title="title" />
         <section class="section-form">
           <AccountForm
-            :init-is-processing="isProcessing"
+            :page="page"
             :init-account="currentUser.account"
             :init-name="currentUser.name"
             :init-email="currentUser.email"
-            @after-submit="handleAfterSubmit"
           />
         </section>
       </div>
@@ -25,8 +24,6 @@
 </template>
 
 <script>
-import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
 import { mapState } from 'vuex'
 import NavBarAdmin from '@/components/NavBarAdmin.vue'
 import TabBarAdmin from '@/components/TabBarAdmin.vue'
@@ -47,7 +44,7 @@ export default {
   data() {
     return {
       title: '帳戶設定',
-      isProcessing: false,
+      page: 'setting',
     }
   },
   computed: {
@@ -66,42 +63,6 @@ export default {
     }
   },
   methods: {
-    async handleAfterSubmit(requestData) {
-      try {
-        console.log(requestData)
-        this.isProcessing = true
-        const { data } = await usersAPI.setting({
-          userId: this.currentUser.id,
-          requestData,
-        })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-        this.isProcessing = false
-        // 更新vuex的state
-        const { account, name, email } = data.user
-        this.$store.commit('setCurrentUser', { account, name, email })
-        Toast.fire({
-          icon: 'success',
-          title: `帳戶設定成功！\n ${data.message}`,
-        })
-      } catch (err) {
-        this.isProcessing = false
-        let message = ''
-        if (err.response) {
-          console.log(err.response.data)
-          message = err.response.data.message
-        } else {
-          console.log(err)
-          message = err.message
-        }
-
-        Toast.fire({
-          icon: 'error',
-          title: `帳戶設定失敗！\n ${message}`,
-        })
-      }
-    },
     // 關閉Modal
     handleNewPostModalClose() {
       this.$store.dispatch('isNewPostModalOpen', false)
