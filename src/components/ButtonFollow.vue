@@ -31,9 +31,10 @@
 
 <script>
 import usersAPI from '@/apis/users'
-import { Toast } from '@/utils/helpers'
+import { Toastification } from './../utils/mixins'
 export default {
   name: 'ButtonFollow',
+  mixins: [Toastification],
   props: {
     user: {
       type: Object,
@@ -64,18 +65,22 @@ export default {
         }
         this.$store.dispatch('handleSetFollowed', userId)
         this.isProcessing = false
-        Toast.fire({
-          icon: 'success',
-          title: `${data.message}`,
+        this.ToastSuccess({
+          title: data.message,
         })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-      } catch (e) {
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
+      } catch (err) {
+        let message = ''
+        if (err.response) {
+          message = err.response.data.message
+        } else {
+          message = err.message
+        }
+        this.ToastError({
           title: '更新失敗',
+          description: message,
         })
       }
     },
