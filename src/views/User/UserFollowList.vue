@@ -93,7 +93,6 @@ export default {
     this.fetchUserFollow(user_id)
   },
   beforeRouteUpdate(to, from, next) {
-    console.log('usrFollowList')
     const { user_id } = to.params
     // this.fetchUserFollow(user_id)
     next()
