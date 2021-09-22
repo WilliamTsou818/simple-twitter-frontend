@@ -73,7 +73,7 @@
         </div>
       </div>
       <div class="user-profile__detail__intro">
-        <div v-show="!isLoading">{{ user.introduction | introFilter }}</div>
+        <div v-show="!isLoading">{{ user.introduction }}</div>
         <div v-show="isLoading">--</div>
       </div>
       <div v-show="isLoading" class="user-profile__detail__follow">--</div>
@@ -105,7 +105,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { altFilter, thousandFilter, introFilter } from './../utils/mixins'
+import { altFilter, thousandFilter } from './../utils/mixins'
 import UserEditModal from '@/components/UserEditModal.vue'
 import ButtonFollow from '@/components/ButtonFollow.vue'
 export default {
@@ -126,7 +126,7 @@ export default {
       default: false,
     },
   },
-  mixins: [altFilter, thousandFilter, introFilter],
+  mixins: [altFilter, thousandFilter],
   data() {
     return {
       isModalOpen: false,

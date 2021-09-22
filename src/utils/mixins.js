@@ -57,7 +57,9 @@ export const altFilter = {
 export const introFilter = {
   filters: {
     introFilter(intro) {
-      return intro ? intro : 'Hello World'
+      if (!intro) {
+        return intro ? intro : 'Hello World'
+      }
     },
   },
 }
