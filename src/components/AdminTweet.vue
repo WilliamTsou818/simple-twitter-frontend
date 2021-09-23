@@ -16,7 +16,14 @@
         {{ tweet.description | ellipsis }}
       </div>
     </div>
-    <button class="atweet__button-remove" @click="handleClickDelete(tweet.id)">
+    <button
+      class="atweet__button-remove"
+      :class="{
+        'atweet__button-wait': isProcessing,
+      }"
+      @click="handleListClickDelete(tweet)"
+      v-bind:disabled="isProcessing"
+    >
       <svg
         width="24"
         height="24"
@@ -42,9 +49,17 @@ export default {
       type: Object,
       required: true,
     },
+    handleListClickDelete: {
+      type: Function,
+      default: () => {},
+    },
     handleClickDelete: {
       type: Function,
       default: () => {},
+    },
+    isProcessing: {
+      type: Boolean,
+      default: false,
     },
   },
   mixins: [fromNowFilter],
@@ -67,6 +82,10 @@ export default {
   padding: 1rem 1.5rem;
   text-align: left;
   border-bottom: 1px solid var(--gray-200);
+  &__button-wait {
+    pointer-events: all !important;
+    cursor: wait;
+  }
   &__avatar {
     width: 50px;
     height: 50px;

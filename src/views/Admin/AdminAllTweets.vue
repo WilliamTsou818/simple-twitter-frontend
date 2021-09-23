@@ -8,11 +8,17 @@
           v-for="tweet in tweets"
           :key="tweet.id"
           :tweet="tweet"
-          :handleClickDelete="deleteTweet"
+          :handleListClickDelete="handleListClickDelete"
+          :isProcessing="isProcessing"
         />
       </transition-group>
     </section>
-    <AdminCheckModal v-show="isModalOpen" />
+    <AdminCheckModal
+      v-show="isModalOpen"
+      :confirmTweet="confirmTweet"
+      :handleToggleModal="handleToggleModal"
+      :handleClickDelete="deleteTweet"
+    />
   </div>
 </template>
 
@@ -40,12 +46,20 @@ export default {
       isProcessing: false,
       tweets: [],
       isModalOpen: false,
+      confirmTweet: {},
     }
   },
   created() {
     this.fetchTweets()
   },
   methods: {
+    handleToggleModal() {
+      this.isModalOpen = !this.isModalOpen
+    },
+    handleListClickDelete(tweet) {
+      this.handleToggleModal(tweet)
+      this.confirmTweet = { ...tweet }
+    },
     async fetchTweets() {
       try {
         const { data } = await adminAPI.tweets.get()
@@ -57,21 +71,26 @@ export default {
     },
     async deleteTweet(tweetId) {
       try {
+        this.handleToggleModal()
+        this.isProcessing = true
         const { data } = await adminAPI.tweets.delete({ tweetId })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
         this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
+        this.isProcessing = false
         this.ToastSuccess({
           title: '刪除推文成功！',
           description: `The tweet id ${tweetId} deleted successfully`,
         })
       } catch (err) {
+        this.isProcessing = false
+        this.ToastError({
+          title: '刪除推文失敗！',
+          description: err.message,
+        })
         console.log(err)
       }
-    },
-    handleToggleModal() {
-      this.isModalOpen = !this.isModalOpen
     },
   },
 }
@@ -86,9 +105,10 @@ export default {
   }
   .fade-enter-active,
   .fade-leave-active {
-    transition: opacity 0.5s;
+    transition: opacity 0.25s;
   }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  .fade-enter,
+  .fade-leave-to {
     opacity: 0;
   }
 }
