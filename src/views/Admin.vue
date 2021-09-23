@@ -1,7 +1,7 @@
 <template>
   <div class="admin">
-    <NavBarAdmin class="sm-d-none" />
-    <TabBarAdmin class="lg-d-none" />
+    <NavBar class="sm-d-none" />
+    <TabBar class="lg-d-none" />
     <main>
       <router-view />
     </main>
@@ -9,14 +9,14 @@
 </template>
 
 <script>
-import NavBarAdmin from './../components/NavBarAdmin.vue'
-import TabBarAdmin from './../components/TabBarAdmin.vue'
+import NavBar from '../components/NavBar.vue'
+import TabBar from '../components/TabBar.vue'
 
 export default {
   name: 'admin',
   components: {
-    NavBarAdmin,
-    TabBarAdmin,
+    NavBar,
+    TabBar,
   },
 }
 </script>

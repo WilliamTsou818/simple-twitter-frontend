@@ -1,7 +1,7 @@
 <template>
   <div class="user">
-    <NavBarAdmin class="sm-d-none" @new-post="handleActionNewPost" />
-    <TabBarAdmin class="lg-d-none" @new-post="handleActionNewPost" />
+    <NavBar class="sm-d-none" @new-post="handleActionNewPost" />
+    <TabBar class="lg-d-none" @new-post="handleActionNewPost" />
     <main>
       <router-view />
     </main>
@@ -23,8 +23,8 @@
 
 <script>
 import { mapState } from 'vuex'
-import NavBarAdmin from './../components/NavBarAdmin.vue'
-import TabBarAdmin from './../components/TabBarAdmin.vue'
+import NavBar from '../components/NavBar.vue'
+import TabBar from '../components/TabBar.vue'
 import UserReplyModal from '@/components/UserReplyModal'
 import UserPopularTop from '@/components/UserPopularTop.vue'
 import UserNewPostModal from '@/components/UserNewPostModal'
@@ -33,8 +33,8 @@ import { newPostAction } from '@/utils/mixins'
 export default {
   name: 'user',
   components: {
-    NavBarAdmin,
-    TabBarAdmin,
+    NavBar,
+    TabBar,
     UserReplyModal,
     UserPopularTop,
     UserNewPostModal,
