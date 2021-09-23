@@ -28,10 +28,14 @@
                   {{ user.account | altFilter }}
                 </div>
               </div>
-              <div v-if="user.followerId && user.followerId !== currentUserId">
+              <div
+                class="follow__list__button"
+                v-if="user.followerId && user.followerId !== currentUserId"
+              >
                 <ButtonFollow :user="user" :userId="user.followerId" small />
               </div>
               <div
+                class="follow__list__button"
                 v-if="user.followingId && user.followingId !== currentUserId"
               >
                 <ButtonFollow :user="user" :userId="user.followingId" small />
@@ -147,11 +151,13 @@ export default {
     &__name {
       color: var(--text);
       font-weight: 900;
+      word-break: break-all;
     }
     &__account {
       color: var(--gray-500);
       margin-top: 5px;
       font-weight: 500;
+      word-break: break-all;
     }
     &__intro {
       color: var(--text);
@@ -160,6 +166,11 @@ export default {
       line-height: 22px;
       padding-top: 5px;
       word-break: break-all;
+    }
+    &__button {
+      min-width: 120px;
+      display: flex;
+      justify-content: flex-end;
     }
   }
 }
