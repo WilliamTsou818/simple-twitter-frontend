@@ -53,10 +53,6 @@ export default {
       type: Function,
       default: () => {},
     },
-    handleClickDelete: {
-      type: Function,
-      default: () => {},
-    },
     isProcessing: {
       type: Boolean,
       default: false,
