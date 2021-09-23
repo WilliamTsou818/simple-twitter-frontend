@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+// import routes from './routes'
 import store from './../store'
 import CustomToast from '../components/CustomToast.vue'
 
@@ -44,8 +45,8 @@ const checkAuthorize = (to, from, next, role) => {
       props: {
         icon: 'error',
         title: '權限不足，無法訪問！',
-        description: ''
-      }
+        description: '',
+      },
     })
     next(from)
     return
@@ -73,7 +74,7 @@ const routes = [
       } else {
         next('/user/login')
       }
-    }
+    },
   },
   //後台登入路由
   {
@@ -214,10 +215,7 @@ router.beforeEach(async (to, from, next) => {
   const pathsWithoutAuthentication = ['UserLogin', 'UserRegister', 'AdminLogin']
 
   // token 無效，轉址到登入頁
-  if (
-    !isAuthenticated &&
-    !pathsWithoutAuthentication.includes(to.name)
-  ) {
+  if (!isAuthenticated && !pathsWithoutAuthentication.includes(to.name)) {
     // console.log('to.name', to.name)
     // console.log('token 無效，轉址到指定登入頁')
     switch (to.name) {

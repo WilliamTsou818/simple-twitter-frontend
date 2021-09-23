@@ -75,7 +75,7 @@ export default {
   created() {
     const { user_id } = this.$route.params
     this.userId = user_id
-    this.$store.dispatch('handleInitFollowing')
+    // this.$store.dispatch('handleInitFollowing')
     this.$store.dispatch('isViewCurrentUser', user_id)
     this.fetchUser(user_id)
   },

@@ -9,17 +9,19 @@
       <router-link
         :to="{ name: 'UserFollowers', params: { user_id: userId } }"
         class="tab-router__link"
+        :class="{ 'router-link-active': tab === 'UserFollowers' }"
       >
         <span class="tab-router__text">跟隨者</span>
       </router-link>
       <router-link
         :to="{ name: 'UserFollowings', params: { user_id: userId } }"
         class="tab-router__link"
+        :class="{ 'router-link-active': tab === 'UserFollowings' }"
       >
         <span class="tab-router__text">正在跟隨</span>
       </router-link>
     </section>
-    <router-view />
+    <router-view :isLoadingPage="isLoading" />
   </div>
 </template>
 
@@ -39,6 +41,8 @@ export default {
   data() {
     return {
       isLoading: true,
+      userId: '',
+      show: '',
     }
   },
   computed: {
@@ -46,17 +50,25 @@ export default {
     currentViewUser() {
       return this.$store.getters.getViewUser
     },
+    tab() {
+      return this.$route.name
+    },
   },
   created() {
     const { user_id } = this.$route.params
     this.userId = user_id
     this.fetchUser(user_id)
+    this.$store.dispatch('isViewCurrentUser', user_id)
+    this.$store.dispatch('fetchViewUserFollowings')
+    this.$store.dispatch('fetchViewUserFollowers')
   },
   beforeRouteUpdate(to, from, next) {
-    const { name } = this.$route
-    const { user_id: userId } = to.params
-    this.show = name
-    this.fetchUser(userId)
+    const { user_id } = this.$route.params
+    this.userId = user_id
+    this.fetchUser(user_id)
+    this.$store.dispatch('isViewCurrentUser', user_id)
+    this.$store.dispatch('fetchViewUserFollowings')
+    this.$store.dispatch('fetchViewUserFollowers')
     next()
   },
   methods: {
@@ -107,7 +119,8 @@ export default {
     &:hover {
       color: var(--theme);
     }
-    &.router-link-active {
+    &.router-link-active,
+    .router-link-exact-active {
       color: var(--theme);
       border-bottom: 2px solid var(--theme);
     }
