@@ -99,6 +99,10 @@ export default {
       padding-right: 5px;
       color: var(--text);
     }
+    &__name,
+    &__account {
+      word-break: break-all;
+    }
     &__account,
     &__date {
       color: var(--gray-500);
