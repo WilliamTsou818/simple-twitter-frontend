@@ -1,8 +1,8 @@
 <template>
   <div class="container container--admin">
     <Head :title="title" />
-    <Spinner v-if="isLoading" />
     <section class="tweets">
+      <Spinner v-if="isLoading" />
       <AdminTweet
         v-for="tweet in tweets"
         :key="tweet.id"
