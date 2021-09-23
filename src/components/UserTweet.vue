@@ -178,7 +178,6 @@ export default {
 @import '../assets/styles/mixin.scss';
 .atweet {
   min-height: 101px;
-  max-height: 145px;
   padding: 10px 15px;
   padding-bottom: 0;
   text-align: left;
@@ -208,6 +207,10 @@ export default {
       font-weight: bold;
       padding-right: 5px;
       color: var(--text);
+    }
+    &__name,
+    &__account {
+      word-break: break-all;
     }
     &__account,
     &__date {

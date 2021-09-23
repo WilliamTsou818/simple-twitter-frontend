@@ -79,6 +79,10 @@ export default {
     flex-direction: column;
     margin-left: 16px;
     &__title {
+      white-space: nowrap;
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
       @include font-setting(18px, 900, var(--text));
     }
     &__count {
