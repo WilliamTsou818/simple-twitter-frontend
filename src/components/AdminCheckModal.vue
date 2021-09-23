@@ -163,7 +163,7 @@ export default {
       color: var(--gray-500);
     }
     &__avatar {
-      width: 40px;
+      min-width: 40px;
       height: 40px;
       border-radius: 20px;
       background-color: #c4c4c4;
