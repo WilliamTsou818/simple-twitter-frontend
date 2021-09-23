@@ -1,7 +1,7 @@
 <template>
   <div class="setting">
-    <NavBarAdmin class="sm-d-none" @new-post="handleActionNewPost" />
-    <TabBarAdmin class="lg-d-none" @new-post="handleActionNewPost" />
+    <NavBar class="sm-d-none" @new-post="handleActionNewPost" />
+    <TabBar class="lg-d-none" @new-post="handleActionNewPost" />
     <main>
       <div class="container container--setting">
         <Head :title="title" />
@@ -25,8 +25,8 @@
 
 <script>
 import { mapState } from 'vuex'
-import NavBarAdmin from '@/components/NavBarAdmin.vue'
-import TabBarAdmin from '@/components/TabBarAdmin.vue'
+import NavBar from '@/components/NavBar.vue'
+import TabBar from '@/components/TabBar.vue'
 import Head from '@/components/Head'
 import AccountForm from '@/components/AccountForm'
 import UserNewPostModal from '@/components/UserNewPostModal'
@@ -35,8 +35,8 @@ import { newPostAction } from '@/utils/mixins'
 export default {
   name: 'UserSetting',
   components: {
-    NavBarAdmin,
-    TabBarAdmin,
+    NavBar,
+    TabBar,
     Head,
     AccountForm,
     UserNewPostModal,

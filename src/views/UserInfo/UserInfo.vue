@@ -44,8 +44,6 @@ import { mapState } from 'vuex'
 import usersAPI from '@/apis/users'
 import { Toastification } from './../../utils/mixins'
 
-import NavBarAdmin from '@/components/NavBarAdmin.vue'
-import TabBarAdmin from '@/components/TabBarAdmin.vue'
 import UserPopularTop from '@/components/UserPopularTop.vue'
 import Head from '@/components/Head'
 import UserProfile from '@/components/UserProfile.vue'
@@ -54,8 +52,6 @@ export default {
   name: 'UserInfo',
   mixins: [Toastification],
   components: {
-    NavBarAdmin,
-    TabBarAdmin,
     UserPopularTop,
     Head,
     UserProfile,
