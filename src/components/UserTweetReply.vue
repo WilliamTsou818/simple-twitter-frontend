@@ -110,10 +110,12 @@ export default {
       padding-right: 5px;
       color: var(--text);
       cursor: pointer;
+      word-break: break-all;
     }
     &__account {
       color: var(--gray-500);
       cursor: pointer;
+      word-break: break-all;
     }
     &__date {
       color: var(--gray-500);
@@ -123,6 +125,7 @@ export default {
       margin-top: 4px;
       color: var(--theme);
       cursor: pointer;
+      word-break: break-all;
       &--text {
         color: var(--gray-500);
       }

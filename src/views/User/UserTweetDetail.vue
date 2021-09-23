@@ -269,7 +269,7 @@ export default {
   &__user {
     display: flex;
     &__avatar {
-      width: 50px;
+      min-width: 50px;
       height: 50px;
       margin-right: 10px;
       border-radius: 50px;

@@ -81,7 +81,7 @@ export default {
         this.isProcessing = false
         this.ToastSuccess({
           title: '刪除推文成功！',
-          description: `The tweet id ${tweetId} deleted successfully`,
+          description: `The tweet deleted successfully`,
         })
       } catch (err) {
         this.isProcessing = false
