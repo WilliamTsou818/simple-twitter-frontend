@@ -35,6 +35,16 @@ Aphitter (Simple Twitter) 是一個功能類似於 Twitter 的社群網站，使
 - Vue
 - vue-notification 、day.js
 
+### 環境準備
+
+#### clone 此專案
+
+```
+git clone https://github.com/WilliamTsou818/simple-twitter-frontend.git
+```
+
+#### Install by yarn or npm
+
 ```
 yarn install
 ```
@@ -50,17 +60,9 @@ yarn serve
 
 ```
 
-or
-
 ```
 npm run serve
 
-```
-
-### Compiles and minifies for production
-
-```
-yarn build
 ```
 
 ### Customize configuration
