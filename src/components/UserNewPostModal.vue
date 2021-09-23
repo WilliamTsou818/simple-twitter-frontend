@@ -1,5 +1,5 @@
 <template>
-  <div class="modal">
+  <transition class="modal" name="modal">
     <div class="modal__mask" @click="handleClose">
       <div class="modal__container" @click.stop="">
         <!-- header -->
@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -145,6 +145,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/styles/mixin.scss';
+.modal-enter,
+.modal-leave-active {
+  opacity: 0;
+}
+.modal-enter .modal__container,
+.modal-leave-active .modal__container {
+  transform: scale(1.2);
+}
 .modal {
   &__mask {
     position: fixed;
@@ -157,6 +165,7 @@ export default {
     align-items: flex-start;
     justify-content: center;
     background-color: var(--gray-200);
+    transition: opacity 0.2s ease;
   }
   &__container {
     width: 85vw;
@@ -166,6 +175,7 @@ export default {
     margin-top: 56px;
     background-color: var(--white);
     border-radius: 14px;
+    transition: all 0.2s ease;
   }
   &__header {
     display: flex;
