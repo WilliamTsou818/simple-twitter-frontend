@@ -106,6 +106,20 @@ export default {
     &__content {
       margin-top: 5px;
       color: var(--text);
+      overflow: hidden;
+      word-break: break-all;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .atweet {
+    &__avatar {
+      width: 32px;
+      height: 32px;
+    }
+    &__detail {
+      font-size: 14px;
     }
   }
 }
