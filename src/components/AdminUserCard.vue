@@ -106,10 +106,12 @@ export default {
     &__name {
       font-weight: 900;
       color: var(--text);
+      word-break: break-all;
     }
     &__account {
       color: var(--gray-500);
       margin-top: 2px;
+      word-break: break-all;
     }
   }
   &__actions {
