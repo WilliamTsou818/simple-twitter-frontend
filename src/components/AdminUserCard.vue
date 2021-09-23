@@ -102,6 +102,7 @@ export default {
     }
   }
   &__info {
+    padding: 0 8px;
     padding-top: 32px;
     &__name {
       font-weight: 900;

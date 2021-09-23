@@ -507,7 +507,8 @@ export default {
   background-color: var(--gray-200);
   transition: opacity 0.2s ease;
   &__container {
-    width: 600px;
+    width: 85vw;
+    max-width: 600px;
     background-color: var(--white);
     border-radius: 14px;
     transition: all 0.2s ease;

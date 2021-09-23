@@ -116,7 +116,8 @@ export default {
   justify-content: center;
   background-color: var(--gray-200);
   &__container {
-    width: 360px;
+    width: 85vw;
+    max-width: 600px;
     background-color: var(--white);
     border-radius: 14px;
     transition: all 0.2s ease;
