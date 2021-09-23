@@ -1,23 +1,22 @@
 <template>
   <form class="form" @submit.prevent.stop="handleSubmit">
     <div class="form__title">{{ title }}</div>
-    <div class="form__account">
+    <div class="form__email">
       <input
-        class="form__account__input"
-        v-model="account"
-        id="account"
-        name="account"
-        type="text"
-        pattern="[a-zA-Z0-9_]+"
+        class="form__email__input"
+        v-model="email"
+        id="email"
+        name="email"
+        type="email"
         required
       />
       <div
-        :class="['form__account__border', { error: accountTip.length > 0 }]"
+        :class="['form__email__border', { error: emailTip.length > 0 }]"
       ></div>
-      <label for="form__account__input" class="form__account__label">
-        帳號
+      <label for="form__email__input" class="form__email__label">
+        Email
       </label>
-      <span class="form__account__tip">{{ accountTip }}</span>
+      <span class="form__email__tip">{{ emailTip }}</span>
     </div>
     <div class="form__password">
       <input
@@ -67,29 +66,22 @@ export default {
   data() {
     return {
       isProcessing: false,
-      account: '',
+      email: '',
       password: '',
       // 字數上限
-      accountMaxLength: 50,
       passwordMinLength: 4,
       passwordMaxLength: 50,
-      // 帳號格式
-      regex: /^[a-zA-Z0-9_-]+$/,
       // 驗證提示訊息
-      accountTip: '',
+      emailTip: '',
       passwordTip: '',
     }
   },
   watch: {
-    account() {
-      if (!this.account) {
-        this.accountTip = '請填寫帳號'
-      } else if (this.account.length > this.accountMaxLength) {
-        this.accountTip = `帳號上限 ${this.accountMaxLength} 字`
-      } else if (!this.regex.test(this.account)) {
-        this.accountTip = '帳號只能為英文、數字與_ '
+    email() {
+      if (!this.email) {
+        this.emailTip = '請填寫Email'
       } else {
-        this.accountTip = ''
+        this.emailTip = ''
       }
     },
     password() {
@@ -107,9 +99,9 @@ export default {
   methods: {
     // 表單驗證
     formValidation() {
-      if (this.accountTip.length > 0 || this.passwordTip.length > 0) {
+      if (this.emailTip.length > 0 || this.passwordTip.length > 0) {
         this.ToastError({
-          title: '請正確填寫帳號和密碼',
+          title: '請正確填寫Email和密碼',
         })
         return false
       }
@@ -121,13 +113,13 @@ export default {
           // 驗證失敗
           return
         }
-        this.accountTip = ''
+        this.emailTip = ''
         this.passwordTip = ''
         this.isProcessing = true
 
         // 是哪種登入
         const { data } = await authorizationAPI.signIn({
-          account: this.account,
+          email: this.email,
           password: this.password,
           role: this.role,
         })
@@ -165,12 +157,10 @@ export default {
         const messageArr = errorData.message.split('|')
         // console.log('messageArr', messageArr)
         messageArr.forEach((message) => {
-          if (message.includes('account cannot be blank')) {
-            this.accountTip += '請填寫帳號 '
-          } else if (message.includes('account should not exceed')) {
-            this.accountTip += '帳號上限 50 字 '
-          } else if (message.includes('account should only include')) {
-            this.accountTip += '帳號只能為英文、數字與_ '
+          if (message.includes('email cannot be blank')) {
+            this.emailTip += '請填寫Email '
+          } else if (message.includes('Email must be a valid email')) {
+            this.emailTip += '請填寫正確的Email '
           } else if (message.includes('password cannot be blank')) {
             this.passwordTip += '請填寫密碼 '
           } else if (message.includes('password should not exceed')) {
@@ -187,7 +177,7 @@ export default {
         switch (errorData.errType) {
           case 'UserSingInError':
           case 'UserSingInRoleError':
-            this.accountTip = '帳號不存在'
+            this.emailTip = 'Email不存在'
             break
           case 'UserSingInPasswordError':
             this.passwordTip = '密碼輸入錯誤'
@@ -215,7 +205,7 @@ export default {
     margin-bottom: 40px;
     @include font-setting(23px, bold, var(--text));
   }
-  &__account,
+  &__email,
   &__password {
     position: relative;
     margin-top: 30px;
