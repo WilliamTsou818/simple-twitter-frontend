@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade">
+  <transition name="modal">
     <div class="modal" @click.self="handleToggleModal">
       <div class="modal__mask">
         <div class="modal__container">
@@ -95,6 +95,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.modal-enter,
+.modal-leave-active {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.modal-enter .modal__container,
+.modal-leave-active .modal__container {
+  transform: scale(1.2);
+}
 .modal {
   position: fixed;
   top: 0;
@@ -110,6 +119,7 @@ export default {
     width: 360px;
     background-color: var(--white);
     border-radius: 14px;
+    transition: all 0.2s ease;
   }
   &__header {
     display: flex;
@@ -182,12 +192,19 @@ export default {
       padding: 8px 16px;
       color: var(--gray-500);
       border-radius: 50px;
+      &:hover {
+        border: 1px solid var(--theme);
+        color: var(--theme);
+      }
     }
     &__dele {
       background-color: var(--theme);
       padding: 8px 16px;
       color: var(--white);
       border-radius: 50px;
+      &:hover {
+        background-color: var(--theme-600);
+      }
     }
   }
 }
