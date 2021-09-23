@@ -192,12 +192,19 @@ export default {
       padding: 8px 16px;
       color: var(--gray-500);
       border-radius: 50px;
+      &:hover {
+        border: 1px solid var(--theme);
+        color: var(--theme);
+      }
     }
     &__dele {
       background-color: var(--theme);
       padding: 8px 16px;
       color: var(--white);
       border-radius: 50px;
+      &:hover {
+        background-color: var(--theme-600);
+      }
     }
   }
 }
