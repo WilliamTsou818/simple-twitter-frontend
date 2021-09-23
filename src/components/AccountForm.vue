@@ -406,6 +406,7 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/styles/mixin.scss';
 .form {
+  margin: 0 auto;
   width: 100%;
   max-width: 90vw;
   &__account,
