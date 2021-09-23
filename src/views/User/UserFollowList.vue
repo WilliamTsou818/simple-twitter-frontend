@@ -3,8 +3,8 @@
     <Spinner v-if="isLoading" />
     <div v-if="!isLoading">
       <div v-if="emptyState" class="follow__empty-hint">
-        <h3>You don’t have any followers yet</h3>
-        <p>When someone follows you, you’ll see them here.</p>
+        <h3>目前沒有 {{ emptyStateMessage }}</h3>
+        <p>當有 {{ emptyStateMessage }} 會顯示於此列表</p>
       </div>
       <transition-group name="fade">
         <router-link
@@ -84,6 +84,9 @@ export default {
     },
     emptyState() {
       return !this.followList.length
+    },
+    emptyStateMessage() {
+      return this.show === 'UserFollowings' ? '正在跟隨' : '跟隨者'
     },
     currentUserId() {
       return this.$store.getters.getCurrentUser.id
