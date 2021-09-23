@@ -3,13 +3,16 @@
     <Head :title="title" />
     <section class="tweets">
       <Spinner v-if="isLoading" />
-      <AdminTweet
-        v-for="tweet in tweets"
-        :key="tweet.id"
-        :tweet="tweet"
-        :handleClickDelete="deleteTweet"
-      />
+      <transition-group name="fade">
+        <AdminTweet
+          v-for="tweet in tweets"
+          :key="tweet.id"
+          :tweet="tweet"
+          :handleClickDelete="deleteTweet"
+        />
+      </transition-group>
     </section>
+    <AdminCheckModal v-show="isModalOpen" />
   </div>
 </template>
 
@@ -20,6 +23,7 @@ import { Toastification } from '@/utils/mixins'
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import AdminTweet from '@/components/AdminTweet'
+import AdminCheckModal from '@/components/AdminCheckModal'
 
 export default {
   mixins: [Toastification],
@@ -27,6 +31,7 @@ export default {
     Spinner,
     Head,
     AdminTweet,
+    AdminCheckModal,
   },
   data() {
     return {
@@ -34,6 +39,7 @@ export default {
       isLoading: true,
       isProcessing: false,
       tweets: [],
+      isModalOpen: false,
     }
   },
   created() {
@@ -64,6 +70,9 @@ export default {
         console.log(err)
       }
     },
+    handleToggleModal() {
+      this.isModalOpen = !this.isModalOpen
+    },
   },
 }
 </script>
@@ -74,6 +83,13 @@ export default {
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
+  }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
   }
 }
 
