@@ -61,12 +61,10 @@ npm i
 
 ```
 yarn serve
-
 ```
 
 ```
 npm run serve
-
 ```
 
 ### Customize configuration
