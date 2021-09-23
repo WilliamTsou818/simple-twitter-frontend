@@ -69,10 +69,7 @@ export default {
           throw new Error(data.message)
         }
         this.$store.dispatch('handleSetFollowed', userId)
-        if (!this.isViewCurrentUser) {
-          this.$store.dispatch('fetchViewUserFollowings')
-          this.$store.dispatch('fetchViewUserFollowers')
-        } else if (this.user.isFollowed) {
+        if (this.isViewCurrentUser && this.user.isFollowed) {
           this.$store.dispatch('fetchViewUserFollowings')
           this.$store.dispatch('fetchViewUserFollowers')
         }

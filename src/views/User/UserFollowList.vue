@@ -1,7 +1,7 @@
 <template>
   <div class="follow">
-    <Spinner v-if="isLoading" />
-    <div v-if="!isLoading">
+    <Spinner v-if="isLoadingPage || currentViewUser.isLoading" />
+    <div v-if="!currentViewUser.isLoading && !isLoadingPage">
       <div v-if="emptyState" class="follow__empty-hint">
         <h3>目前沒有 {{ emptyStateMessage }}</h3>
         <p>當有 {{ emptyStateMessage }} 會顯示於此列表</p>
@@ -61,6 +61,12 @@ export default {
     ButtonFollow,
     Spinner,
   },
+  props: {
+    isLoadingPage: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       show: 'followings',
@@ -73,9 +79,6 @@ export default {
     },
     tab() {
       return this.$route.name
-    },
-    isLoading() {
-      return this.$store.getters.getViewUser.isLoading
     },
     followList() {
       return this.tab === 'UserFollowings'
@@ -93,38 +96,8 @@ export default {
     },
   },
   created() {
-    const { user_id } = this.$route.params
     const { name } = this.$route
     this.show = name
-    // this.fetchUserFollow(user_id)
-  },
-  beforeRouteUpdate(to, from, next) {
-    const { user_id } = to.params
-    // this.fetchUserFollow(user_id)
-    next()
-  },
-  methods: {
-    // async fetchUserFollow(userId) {
-    //   try {
-    //     this.isLoading = true
-    //     const responseFollowing = await usersAPI.getUserFollowing({ userId })
-    //     this.$store.dispatch(
-    //       'handleSetViewUserFollowings',
-    //       responseFollowing.data
-    //     )
-    //     const responseFollowers = await usersAPI.getUserFollower({ userId })
-    //     this.$store.dispatch(
-    //       'handleSetViewUserFollowers',
-    //       responseFollowers.data
-    //     )
-    //     this.isLoading = false
-    //   } catch (err) {
-    //     this.isLoading = false
-    //     this.ToastError({
-    //       title: err.message,
-    //     })
-    //   }
-    // },
   },
 }
 </script>
@@ -193,7 +166,6 @@ export default {
 .fade-enter-active {
   transition: opacity 0.5s ease;
 }
-
 .fade-enter {
   opacity: 0;
 }
