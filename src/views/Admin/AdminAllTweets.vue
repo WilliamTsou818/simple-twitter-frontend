@@ -1,15 +1,24 @@
 <template>
   <div class="container container--admin">
     <Head :title="title" />
-    <Spinner v-if="isLoading" />
     <section class="tweets">
-      <AdminTweet
-        v-for="tweet in tweets"
-        :key="tweet.id"
-        :tweet="tweet"
-        :handleClickDelete="deleteTweet"
-      />
+      <Spinner v-if="isLoading" />
+      <transition-group name="fade">
+        <AdminTweet
+          v-for="tweet in tweets"
+          :key="tweet.id"
+          :tweet="tweet"
+          :handleListClickDelete="handleListClickDelete"
+          :isProcessing="isProcessing"
+        />
+      </transition-group>
     </section>
+    <AdminCheckModal
+      v-show="isModalOpen"
+      :confirmTweet="confirmTweet"
+      :handleToggleModal="handleToggleModal"
+      :handleClickDelete="deleteTweet"
+    />
   </div>
 </template>
 
@@ -20,6 +29,7 @@ import { Toastification } from '@/utils/mixins'
 import Spinner from '@/components/Spinner'
 import Head from '@/components/Head'
 import AdminTweet from '@/components/AdminTweet'
+import AdminCheckModal from '@/components/AdminCheckModal'
 
 export default {
   mixins: [Toastification],
@@ -27,6 +37,7 @@ export default {
     Spinner,
     Head,
     AdminTweet,
+    AdminCheckModal,
   },
   data() {
     return {
@@ -34,12 +45,21 @@ export default {
       isLoading: true,
       isProcessing: false,
       tweets: [],
+      isModalOpen: false,
+      confirmTweet: {},
     }
   },
   created() {
     this.fetchTweets()
   },
   methods: {
+    handleToggleModal() {
+      this.isModalOpen = !this.isModalOpen
+    },
+    handleListClickDelete(tweet) {
+      this.handleToggleModal(tweet)
+      this.confirmTweet = { ...tweet }
+    },
     async fetchTweets() {
       try {
         const { data } = await adminAPI.tweets.get()
@@ -51,16 +71,24 @@ export default {
     },
     async deleteTweet(tweetId) {
       try {
+        this.handleToggleModal()
+        this.isProcessing = true
         const { data } = await adminAPI.tweets.delete({ tweetId })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
         this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
+        this.isProcessing = false
         this.ToastSuccess({
           title: '刪除推文成功！',
           description: `The tweet id ${tweetId} deleted successfully`,
         })
       } catch (err) {
+        this.isProcessing = false
+        this.ToastError({
+          title: '刪除推文失敗！',
+          description: err.message,
+        })
         console.log(err)
       }
     },
@@ -74,6 +102,14 @@ export default {
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
+  }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.25s;
+  }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
   }
 }
 
