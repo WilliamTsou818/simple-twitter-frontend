@@ -9,9 +9,9 @@
       :class="{ 'chatBubble-self': chat.isSelf }"
     >
       <div
-        v-show="chat.avatar"
+        v-if="chat.User"
         class="chatBubble__avatar"
-        :style="{ backgroundImage: 'url(' + chat.avatar + ')' }"
+        :style="{ backgroundImage: 'url(' + chat.User.avatar + ')' }"
       ></div>
       <div class="">
         <div class="chatBubble__bubble">{{ chat.content }}</div>
