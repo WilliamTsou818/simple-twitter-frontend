@@ -1,9 +1,17 @@
 <template>
-  <div class="container container--chat">私人聊天室</div>
+  <div class="container container--chat">
+    <Head title="私人聊天室" />
+  </div>
 </template>
 
 <script>
-export default {}
+import Head from '@/components/Head'
+export default {
+  name: 'PrivateRoom',
+  components: {
+    Head,
+  },
+}
 </script>
 
 <style></style>
