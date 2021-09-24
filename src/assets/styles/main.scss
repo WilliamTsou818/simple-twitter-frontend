@@ -5,8 +5,7 @@
 .container {
   min-height: 100vh;
   &--admin,
-  &--setting,
-  &--chat {
+  &--setting {
     border-left: 1px solid var(--blue-gray-600);
   }
   &--user {
