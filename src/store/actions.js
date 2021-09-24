@@ -104,13 +104,17 @@ export default {
   setPublicAllMessages(context, data) {
     context.commit('setPublicAllMessages', data)
   },
+  //設定私人聊天室們
+  setPrivateRooms(context, data) {
+    context.commit('setPrivateRooms', data)
+  },
   // 測試socket呼叫到的對應action
   SOCKET_announce(context, data) {
     console.log('SOCKET_announce back', data)
     // TODO:另外設定
     context.commit('pushPublicAllMessages', {
       isPill: true,
-      content: data.message
+      content: data.message,
     })
   },
   SOCKET_publicMessage(context, data) {
@@ -121,7 +125,7 @@ export default {
       isSelf: data.userId === context.state.currentUser.id,
       content: data.content,
       avatar: data.avatar,
-      createdAt: data.createdAt
+      createdAt: data.createdAt,
     })
-  }
+  },
 }
