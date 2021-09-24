@@ -1,13 +1,22 @@
 <template>
-  <div class="chatBubble" :class="{ 'chatBubble-self': chat.isSelf }">
+  <div>
+    <div v-show="chat.isPill" class="pill-status">
+      <span class="pill-status__text">{{ chat.content }}</span>
+    </div>
     <div
-      v-show="chat.avatar"
-      class="chatBubble__avatar"
-      :style="{ backgroundImage: 'url(' + chat.avatar + ')' }"
-    ></div>
-    <div class="">
-      <div class="chatBubble__bubble">{{ chat.content }}</div>
-      <div class="chatBubble__time">{{ chat.createdAt | fromNowFilter }}</div>
+      v-show="!chat.isPill"
+      class="chatBubble"
+      :class="{ 'chatBubble-self': chat.isSelf }"
+    >
+      <div
+        v-show="chat.avatar"
+        class="chatBubble__avatar"
+        :style="{ backgroundImage: 'url(' + chat.avatar + ')' }"
+      ></div>
+      <div class="">
+        <div class="chatBubble__bubble">{{ chat.content }}</div>
+        <div class="chatBubble__time">{{ chat.createdAt | fromNowFilter }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -21,22 +30,21 @@ export default {
     chat: {
       type: Object,
     },
-    // isSelf: {
-    //   type: Boolean,
-    //   default: false,
-    // },
-    // avatar: {
-    //   type: String,
-    // },
-    // time: {
-    //   type: String,
-    // },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 @import '../assets/styles/mixin.scss';
+.pill-status {
+  margin: 8px 0;
+  &__text {
+    padding: 7px 14px;
+    background-color: var(--gray-300);
+    border-radius: 20px;
+    @include font-setting(15px, 500, var(--gray-500));
+  }
+}
 .chatBubble {
   display: flex;
   justify-content: left;

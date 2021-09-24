@@ -1,8 +1,6 @@
 <template>
   <div class="chat-room">
     <div class="chat-room__chat">
-      <!-- <ChatBubble />
-      <ChatBubble isSelf /> -->
       <ChatBubble v-for="chat in chats" :key="chat.id" :chat="chat" />
     </div>
     <div class="chat-room__newChat">
@@ -35,32 +33,63 @@ export default {
   components: {
     ChatBubble,
   },
-  data() {
-    return {
-      chats: [
-        {
-          id: '45678',
-          isSelf: false,
-          content: 'Hello 你最近好嗎？',
-          createdAt: '2021-09-11T08:51:50.000Z',
-          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
-        },
-        {
-          id: '4532g',
-          isSelf: true,
-          content: '最近天氣變化大～',
-          createdAt: '2021-09-24T08:51:50.000Z',
-        },
-        {
-          id: '4532U',
-          isSelf: false,
-          content: '記得多穿一點囉！',
-          createdAt: '2021-09-24T18:51:50.000Z',
-          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
-        },
-      ],
-    }
+  props: {
+    chats: {
+      type: Array,
+    },
   },
+  // data() {
+  //   return {
+  //     chats: [
+  //       {
+  //         isPill: true,
+  //         content: 'Esther Howard 上線',
+  //       },
+  //       {
+  //         isPill: false,
+  //         id: '45678',
+  //         isSelf: false,
+  //         content: 'Hello 你最近好嗎？',
+  //         createdAt: '2021-09-11T08:51:50.000Z',
+  //         avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
+  //       },
+  //       {
+  //         isPill: false,
+  //         id: '4532g',
+  //         isSelf: true,
+  //         content: '最近天氣變化大～',
+  //         createdAt: '2021-09-24T08:51:50.000Z',
+  //       },
+  //       {
+  //         isPill: false,
+  //         id: '4532U',
+  //         isSelf: false,
+  //         content: '記得多穿一點囉！',
+  //         createdAt: '2021-09-24T18:51:50.000Z',
+  //         avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
+  //       },
+  //       {
+  //         isPill: false,
+  //         id: '4532g',
+  //         isSelf: true,
+  //         content: '好喔～',
+  //         createdAt: '2021-09-24T18:51:50.000Z',
+  //       },
+  //       {
+  //         isPill: false,
+  //         id: '422532U',
+  //         isSelf: false,
+  //         content: '我先離開囉',
+  //         createdAt: '2021-09-24T18:51:50.000Z',
+  //         avatar: 'https://i.imgur.com/HNBx3FH.jpeg',
+  //       },
+  //       {
+  //         isPill: true,
+  //         content: 'Ralph Edwards 離線',
+  //       },
+  //     ],
+  //   }
+  // },
 }
 </script>
 
@@ -68,6 +97,7 @@ export default {
 @import '../assets/styles/mixin.scss';
 .chat-room {
   height: calc(100vh - 56px);
+  padding-top: 15px;
   display: flex;
   flex-direction: column;
   &__chat {

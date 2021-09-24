@@ -9,6 +9,7 @@
       </div>
       <div class="chat__room">
         <Head title="公開聊天室" />
+        <ChatRoom :chats="chats" />
       </div>
     </div>
   </div>
@@ -17,11 +18,67 @@
 <script>
 import Head from '@/components/Head'
 import ChatList from '@/components/ChatList'
+import ChatRoom from '@/components/ChatRoom'
 export default {
   name: 'PrivateRoom',
   components: {
     Head,
     ChatList,
+    ChatRoom,
+  },
+  data() {
+    return {
+      chats: [
+        {
+          isPill: true,
+          id: '2397823',
+          content: 'Esther Howard 上線',
+        },
+        {
+          isPill: false,
+          id: '45678',
+          isSelf: false,
+          content: '大家完成專案了嗎？',
+          createdAt: '2021-09-11T08:51:50.000Z',
+          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
+        },
+        {
+          isPill: false,
+          id: '4532g',
+          isSelf: true,
+          content: '快了吧....',
+          createdAt: '2021-09-24T08:51:50.000Z',
+        },
+        {
+          isPill: false,
+          id: '4532U',
+          isSelf: false,
+          content: '記得參加工作坊喔',
+          createdAt: '2021-09-24T18:51:50.000Z',
+          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
+        },
+        {
+          isPill: false,
+          id: '45t32g',
+          isSelf: true,
+          content: '好喔～',
+          createdAt: '2021-09-24T18:51:50.000Z',
+        },
+        {
+          isPill: false,
+          id: '422532U',
+          isSelf: false,
+          content: '我先離開囉',
+          createdAt: '2021-09-24T18:51:50.000Z',
+          avatar: 'https://i.imgur.com/HNBx3FH.jpeg',
+        },
+        {
+          isPill: true,
+          id: '232234',
+          content: 'Ralph Edwards 離線',
+        },
+      ],
+    }
   },
 }
 </script>
