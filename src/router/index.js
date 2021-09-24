@@ -121,6 +121,29 @@ const routes = [
     component: () => import('../views/User/UserSetting.vue'),
     beforeEnter: checkUserAuthorize,
   },
+  //聊天室
+  {
+    path: '/user/chat',
+    name: 'Chat',
+    redirect: '/user/chat/public',
+    component: () => import('../views/User/Chat.vue'),
+    children: [
+      {
+        //公開聊天室
+        path: '/user/chat/public',
+        name: 'PublicRoom',
+        component: () => import('../views/User/PublicRoom.vue'),
+        beforeEnter: checkUserAuthorize,
+      },
+      {
+        //私人聊天室
+        path: '/user/chat/:room_id',
+        name: 'PrivateRoom',
+        component: () => import('../views/User/PrivateRoom.vue'),
+        beforeEnter: checkUserAuthorize,
+      },
+    ],
+  },
   //前台路由
   {
     path: '/user',
