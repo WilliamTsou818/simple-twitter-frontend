@@ -6,14 +6,14 @@
     <div
       v-show="!chat.isPill"
       class="chatBubble"
-      :class="{ 'chatBubble-self': chat.isSelf }"
+      :class="{ 'chatBubble-self': isCurrentUser }"
     >
       <div
         v-if="chat.User"
         class="chatBubble__avatar"
         :style="{ backgroundImage: 'url(' + chat.User.avatar + ')' }"
       ></div>
-      <div class="">
+      <div>
         <div class="chatBubble__bubble">{{ chat.content }}</div>
         <div class="chatBubble__time">{{ chat.createdAt | fromNowFilter }}</div>
       </div>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { fromNowFilter } from '../utils/mixins'
 export default {
   name: 'Chatlist',
@@ -29,6 +30,12 @@ export default {
   props: {
     chat: {
       type: Object,
+    },
+  },
+  computed: {
+    ...mapState(['currentUser']),
+    isCurrentUser() {
+      return this.currentUser.id === this.chat.UserId
     },
   },
 }
