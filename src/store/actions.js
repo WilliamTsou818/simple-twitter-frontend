@@ -100,11 +100,28 @@ export default {
   isReplyRefresh(context, isRefresh) {
     context.commit('setIsReplyRefresh', isRefresh)
   },
-  // TODO:測試socket有呼叫到對應的action
+  // 設定公開聊天室歷史訊息
+  setPublicAllMessages(context, data) {
+    context.commit('setPublicAllMessages', data)
+  },
+  // 測試socket呼叫到的對應action
   SOCKET_announce(context, data) {
     console.log('SOCKET_announce back', data)
+    // TODO:另外設定
+    context.commit('pushPublicAllMessages', {
+      isPill: true,
+      content: data.message
+    })
   },
   SOCKET_publicMessage(context, data) {
     console.log('SOCKET_publicMessage back', data)
+    // TODO:另外設定
+    context.commit('pushPublicAllMessages', {
+      isPill: false,
+      isSelf: data.userId === context.state.currentUser.id,
+      content: data.content,
+      avatar: data.avatar,
+      createdAt: data.createdAt
+    })
   }
 }

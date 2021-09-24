@@ -1,15 +1,19 @@
 <template>
   <div class="chat-room">
     <div class="chat-room__chat">
-      <ChatBubble v-for="chat in chats" :key="chat.id" :chat="chat" />
+      <ChatBubble v-for="(chat, index) in chats" :key="index" :chat="chat" />
     </div>
     <div class="chat-room__newChat">
       <input
         class="chat-room__newChat__input"
+        v-model="content"
         type="text"
         placeholder="輸入訊息..."
       />
-      <button class="chat-room__newChat__submit">
+      <button
+        class="chat-room__newChat__submit"
+        @click.stop.prevent="handleNewChatClick"
+      >
         <svg
           width="24"
           height="24"
@@ -36,6 +40,17 @@ export default {
   props: {
     chats: {
       type: Array,
+    },
+  },
+  data() {
+    return {
+      content: '',
+    }
+  },
+  methods: {
+    handleNewChatClick() {
+      this.$emit('new-chat', this.content)
+      this.content = ''
     },
   },
   // data() {

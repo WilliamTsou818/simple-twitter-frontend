@@ -9,18 +9,22 @@
       </div>
       <div class="chat__room">
         <Head title="公開聊天室" />
-        <ChatRoom :chats="chats" />
+        <ChatRoom :chats="publicAllMessages" @new-chat="handleNewChatSend" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import usersAPI from '@/apis/users'
+import { mapState } from 'vuex'
+
 import Head from '@/components/Head'
 import ChatList from '@/components/ChatList'
 import ChatRoom from '@/components/ChatRoom'
+
 export default {
-  name: 'PrivateRoom',
+  name: 'PublicRoom',
   components: {
     Head,
     ChatList,
@@ -28,6 +32,7 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       chats: [
         {
           isPill: true,
@@ -79,6 +84,56 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    ...mapState(['publicAllMessages']),
+  },
+  created() {
+    console.log('created------------joinPublicRoom')
+    this.fetchAllMessages()
+    this.$socket.emit('joinPublicRoom')
+  },
+  beforeDestroy() {
+    console.log('beforeDestroy------------leavePublicRoom')
+    this.$socket.emit('leavePublicRoom')
+  },
+  sockets: {
+    connect() {
+      console.log('publicRoon socket connected', this.$socket.connected)
+      // 斷線重連，重新加入房間
+      this.$socket.emit('joinPublicRoom')
+    },
+  },
+  methods: {
+    async fetchAllMessages() {
+      try {
+        this.isLoading = true
+        const { data } = await usersAPI.messages.getPublicAll()
+        this.$store.dispatch('setPublicAllMessages', data)
+        this.isLoading = false
+      } catch (err) {
+        let message = ''
+        if (err.response) {
+          console.log(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
+        this.ToastError({
+          title: '獲取訊息失敗！',
+          description: message,
+        })
+      }
+    },
+    handleNewChatSend(content) {
+      console.log('handleNewChatSend', content)
+      this.$socket.emit('publicMessage', {
+        userId: this.$store.getters.getCurrentUser.id,
+        content,
+      })
+    },
   },
 }
 </script>
