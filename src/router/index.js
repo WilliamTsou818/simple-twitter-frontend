@@ -241,8 +241,29 @@ router.beforeEach(async (to, from, next) => {
     }
     return
   }
+  isAuthenticated && checkSocketConnect()
 
   next()
 })
+
+// 檢查socket是否連線
+const checkSocketConnect = () => {
+  console.log('checkSocketConnect', store.state.currentUser.role)
+  console.log('socket.connected ===> ', Vue.prototype.$socket.connected);
+  if (!Vue.prototype.$socket.connected) {
+    console.log('socket 尚未連接')
+    if (store.state.currentUser.role === 'user') {
+      console.log('這邊是要進入User的相關頁面---------------socket 連接')
+      console.log('socket 開始連接')
+      Vue.prototype.$socket.auth.token = store.state.token
+      console.log('auth token', Vue.prototype.$socket.auth.token)
+      Vue.prototype.$socket.connect()
+    } else {
+      console.log('不是user,不連接 socket')
+    }
+  } else {
+    console.log('socket 已經連接')
+  }
+}
 
 export default router

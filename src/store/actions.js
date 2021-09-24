@@ -100,4 +100,11 @@ export default {
   isReplyRefresh(context, isRefresh) {
     context.commit('setIsReplyRefresh', isRefresh)
   },
+  // TODO:測試socket有呼叫到對應的action
+  SOCKET_announce(context, data) {
+    console.log('SOCKET_announce back', data)
+  },
+  SOCKET_publicMessage(context, data) {
+    console.log('SOCKET_publicMessage back', data)
+  }
 }
