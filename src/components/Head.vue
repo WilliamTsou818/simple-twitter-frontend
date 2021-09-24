@@ -117,7 +117,9 @@ export default {
   }
   &__message {
     position: absolute;
-    right: 12px;
+    right: 15px;
+    display: flex;
+    align-items: center;
   }
 }
 </style>
