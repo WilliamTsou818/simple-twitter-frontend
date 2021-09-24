@@ -125,7 +125,7 @@ const routes = [
   {
     path: '/user/chat',
     name: 'Chat',
-    redirect: '/user/chat/public',
+    redirect: '/user/chat/private',
     component: () => import('../views/User/Chat.vue'),
     children: [
       {
@@ -133,6 +133,13 @@ const routes = [
         path: '/user/chat/public',
         name: 'PublicRoom',
         component: () => import('../views/User/PublicRoom.vue'),
+        beforeEnter: checkUserAuthorize,
+      },
+      {
+        //私人聊天室
+        path: '/user/chat/private',
+        name: 'PrivateRoom',
+        component: () => import('../views/User/PrivateRoom.vue'),
         beforeEnter: checkUserAuthorize,
       },
       {
