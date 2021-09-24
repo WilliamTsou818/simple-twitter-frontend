@@ -16,10 +16,16 @@
           time="2021-09-12T06:31:16.000Z"
           active
         />
-        <ChatList active />
+        <ChatList
+          name="apple"
+          account="apple"
+          chat="Nulla Lorem mollit cupidatat irure"
+          time="2021-09-24T06:31:16.000Z"
+        />
       </div>
       <div class="chat__room">
         <Head title="Apple" account="apple" />
+        <ChatRoom />
       </div>
     </div>
   </div>
@@ -28,11 +34,13 @@
 <script>
 import Head from '@/components/Head'
 import ChatList from '@/components/ChatList'
+import ChatRoom from '@/components/ChatRoom'
 export default {
   name: 'PrivateRoom',
   components: {
     Head,
     ChatList,
+    ChatRoom,
   },
 }
 </script>
