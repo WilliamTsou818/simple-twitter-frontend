@@ -62,10 +62,11 @@ export default {
       color: var(--white);
       background-color: var(--theme);
       border-radius: 25px 25px 0 25px;
+      text-align: right;
     }
   }
   &__avatar {
-    width: 40px;
+    min-width: 40px;
     height: 40px;
     border-radius: 20px;
     background-color: var(--blue-gray-600);
@@ -80,6 +81,9 @@ export default {
     border-radius: 25px 25px 25px 0px;
     color: var(--text);
     background-color: var(--blue-gray-600);
+    word-wrap: break-word;
+    word-break: break-all;
+    text-align: left;
   }
   &__time {
     text-align: left;
