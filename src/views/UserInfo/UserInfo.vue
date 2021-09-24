@@ -7,6 +7,7 @@
       :count="currentViewUser.data.TweetsCount"
       backArrow
     />
+    <button @click="sendMessage">Test message</button>
     <div class="section-wrapper">
       <UserProfile
         :user="currentViewUser.data"
@@ -74,6 +75,9 @@ export default {
     // this.$store.dispatch('handleInitFollowing')
     this.$store.dispatch('isViewCurrentUser', user_id)
     this.fetchUser(user_id)
+    // FIXME:測試用
+    console.log('created------------joinPublicRoom')
+    this.$socket.emit('joinPublicRoom')
   },
   beforeRouteUpdate(to, from, next) {
     const { user_id } = to.params
@@ -83,6 +87,18 @@ export default {
     this.userId = user_id
     this.$store.dispatch('isViewCurrentUser', user_id)
     next()
+  },
+  beforeDestroy() {
+    // FIXME:測試用
+    console.log('beforeDestroy------------leavePublicRoom')
+    this.$socket.emit('leavePublicRoom')
+  },
+  // FIXME:測試用
+  sockets: {
+    connect() {
+      console.log('publicRoon socket connected', this.$socket.connected)
+      this.$socket.emit('joinPublicRoom')
+    },
   },
   methods: {
     async fetchUser(userId) {
@@ -105,6 +121,14 @@ export default {
         })
         this.$router.back()
       }
+    },
+    // FIXME:測試用
+    sendMessage() {
+      console.log('sendMessage')
+      this.$socket.emit('publicMessage', {
+        userId: this.$store.getters.getCurrentUser.id,
+        content: '大家好~~~',
+      })
     },
   },
 }
