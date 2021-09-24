@@ -1,31 +1,36 @@
 <template>
-  <div class="chatBubble" :class="{ 'chatBubble-self': isSelf }">
-    <div class="chatBubble__avatar"></div>
+  <div class="chatBubble" :class="{ 'chatBubble-self': chat.isSelf }">
+    <div
+      v-show="chat.avatar"
+      class="chatBubble__avatar"
+      :style="{ backgroundImage: 'url(' + chat.avatar + ')' }"
+    ></div>
     <div class="">
-      <div class="chatBubble__bubble">hello word</div>
-      <div class="chatBubble__time">剛剛</div>
+      <div class="chatBubble__bubble">{{ chat.content }}</div>
+      <div class="chatBubble__time">{{ chat.createdAt | fromNowFilter }}</div>
     </div>
   </div>
 </template>
 
 <script>
+import { fromNowFilter } from '../utils/mixins'
 export default {
   name: 'Chatlist',
-  // mixins: [fromNowFilter],
+  mixins: [fromNowFilter],
   props: {
-    isSelf: {
-      type: Boolean,
-      default: false,
-    },
-    avatar: {
-      type: String,
-    },
     chat: {
-      type: String,
+      type: Object,
     },
-    time: {
-      type: String,
-    },
+    // isSelf: {
+    //   type: Boolean,
+    //   default: false,
+    // },
+    // avatar: {
+    //   type: String,
+    // },
+    // time: {
+    //   type: String,
+    // },
   },
 }
 </script>
@@ -58,6 +63,9 @@ export default {
     background-color: var(--blue-gray-600);
     margin-bottom: 20px;
     margin-right: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   &__bubble {
     padding: 10px 15px;

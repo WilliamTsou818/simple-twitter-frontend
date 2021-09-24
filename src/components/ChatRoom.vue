@@ -1,9 +1,9 @@
 <template>
   <div class="chat-room">
     <div class="chat-room__chat">
-      <ChatBubble />
-      <ChatBubble isSelf />
-      <ChatBubble />
+      <!-- <ChatBubble />
+      <ChatBubble isSelf /> -->
+      <ChatBubble v-for="chat in chats" :key="chat.id" :chat="chat" />
     </div>
     <div class="chat-room__newChat">
       <input
@@ -34,6 +34,32 @@ export default {
   name: 'ChatRoom',
   components: {
     ChatBubble,
+  },
+  data() {
+    return {
+      chats: [
+        {
+          id: '45678',
+          isSelf: false,
+          content: 'Hello 你最近好嗎？',
+          createdAt: '2021-09-11T08:51:50.000Z',
+          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
+        },
+        {
+          id: '4532g',
+          isSelf: true,
+          content: '最近天氣變化大～',
+          createdAt: '2021-09-24T08:51:50.000Z',
+        },
+        {
+          id: '4532U',
+          isSelf: false,
+          content: '記得多穿一點囉！',
+          createdAt: '2021-09-24T18:51:50.000Z',
+          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
+        },
+      ],
+    }
   },
 }
 </script>
