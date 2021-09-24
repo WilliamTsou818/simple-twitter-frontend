@@ -10,13 +10,6 @@
       @close="handleNewPostModalClose"
       @post-success="handleNewPostSuccess"
     />
-    <UserReplyModal
-      v-show="isReplyModalOpen"
-      :init-reply="replyDetail"
-      :reply-to="replyTo"
-      @close="handleReplyModalClose"
-      @reply-success="handleReplySuccess"
-    />
   </div>
 </template>
 
@@ -24,40 +17,30 @@
 import { mapState } from 'vuex'
 import NavBar from '@/components/NavBar.vue'
 import TabBar from '@/components/TabBar.vue'
-import UserReplyModal from '@/components/UserReplyModal'
 import UserNewPostModal from '@/components/UserNewPostModal'
 import { newPostAction } from '@/utils/mixins'
 
 export default {
-  name: 'user',
+  name: 'Chat',
   components: {
     NavBar,
     TabBar,
-    UserReplyModal,
     UserNewPostModal,
   },
   computed: {
-    ...mapState(['isNewPostModalOpen', 'isReplyModalOpen', 'replyDetail']),
-    replyTo() {
-      return this.replyDetail.User ? this.replyDetail.User.account : ''
-    },
+    ...mapState(['isNewPostModalOpen']),
   },
   mixins: [newPostAction],
   beforeRouteUpdate(to, from, next) {
     if (this.isNewPostModalOpen) {
       this.handleNewPostModalClose()
     }
-    if (this.isReplyModalOpen) {
-      this.$store.dispatch('isReplyModalOpen', false)
-    }
+
     next()
   },
   beforeDestroy() {
     if (this.isNewPostModalOpen) {
       this.handleNewPostModalClose()
-    }
-    if (this.isReplyModalOpen) {
-      this.$store.dispatch('isReplyModalOpen', false)
     }
   },
   methods: {
@@ -69,13 +52,6 @@ export default {
     handleNewPostSuccess() {
       // 設定需要刷新，需要刷新的頁面必須watch state.isNewPostRefresh的變化
       this.$store.dispatch('isNewPostRefresh', true)
-    },
-    handleReplyModalClose() {
-      this.$store.dispatch('isReplyModalOpen', false)
-    },
-    handleReplySuccess() {
-      // 設定需要刷新，需要刷新的頁面必須watch state.isReplyRefresh的變化
-      this.$store.dispatch('isReplyRefresh', true)
     },
   },
 }
