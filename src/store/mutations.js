@@ -101,4 +101,10 @@ export default {
   setIsReplyRefresh(state, isRefresh) {
     state.isReplyRefresh = isRefresh
   },
+  setPublicAllMessages(state, data) {
+    state.publicAllMessages = data
+  },
+  pushPublicAllMessages(state, data) {
+    state.publicAllMessages.push(data)
+  },
 }

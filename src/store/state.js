@@ -41,4 +41,6 @@ export default {
   isReplyModalOpen: false,
   // 是否回覆成功需要刷新
   isReplyRefresh: false,
+  // 公開聊天室訊息
+  publicAllMessages: []
 }
