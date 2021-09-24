@@ -77,6 +77,20 @@ export default {
           id: '232234',
           content: 'Ralph Edwards 離線',
         },
+        {
+          isPill: false,
+          id: '45t32eweg',
+          isSelf: true,
+          content: '好喔～',
+          createdAt: '2021-09-24T18:51:50.000Z',
+        },
+        {
+          isPill: false,
+          id: '45tww32g',
+          isSelf: true,
+          content: '好喔～',
+          createdAt: '2021-09-24T18:51:50.000Z',
+        },
       ],
     }
   },
