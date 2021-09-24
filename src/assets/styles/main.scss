@@ -8,7 +8,8 @@
   &--setting {
     border-left: 1px solid var(--blue-gray-600);
   }
-  &--user {
+  &--user,
+  &--chat {
     border-left: 1px solid var(--blue-gray-600);
     border-right: 1px solid var(--blue-gray-600);
   }
