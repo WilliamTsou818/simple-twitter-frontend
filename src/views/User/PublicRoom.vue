@@ -9,7 +9,7 @@
       </div>
       <div class="chat__room">
         <Head title="公開聊天室" />
-        <ChatRoom :chats="chats" />
+        <ChatRoom :chats="chats" @new-chat="handleNewChatSend" />
       </div>
     </div>
   </div>
@@ -20,7 +20,7 @@ import Head from '@/components/Head'
 import ChatList from '@/components/ChatList'
 import ChatRoom from '@/components/ChatRoom'
 export default {
-  name: 'PrivateRoom',
+  name: 'PublicRoom',
   components: {
     Head,
     ChatList,
@@ -79,6 +79,30 @@ export default {
         },
       ],
     }
+  },
+  created() {
+    console.log('created------------joinPublicRoom')
+    this.$socket.emit('joinPublicRoom')
+  },
+  beforeDestroy() {
+    console.log('beforeDestroy------------leavePublicRoom')
+    this.$socket.emit('leavePublicRoom')
+  },
+  sockets: {
+    connect() {
+      console.log('publicRoon socket connected', this.$socket.connected)
+      // 斷線重連，重新加入房間
+      this.$socket.emit('joinPublicRoom')
+    },
+  },
+  methods: {
+    handleNewChatSend(content) {
+      console.log('handleNewChatSend', content)
+      this.$socket.emit('publicMessage', {
+        userId: this.$store.getters.getCurrentUser.id,
+        content,
+      })
+    },
   },
 }
 </script>
