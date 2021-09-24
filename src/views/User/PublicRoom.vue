@@ -9,16 +9,20 @@
       </div>
       <div class="chat__room">
         <Head title="公開聊天室" />
-        <ChatRoom :chats="chats" @new-chat="handleNewChatSend" />
+        <ChatRoom :chats="publicAllMessages" @new-chat="handleNewChatSend" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import usersAPI from '@/apis/users'
+import { mapState } from 'vuex'
+
 import Head from '@/components/Head'
 import ChatList from '@/components/ChatList'
 import ChatRoom from '@/components/ChatRoom'
+
 export default {
   name: 'PublicRoom',
   components: {
@@ -28,6 +32,7 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       chats: [
         {
           isPill: true,
@@ -80,8 +85,12 @@ export default {
       ],
     }
   },
+  computed: {
+    ...mapState(['publicAllMessages']),
+  },
   created() {
     console.log('created------------joinPublicRoom')
+    this.fetchAllMessages()
     this.$socket.emit('joinPublicRoom')
   },
   beforeDestroy() {
@@ -96,6 +105,28 @@ export default {
     },
   },
   methods: {
+    async fetchAllMessages() {
+      try {
+        this.isLoading = true
+        const { data } = await usersAPI.messages.getPublicAll()
+        this.$store.dispatch('setPublicAllMessages', data)
+        this.isLoading = false
+      } catch (err) {
+        let message = ''
+        if (err.response) {
+          console.log(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
+        this.ToastError({
+          title: '獲取訊息失敗！',
+          description: message,
+        })
+      }
+    },
     handleNewChatSend(content) {
       console.log('handleNewChatSend', content)
       this.$socket.emit('publicMessage', {

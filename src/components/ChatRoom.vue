@@ -1,7 +1,7 @@
 <template>
   <div class="chat-room">
     <div class="chat-room__chat">
-      <ChatBubble v-for="chat in chats" :key="chat.id" :chat="chat" />
+      <ChatBubble v-for="(chat, index) in chats" :key="index" :chat="chat" />
     </div>
     <div class="chat-room__newChat">
       <input

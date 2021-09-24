@@ -79,4 +79,18 @@ export default {
       return apiHelper.get(`/tweets/${tweetId}`)
     },
   },
+  messages: {
+    // 取得PublicRoom的訊息
+    getPublicAll() {
+      return apiHelper.get(`/messages/5`)
+    },
+    // 取得特定PrivateRoom的訊息
+    getPrivateALL({ RoomId }) {
+      return apiHelper.get(`/messages/${RoomId}`)
+    },
+    // 取得當前使用者的所有Private Room
+    getPrivateRoom({ UserId }) {
+      return apiHelper.get(`/messages/private/${UserId}`)
+    }
+  }
 }
