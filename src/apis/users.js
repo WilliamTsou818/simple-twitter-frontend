@@ -85,7 +85,7 @@ export default {
       return apiHelper.get(`/messages/5`)
     },
     // 取得特定PrivateRoom的訊息
-    getPrivateALL({ RoomId }) {
+    getPrivateAll({ RoomId }) {
       return apiHelper.get(`/messages/${RoomId}`)
     },
     //TODO: 應該是不用帶UserId 取得當前使用者的所有Private Room

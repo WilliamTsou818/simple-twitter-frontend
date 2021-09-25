@@ -164,8 +164,10 @@ export default {
           // 回傳room_id
           console.log('response', response)
           // 然後跳轉私訊頁面
-          const room_id = ''
-          this.$router.push({ name: 'PrivateRoom', params: { room_id } })
+          this.$router.push({
+            name: 'PrivateRoom',
+            params: { room_id: response.RoomId },
+          })
         }
       )
     },

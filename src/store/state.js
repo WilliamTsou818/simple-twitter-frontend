@@ -49,4 +49,6 @@ export default {
   privateRooms: [],
   // 私訊未讀數量
   privateUnreadMessageCount: 0,
+  // 私訊聊天室訊息
+  privateAllMessages: [],
 }
