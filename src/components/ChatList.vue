@@ -74,6 +74,9 @@ export default {
     height: 50px;
     border-radius: 25px;
     background-color: var(--blue-gray-600);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   &__info {
     padding-left: 10px;
