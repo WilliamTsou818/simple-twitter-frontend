@@ -24,16 +24,16 @@
         </router-link>
 
         <router-link class="nav-left__nav__link" to="/user/chat/public">
-          <NavItem title="公開聊天室" count="12">
+          <NavItem title="公開聊天室">
             <IconChat />
           </NavItem>
         </router-link>
 
-        <router-link class="nav-left__nav__link" to="/user/chat/private">
+        <!-- <router-link class="nav-left__nav__link" to="/user/chat/private">
           <NavItem title="私人訊息" count="6">
             <IconMail />
           </NavItem>
-        </router-link>
+        </router-link> -->
 
         <router-link
           :to="{ name: 'UserInfo', params: { user_id: currentUser.id } }"
