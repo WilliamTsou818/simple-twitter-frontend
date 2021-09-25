@@ -110,7 +110,7 @@ export default {
   },
   // 設定公開聊天室線上的使用者
   SOCKET_publicUsers(context, data) {
-    context.commit('setpublicUsers', data)
+    context.commit('setPublicUsers', data)
   },
   // 公開聊天室系統通知
   SOCKET_announce(context, data) {

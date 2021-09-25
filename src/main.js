@@ -71,8 +71,8 @@ new Vue({
       console.log('announce back', data)
     },
     // 公開聊天室(線上的使用者)
-    publicUser(data) {
-      console.log('publicUser back', data)
+    publicUsers(data) {
+      console.log('publicUsers back', data)
     },
     // 公開聊天室(訊息通知)
     publicMessage(data) {
