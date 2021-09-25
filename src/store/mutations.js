@@ -110,4 +110,7 @@ export default {
   setPrivateRooms(state, data) {
     state.privateRooms.room = data
   },
+  setPublicUser(state, data) {
+    state.publicUser = [...data]
+  }
 }
