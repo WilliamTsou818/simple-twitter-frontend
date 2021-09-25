@@ -5,8 +5,7 @@
     </div>
     <div
       v-show="!chat.isPill"
-      class="chatBubble"
-      :class="{ 'chatBubble-self': isCurrentUser }"
+      :class="['chatBubble', { 'chatBubble-self': isCurrentUser }]"
     >
       <div
         v-if="chat.User"
