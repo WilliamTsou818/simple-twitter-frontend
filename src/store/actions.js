@@ -109,16 +109,15 @@ export default {
     context.commit('setPrivateRooms', data)
   },
   // 設定公開聊天室線上的使用者
-  SOCKET_publicUser(context, data) {
-    context.commit('setPublicUser', data)
+  SOCKET_publicUsers(context, data) {
+    context.commit('setpublicUsers', data)
   },
   // 公開聊天室系統通知
   SOCKET_announce(context, data) {
     console.log('SOCKET_announce back', data)
     context.commit('pushPublicAllMessages', {
+      ...data,
       isPill: true,
-      // FIXME:後端會幫忙統一成content
-      content: data.message,
     })
   },
   SOCKET_publicMessage(context, data) {

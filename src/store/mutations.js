@@ -16,10 +16,12 @@ export default {
     // TODO:socket disconnect
     if (Vue.prototype.$socket.connected) {
       console.log('呼叫 socket disconnect')
-      // FIXME:如果在公共聊天室，要發送離開事件
-      if (router.currentRoute.name === 'UserAllTweets') {
+      // 如果在公共聊天室，要發送離開事件
+      if (router.currentRoute.name === 'PublicRoom') {
         console.log('登出前呼叫離開房間')
         Vue.prototype.$socket.emit('leavePublicRoom')
+      } else if (router.currentRoute.name === 'Private' || router.currentRoute.name === 'PrivateRoom') {
+        Vue.prototype.$socket.emit('leavePrivateRoom')
       }
       Vue.prototype.$socket.disconnect()
       Vue.prototype.$socket.auth.token = ''
@@ -110,7 +112,7 @@ export default {
   setPrivateRooms(state, data) {
     state.privateRooms.room = data
   },
-  setPublicUser(state, data) {
-    state.publicUser = [...data]
+  setPublicUsers(state, data) {
+    state.publicUsers = [...data]
   }
 }
