@@ -1,7 +1,7 @@
 <template>
   <div class="container container--chat">
     <div class="chat">
-      <div class="chat__list">
+      <div class="chat__lists">
         <Head title="訊息" message />
         <ChatList
           name="apple"
@@ -133,10 +133,14 @@ export default {
 <style lang="scss" scoped>
 .chat {
   display: flex;
-  &__list {
+  &__lists {
     width: 390px;
     height: 100vh;
+    overflow-y: scroll;
     border-right: 1px solid var(--blue-gray-600);
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   &__room {
     flex: 1;
