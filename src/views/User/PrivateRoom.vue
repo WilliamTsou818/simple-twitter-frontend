@@ -36,11 +36,10 @@ export default {
     ChatList,
     ChatRoom,
   },
-  created() {
-    this.fetchAllRooms()
-  },
   data() {
     return {
+      isLoading: true,
+      isJoin: false,
       chats: [
         {
           isPill: false,
@@ -125,7 +124,37 @@ export default {
       ],
     }
   },
+  computed: {
+    ...mapState(['currentUser', 'privateRooms', 'privateAllMessages']),
+  },
+  created() {
+    const { room_id } = this.$route.params
+    console.log('room_id', room_id)
+    this.openPrivateRoom(room_id)
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log('beforeRouteUpdate to', to)
+    // 這邊要離開房間?在join?
+    if (this.isJoin) {
+      console.log('beforeRouteUpdate------------leavePrivateRoom')
+      this.$socket.emit('leavePrivateRoom')
+    }
+    const { room_id } = to.params
+    console.log('beforeRouteUpdate room_id', room_id)
+    this.openPrivateRoom(room_id)
+    next()
+  },
+  beforeDestroy() {
+    if (this.isJoin) {
+      console.log('beforeDestroy------------leavePrivateRoom')
+      this.$socket.emit('leavePrivateRoom')
+    }
+  },
   methods: {
+    async openPrivateRoom(room_id) {
+      await this.fetchAllRooms()
+      this.joinPrivateRoom(room_id)
+    },
     async fetchAllRooms() {
       try {
         this.isLoading = true
@@ -145,6 +174,61 @@ export default {
 
         this.ToastError({
           title: '獲取訊息失敗！',
+          description: message,
+        })
+      }
+    },
+    joinPrivateRoom(room_id) {
+      const roomData = room_id
+        ? this.privateRooms.find((room) => {
+            room.RoomId === room_id
+          })
+        : null
+      if (!roomData && this.privateRooms.length > 0) {
+        // 重新導向第一個私訊
+        console.log('重新導向第一個私訊 RoomId', this.privateRooms[0].RoomId)
+        this.$router.push({
+          name: 'PrivateRoom',
+          params: { room_id: this.privateRooms[0].RoomId },
+        })
+        return
+      }
+      console.log('roomData', roomData)
+      if (roomData) {
+        console.log('------------joinPrivateRoom')
+        this.$socket.emit(
+          'joinPrivateRoom',
+          { targetUserId: roomData.UserId, currentUserId: this.currentUser.id },
+          (response) => {
+            // 回傳room_id
+            console.log('response', response)
+          }
+        )
+        this.isJoin = true
+        this.fetchAllMessages(room_id)
+      } else {
+        console.log('目前沒有私訊房間')
+      }
+    },
+    async fetchAllMessages(RoomId) {
+      try {
+        this.isLoading = true
+        const { data } = await usersAPI.messages.getPrivateAll({ RoomId })
+        console.log('fetchAllMessages', data)
+        this.$store.dispatch('setPrivateAllMessages', data)
+        this.isLoading = false
+      } catch (err) {
+        let message = ''
+        if (err.response) {
+          console.log(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
+        this.ToastError({
+          title: '獲取私訊失敗！',
           description: message,
         })
       }

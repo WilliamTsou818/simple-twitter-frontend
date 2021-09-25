@@ -45,6 +45,10 @@ export default {
   publicUsers: [],
   // 公開聊天室訊息
   publicAllMessages: [],
-  //私人聊天室們
+  // 私人聊天室們
   privateRooms: [],
+  // 私訊未讀數量
+  privateUnreadMessageCount: 0,
+  // 私訊聊天室訊息
+  privateAllMessages: [],
 }

@@ -110,9 +110,15 @@ export default {
     state.publicAllMessages.push(data)
   },
   setPrivateRooms(state, data) {
-    state.privateRooms.room = data
+    state.privateRooms = data
   },
   setPublicUsers(state, data) {
     state.publicUsers = [...data]
-  }
+  },
+  setPrivateUnreadMessageCount(state, data) {
+    state.privateUnreadMessageCount = data
+  },
+  setPrivateAllMessages(state, data) {
+    state.privateAllMessages = [...data]
+  },
 }

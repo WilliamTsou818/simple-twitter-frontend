@@ -108,6 +108,10 @@ export default {
   setPrivateRooms(context, data) {
     context.commit('setPrivateRooms', data)
   },
+  // 設定私人聊天室歷史訊息
+  setPrivateAllMessages(context, data) {
+    context.commit('setPrivateAllMessages', data)
+  },
   // 設定公開聊天室線上的使用者
   SOCKET_publicUsers(context, data) {
     console.log('SOCKET_publicUsers back', data)
@@ -121,11 +125,18 @@ export default {
       isPill: true,
     })
   },
+  // 公開聊天室訊息
   SOCKET_publicMessage(context, data) {
     console.log('SOCKET_publicMessage back', data)
     context.commit('pushPublicAllMessages', data)
   },
+  // 私人聊天室訊息
   SOCKET_privateMessage(context, data) {
     console.log('SOCKET_privateMessage back', data)
+  },
+  // 未讀訊息
+  SOCKET_unReadMessage(context, data) {
+    console.log('SOCKET_unReadMessage back', data)
+    context.commit('setPrivateUnreadMessageCount', data.privateUnreadMessageCount)
   },
 }
