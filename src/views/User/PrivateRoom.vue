@@ -33,6 +33,7 @@
 
 <script>
 import usersAPI from '@/apis/users'
+import { Toastification } from './../../utils/mixins'
 import { mapState } from 'vuex'
 
 import Head from '@/components/Head'
@@ -41,6 +42,7 @@ import ChatRoom from '@/components/ChatRoom'
 
 export default {
   name: 'PrivateRoom',
+  mixins: [Toastification],
   components: {
     Head,
     ChatList,

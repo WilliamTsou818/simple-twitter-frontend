@@ -17,6 +17,7 @@
 
 <script>
 import usersAPI from '@/apis/users'
+import { Toastification } from './../../utils/mixins'
 import { mapState } from 'vuex'
 
 import Head from '@/components/Head'
@@ -25,6 +26,7 @@ import ChatRoom from '@/components/ChatRoom'
 
 export default {
   name: 'PublicRoom',
+  mixins: [Toastification],
   components: {
     Head,
     ChatList,
@@ -33,6 +35,7 @@ export default {
   data() {
     return {
       isLoading: true,
+      isJoin: false,
       chats: [
         {
           isPill: true,
@@ -103,13 +106,16 @@ export default {
     ...mapState(['publicAllMessages']),
   },
   async created() {
-    console.log('created------------joinPublicRoom')
     await this.fetchAllMessages()
+    console.log('created------------joinPublicRoom')
     this.$socket.emit('joinPublicRoom')
+    this.isJoin = true
   },
   beforeDestroy() {
-    console.log('beforeDestroy------------leavePublicRoom')
-    this.$socket.emit('leavePublicRoom')
+    if (this.isJoin) {
+      console.log('beforeDestroy------------leavePublicRoom')
+      this.$socket.emit('leavePublicRoom')
+    }
   },
   sockets: {
     connect() {
