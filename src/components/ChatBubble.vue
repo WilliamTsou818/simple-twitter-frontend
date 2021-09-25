@@ -46,7 +46,7 @@ export default {
   padding: 15px 0;
   &__text {
     padding: 7px 14px;
-    background-color: var(--gray-300);
+    background-color: var(--gray-350);
     border-radius: 20px;
     @include font-setting(15px, 500, var(--gray-500));
   }
@@ -68,7 +68,7 @@ export default {
       color: var(--white);
       background-color: var(--theme);
       border-radius: 25px 25px 0 25px;
-      text-align: right;
+      text-align: left;
     }
   }
   &__avatar {
