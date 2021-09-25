@@ -1,11 +1,11 @@
 <template>
-  <router-link :to="link" class="nav-item">
+  <div class="nav-item">
     <div class="nav-item__icon">
       <div v-if="count" class="nav-item__icon__badge">{{ count }}</div>
       <slot class="nav-item__icon__svg"></slot>
     </div>
     <span class="nav-item__text">{{ title }}</span>
-  </router-link>
+  </div>
 </template>
 
 <script>
@@ -27,17 +27,26 @@ export default {
 
 <style lang="scss">
 @import '../assets/styles/mixin.scss';
+.router-link-active {
+  .nav-item {
+    color: var(--theme);
+    &__icon {
+      color: var(--theme);
+    }
+  }
+}
 .nav-item {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
-  border-radius: 20rem;
+  width: 100%;
+  /* padding: 8px 12px;
+  border-radius: 20rem; */
   @include font-setting(18px, bold, var(--text));
   &:hover {
-    background-color: var(--theme-200);
+    /* background-color: var(--theme-200); */
     color: var(--theme);
-    .nav-item__icon__svg {
-      fill: var(--theme);
+    .nav-item__icon {
+      color: var(--theme);
     }
   }
   &.router-link-active {
@@ -51,6 +60,7 @@ export default {
     width: 24px;
     height: 24px;
     margin-right: 1.25rem;
+    color: var(--text);
     &__svg {
       fill: var(--text);
     }
