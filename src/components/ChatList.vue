@@ -2,22 +2,22 @@
   <div :class="['chat-list', { 'chat-list-active': active }]">
     <div
       class="chat-list__avatar"
-      :style="{ backgroundImage: 'url(' + avatar + ')' }"
+      :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
     ></div>
     <div class="chat-list__info">
       <div class="chat-list__info__detail">
         <div class="chat-list__info__user">
-          <span class="chat-list__info__name">{{ name }} </span>
+          <span class="chat-list__info__name">{{ user.name }} </span>
           <span class="chat-list__info__account">{{
-            account | altFilter
+            user.account | altFilter
           }}</span>
         </div>
         <div v-show="time" class="chat-list__info__time">
           {{ time | fromNowFilter }}
         </div>
       </div>
-      <div v-show="chat" class="chat-list__info__chat">
-        {{ chat }}
+      <div v-show="room" class="chat-list__info__chat">
+        {{ room.chat }}
       </div>
     </div>
   </div>
@@ -33,20 +33,16 @@ export default {
       type: Boolean,
       default: false,
     },
-    avatar: {
-      type: String,
+    user: {
+      type: Object,
     },
-    name: {
-      type: String,
-      default: 'loading',
+    room: {
+      type: [Object, Boolean],
+      default: false,
     },
-    account: {
-      type: String,
-      default: 'loading',
-    },
-    chat: {
-      type: String,
-    },
+    // chat: {
+    //   type: String,
+    // },
     time: {
       type: String,
     },

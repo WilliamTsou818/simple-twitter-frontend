@@ -5,20 +5,7 @@
         <Head :title="onlineUsers" />
         <ChatList
           v-for="user in publicUsers"
-          :key="user.id"
-          :name="user.name"
-          :account="user.account"
-          :avatar="user.avatar"
-        />
-        <ChatList
-          v-for="user in publicUsers"
-          :key="user.id"
-          :name="user.name"
-          :account="user.account"
-          :avatar="user.avatar"
-        />
-        <ChatList
-          v-for="user in publicUsers"
+          :user="user"
           :key="user.id"
           :name="user.name"
           :account="user.account"
