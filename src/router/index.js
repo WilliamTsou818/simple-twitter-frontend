@@ -138,13 +138,13 @@ const routes = [
       {
         //私人聊天室
         path: '/user/chat/private',
-        name: 'PrivateRoom',
+        name: 'Private',
         component: () => import('../views/User/PrivateRoom.vue'),
         beforeEnter: checkUserAuthorize,
       },
       {
         //私人聊天室
-        path: '/user/chat/:room_id',
+        path: '/user/chat/private/:room_id',
         name: 'PrivateRoom',
         component: () => import('../views/User/PrivateRoom.vue'),
         beforeEnter: checkUserAuthorize,
@@ -279,7 +279,7 @@ router.beforeEach(async (to, from, next) => {
 // 檢查socket是否連線
 const checkSocketConnect = () => {
   console.log('checkSocketConnect', store.state.currentUser.role)
-  console.log('socket.connected ===> ', Vue.prototype.$socket.connected);
+  console.log('socket.connected ===> ', Vue.prototype.$socket.connected)
   if (!Vue.prototype.$socket.connected) {
     console.log('socket 尚未連接')
     if (store.state.currentUser.role === 'user') {

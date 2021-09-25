@@ -42,5 +42,7 @@ export default {
   // 是否回覆成功需要刷新
   isReplyRefresh: false,
   // 公開聊天室訊息
-  publicAllMessages: []
+  publicAllMessages: [],
+  //私人聊天室們
+  privateRooms: [],
 }

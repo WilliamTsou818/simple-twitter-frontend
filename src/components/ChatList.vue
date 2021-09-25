@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-list" :class="{ 'chat-list-active': active }">
+  <div :class="['chat-list', { 'chat-list-active': active }]">
     <div class="chat-list__avatar"></div>
     <div class="chat-list__info">
       <div class="chat-list__info__detail">

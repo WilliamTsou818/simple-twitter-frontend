@@ -32,15 +32,22 @@
 </template>
 
 <script>
+import usersAPI from '@/apis/users'
+import { mapState } from 'vuex'
+
 import Head from '@/components/Head'
 import ChatList from '@/components/ChatList'
 import ChatRoom from '@/components/ChatRoom'
+
 export default {
   name: 'PrivateRoom',
   components: {
     Head,
     ChatList,
     ChatRoom,
+  },
+  created() {
+    this.fetchAllRooms()
   },
   data() {
     return {
@@ -85,6 +92,38 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    async fetchAllRooms() {
+      try {
+        this.isLoading = true
+        const { data } = await usersAPI.messages.getPrivateRoom()
+        this.$store.dispatch('setPrivateRooms', data)
+        console.log(data)
+        this.isLoading = false
+      } catch (err) {
+        let message = ''
+        if (err.response) {
+          console.log(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
+        this.ToastError({
+          title: '獲取訊息失敗！',
+          description: message,
+        })
+      }
+    },
+    handleNewChatSend(content) {
+      console.log('handleNewChatSend', content)
+      this.$socket.emit('publicMessage', {
+        userId: this.$store.getters.getCurrentUser.id,
+        content,
+      })
+    },
   },
 }
 </script>
