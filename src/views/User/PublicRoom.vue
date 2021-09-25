@@ -105,11 +105,8 @@ export default {
   computed: {
     ...mapState(['publicAllMessages']),
   },
-  async created() {
-    await this.fetchAllMessages()
-    console.log('created------------joinPublicRoom')
-    this.$socket.emit('joinPublicRoom')
-    this.isJoin = true
+  created() {
+    this.openPublicRoom()
   },
   beforeDestroy() {
     if (this.isJoin) {
@@ -121,10 +118,16 @@ export default {
     connect() {
       console.log('publicRoon socket connected', this.$socket.connected)
       // 斷線重連，重新加入房間
-      this.$socket.emit('joinPublicRoom')
+      this.openPublicRoom()
     },
   },
   methods: {
+    async openPublicRoom() {
+      await this.fetchAllMessages()
+      console.log('created------------joinPublicRoom')
+      this.$socket.emit('joinPublicRoom')
+      this.isJoin = true
+    },
     async fetchAllMessages() {
       try {
         this.isLoading = true
