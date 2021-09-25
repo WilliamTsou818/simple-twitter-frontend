@@ -127,4 +127,20 @@ export default {
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
+
+@media screen and (max-width: 600px) {
+  .chat-room {
+    &__chat {
+      height: calc(100vh - 168px);
+      padding-top: 56px;
+    }
+  }
+}
+@media screen and (max-width: 960px) {
+  .chat-room {
+    &__chat {
+      padding-top: 50px;
+    }
+  }
+}
 </style>
