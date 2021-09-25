@@ -128,4 +128,8 @@ export default {
   SOCKET_privateMessage(context, data) {
     console.log('SOCKET_privateMessage back', data)
   },
+  SOCKET_unReadMessage(context, data) {
+    console.log('SOCKET_unReadMessage back', data)
+    context.commit('setPrivateUnreadMessageCount', data.privateUnreadMessageCount)
+  },
 }

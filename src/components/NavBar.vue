@@ -30,7 +30,7 @@
         </router-link>
 
         <router-link class="nav-left__nav__link" to="/user/chat/private">
-          <NavItem title="私人訊息" count="6">
+          <NavItem title="私人訊息" :count="privateUnreadMessageCount">
             <IconMail />
           </NavItem>
         </router-link>
@@ -110,7 +110,7 @@ import IconSetting from '@/components/icons/IconSetting'
 export default {
   name: 'NavBar',
   computed: {
-    ...mapState(['currentUser']),
+    ...mapState(['currentUser', 'privateUnreadMessageCount']),
   },
   components: {
     NavItem,

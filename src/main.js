@@ -54,6 +54,7 @@ new Vue({
   sockets: {
     connect() {
       console.log('socket connected', this.$socket.connected)
+      this.$socket.emit('unReadMessage', { currentUserId: store.state.currentUser.id })
     },
     disconnect(reason) {
       console.log('socket disconnect', reason)
@@ -69,7 +70,7 @@ new Vue({
     // 私人聊天室(訊息通知)
     privateMessage(data) {
       console.log('privateMessage back', data)
-    }
+    },
   },
 }).$mount('#app')
 

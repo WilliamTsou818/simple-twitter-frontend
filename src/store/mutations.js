@@ -114,5 +114,8 @@ export default {
   },
   setPublicUsers(state, data) {
     state.publicUsers = [...data]
-  }
+  },
+  setPrivateUnreadMessageCount(state, data) {
+    state.privateUnreadMessageCount = data
+  },
 }
