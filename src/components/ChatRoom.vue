@@ -9,6 +9,7 @@
         v-model="content"
         type="text"
         placeholder="輸入訊息..."
+        @keyup.enter="handleNewChatClick"
       />
       <button
         class="chat-room__newChat__submit"
