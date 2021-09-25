@@ -88,9 +88,9 @@ export default {
   computed: {
     ...mapState(['publicAllMessages']),
   },
-  created() {
+  async created() {
     console.log('created------------joinPublicRoom')
-    this.fetchAllMessages()
+    await this.fetchAllMessages()
     this.$socket.emit('joinPublicRoom')
   },
   beforeDestroy() {
@@ -109,6 +109,7 @@ export default {
       try {
         this.isLoading = true
         const { data } = await usersAPI.messages.getPublicAll()
+        console.log('fetchAllMessages', data)
         this.$store.dispatch('setPublicAllMessages', data)
         this.isLoading = false
       } catch (err) {
@@ -130,7 +131,8 @@ export default {
     handleNewChatSend(content) {
       console.log('handleNewChatSend', content)
       this.$socket.emit('publicMessage', {
-        userId: this.$store.getters.getCurrentUser.id,
+        UserId: this.$store.getters.getCurrentUser.id,
+        RoomId: 5,
         content,
       })
     },
