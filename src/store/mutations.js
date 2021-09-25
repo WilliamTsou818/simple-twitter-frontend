@@ -1,3 +1,6 @@
+import Vue from 'vue'
+import router from '@/router'
+
 export default {
   setCurrentUser(state, currentUser) {
     state.currentUser = {
@@ -10,6 +13,19 @@ export default {
   },
   // 登出，撤銷相關資料
   revokeAuthentication(state) {
+    // TODO:socket disconnect
+    if (Vue.prototype.$socket.connected) {
+      console.log('呼叫 socket disconnect')
+      // 如果在公共聊天室，要發送離開事件
+      if (router.currentRoute.name === 'PublicRoom') {
+        console.log('登出前呼叫離開房間')
+        Vue.prototype.$socket.emit('leavePublicRoom')
+      } else if (router.currentRoute.name === 'Private' || router.currentRoute.name === 'PrivateRoom') {
+        Vue.prototype.$socket.emit('leavePrivateRoom')
+      }
+      Vue.prototype.$socket.disconnect()
+      Vue.prototype.$socket.auth.token = ''
+    }
     state.currentUser = {}
     state.isAuthenticated = false
     state.token = ''
@@ -87,4 +103,16 @@ export default {
   setIsReplyRefresh(state, isRefresh) {
     state.isReplyRefresh = isRefresh
   },
+  setPublicAllMessages(state, data) {
+    state.publicAllMessages = [...data]
+  },
+  pushPublicAllMessages(state, data) {
+    state.publicAllMessages.push(data)
+  },
+  setPrivateRooms(state, data) {
+    state.privateRooms.room = data
+  },
+  setPublicUsers(state, data) {
+    state.publicUsers = [...data]
+  }
 }

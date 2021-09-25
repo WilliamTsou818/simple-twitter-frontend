@@ -100,4 +100,32 @@ export default {
   isReplyRefresh(context, isRefresh) {
     context.commit('setIsReplyRefresh', isRefresh)
   },
+  // 設定公開聊天室歷史訊息
+  setPublicAllMessages(context, data) {
+    context.commit('setPublicAllMessages', data)
+  },
+  //設定私人聊天室們
+  setPrivateRooms(context, data) {
+    context.commit('setPrivateRooms', data)
+  },
+  // 設定公開聊天室線上的使用者
+  SOCKET_publicUsers(context, data) {
+    console.log('SOCKET_publicUsers back', data)
+    context.commit('setPublicUsers', data)
+  },
+  // 公開聊天室系統通知
+  SOCKET_announce(context, data) {
+    console.log('SOCKET_announce back', data)
+    context.commit('pushPublicAllMessages', {
+      ...data,
+      isPill: true,
+    })
+  },
+  SOCKET_publicMessage(context, data) {
+    console.log('SOCKET_publicMessage back', data)
+    context.commit('pushPublicAllMessages', data)
+  },
+  SOCKET_privateMessage(context, data) {
+    console.log('SOCKET_privateMessage back', data)
+  },
 }

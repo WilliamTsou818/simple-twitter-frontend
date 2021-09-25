@@ -37,7 +37,10 @@
         </button>
       </div>
       <div v-if="!isCurrentUser" class="user-profile__action__other">
-        <button>
+        <button
+          @click.stop.prevent="handleClickMessege"
+          :disabled="isProcessing"
+        >
           <img
             class="user-profile__action__icon"
             src="@/assets/images/btn_messege.svg"
@@ -145,6 +148,26 @@ export default {
     //打開編輯個人資料 Modal
     handleToggleModal() {
       this.isModalOpen = !this.isModalOpen
+    },
+    // 開啟私訊按鈕
+    handleClickMessege() {
+      // TODO:待測試
+      console.log('handleClickMessege')
+      console.log('targetUserId', this.user.id)
+      console.log('currentUserId', this.currentUser.id)
+      // 這邊先joinPrivateRoom
+      this.isProcessing = true
+      this.$socket.emit(
+        'joinPrivateRoom',
+        { targetUserId: this.user.id, currentUserId: this.currentUser.id },
+        (response) => {
+          // 回傳room_id
+          console.log('response', response)
+          // 然後跳轉私訊頁面
+          const room_id = ''
+          this.$router.push({ name: 'PrivateRoom', params: { room_id } })
+        }
+      )
     },
   },
 }
