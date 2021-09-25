@@ -179,11 +179,12 @@ export default {
       }
     },
     joinPrivateRoom(room_id) {
+      console.log('joinPrivateRoom', room_id)
       const roomData = room_id
-        ? this.privateRooms.find((room) => {
-            room.RoomId === room_id
-          })
+        ? this.privateRooms.find((room) => room.RoomId === room_id)
         : null
+
+      console.log('roomData 1', roomData)
       if (!roomData && this.privateRooms.length > 0) {
         // 重新導向第一個私訊
         console.log('重新導向第一個私訊 RoomId', this.privateRooms[0].RoomId)
