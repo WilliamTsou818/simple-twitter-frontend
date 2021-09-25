@@ -1,7 +1,9 @@
 <template>
   <div class="chat-room">
     <div ref="chat" class="chat-room__chat">
-      <ChatBubble v-for="(chat, index) in chats" :key="index" :chat="chat" />
+      <transition-group name="fade">
+        <ChatBubble v-for="(chat, index) in chats" :key="index" :chat="chat" />
+      </transition-group>
     </div>
     <div class="chat-room__newChat">
       <input
@@ -116,5 +118,13 @@ export default {
       }
     }
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

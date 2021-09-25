@@ -11,6 +11,7 @@
           :account="user.account"
           :avatar="user.avatar"
         />
+        <Spinner v-show="isLoading" />
       </div>
       <div class="chat__room">
         <Head title="公開聊天室" />
@@ -28,6 +29,7 @@ import { mapState } from 'vuex'
 import Head from '@/components/Head'
 import ChatList from '@/components/ChatList'
 import ChatRoom from '@/components/ChatRoom'
+import Spinner from '@/components/Spinner'
 
 export default {
   name: 'PublicRoom',
@@ -36,6 +38,7 @@ export default {
     Head,
     ChatList,
     ChatRoom,
+    Spinner,
   },
   data() {
     return {
