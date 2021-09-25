@@ -1,15 +1,17 @@
 <template>
   <div class="container container--chat">
     <div class="chat">
-      <div class="chat__list">
+      <div class="chat__lists">
         <Head :title="onlineUsers" />
         <ChatList
           v-for="user in publicUsers"
+          :user="user"
           :key="user.id"
           :name="user.name"
           :account="user.account"
           :avatar="user.avatar"
         />
+        <Spinner v-show="isLoading" />
       </div>
       <div class="chat__room">
         <Head title="公開聊天室" />
@@ -27,6 +29,7 @@ import { mapState } from 'vuex'
 import Head from '@/components/Head'
 import ChatList from '@/components/ChatList'
 import ChatRoom from '@/components/ChatRoom'
+import Spinner from '@/components/Spinner'
 
 export default {
   name: 'PublicRoom',
@@ -35,75 +38,12 @@ export default {
     Head,
     ChatList,
     ChatRoom,
+    Spinner,
   },
   data() {
     return {
       isLoading: true,
       isJoin: false,
-      chats: [
-        {
-          isPill: true,
-          id: '2397823',
-          content: 'Esther Howard 上線',
-        },
-        {
-          isPill: false,
-          id: '45678',
-          isSelf: false,
-          content: '大家完成專案了嗎？',
-          createdAt: '2021-09-11T08:51:50.000Z',
-          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
-        },
-        {
-          isPill: false,
-          id: '4532g',
-          isSelf: true,
-          content: '快了吧....',
-          createdAt: '2021-09-24T08:51:50.000Z',
-        },
-        {
-          isPill: false,
-          id: '4532U',
-          isSelf: false,
-          content: '記得參加工作坊喔',
-          createdAt: '2021-09-24T18:51:50.000Z',
-          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
-        },
-        {
-          isPill: false,
-          id: '45t32g',
-          isSelf: true,
-          content: '好喔～',
-          createdAt: '2021-09-24T18:51:50.000Z',
-        },
-        {
-          isPill: false,
-          id: '422532U',
-          isSelf: false,
-          content: '我先離開囉',
-          createdAt: '2021-09-24T18:51:50.000Z',
-          avatar: 'https://i.imgur.com/HNBx3FH.jpeg',
-        },
-        {
-          isPill: true,
-          id: '232234',
-          content: 'Ralph Edwards 離線',
-        },
-        {
-          isPill: false,
-          id: '45t32eweg',
-          isSelf: true,
-          content: '好喔～',
-          createdAt: '2021-09-24T18:51:50.000Z',
-        },
-        {
-          isPill: false,
-          id: '45tww32g',
-          isSelf: true,
-          content: '好喔～',
-          createdAt: '2021-09-24T18:51:50.000Z',
-        },
-      ],
     }
   },
   computed: {
@@ -188,10 +128,14 @@ export default {
 <style lang="scss" scoped>
 .chat {
   display: flex;
-  &__list {
+  &__lists {
     width: 390px;
     height: 100vh;
+    overflow-y: scroll;
     border-right: 1px solid var(--blue-gray-600);
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   &__room {
     flex: 1;

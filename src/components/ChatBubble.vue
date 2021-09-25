@@ -43,7 +43,7 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/styles/mixin.scss';
 .pill-status {
-  margin: 8px 0;
+  padding: 15px 0;
   &__text {
     padding: 7px 14px;
     background-color: var(--gray-300);

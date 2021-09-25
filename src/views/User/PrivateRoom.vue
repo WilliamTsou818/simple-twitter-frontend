@@ -1,26 +1,14 @@
 <template>
   <div class="container container--chat">
     <div class="chat">
-      <div class="chat__list">
+      <div class="chat__lists">
         <Head title="訊息" message />
         <ChatList
-          name="apple"
-          account="apple"
-          chat="Nulla Lorem mollit cupidatat irure"
-          time="2021-09-24T06:31:16.000Z"
-        />
-        <ChatList
-          name="apple"
-          account="apple"
-          chat="Nulla Lorem mollit cupidatat irurew w dwe w wwwwww"
-          time="2021-09-12T06:31:16.000Z"
-          active
-        />
-        <ChatList
-          name="apple"
-          account="apple"
-          chat="Nulla Lorem mollit cupidatat irure"
-          time="2021-09-24T06:31:16.000Z"
+          v-for="data in dummyRooms"
+          :key="data.id"
+          :user="data.User"
+          :room="data.Room"
+          :time="data.updatedAt"
         />
       </div>
       <div class="chat__room">
@@ -93,6 +81,48 @@ export default {
           avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
         },
       ],
+      //TODO: 不確定roomID和roomName的內容，該使用誰當path
+      //TODO: apiary的account有@ 待確認
+      dummyRooms: [
+        {
+          id: 15,
+          UserId: 25,
+          RoomId: 15,
+          createdAt: '2021-09-11T08:51:50.000Z',
+          updatedAt: '2021-09-11T08:51:50.000Z',
+          Room: {
+            id: 15,
+            name: '25-15',
+            chat: '這樣也是符合挑戰規格',
+          },
+          User: {
+            id: 25,
+            avatar:
+              'https://loremflickr.com/320/240/boy/?lock=30.806766147458163',
+            name: 'User2',
+            account: '@user2',
+          },
+        },
+        {
+          id: 35,
+          UserId: 35,
+          RoomId: 25,
+          createdAt: '2021-09-11T08:51:50.000Z',
+          updatedAt: '2021-09-11T08:51:50.000Z',
+          Room: {
+            id: 25,
+            name: '15-35',
+            chat: '嗯嗯 你先去吃飯吧',
+          },
+          User: {
+            id: 35,
+            avatar:
+              'https://loremflickr.com/320/240/girl/?lock=43.956002864159',
+            name: 'User3',
+            account: '@user3',
+          },
+        },
+      ],
     }
   },
   methods: {
@@ -133,10 +163,14 @@ export default {
 <style lang="scss" scoped>
 .chat {
   display: flex;
-  &__list {
+  &__lists {
     width: 390px;
     height: 100vh;
+    overflow-y: scroll;
     border-right: 1px solid var(--blue-gray-600);
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   &__room {
     flex: 1;
