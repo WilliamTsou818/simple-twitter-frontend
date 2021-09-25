@@ -5,15 +5,14 @@
     </div>
     <div
       v-show="!chat.isPill"
-      class="chatBubble"
-      :class="{ 'chatBubble-self': chat.isSelf }"
+      :class="['chatBubble', { 'chatBubble-self': isCurrentUser }]"
     >
       <div
-        v-show="chat.avatar"
+        v-if="chat.User"
         class="chatBubble__avatar"
-        :style="{ backgroundImage: 'url(' + chat.avatar + ')' }"
+        :style="{ backgroundImage: 'url(' + chat.User.avatar + ')' }"
       ></div>
-      <div class="">
+      <div>
         <div class="chatBubble__bubble">{{ chat.content }}</div>
         <div class="chatBubble__time">{{ chat.createdAt | fromNowFilter }}</div>
       </div>
@@ -22,6 +21,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { fromNowFilter } from '../utils/mixins'
 export default {
   name: 'Chatlist',
@@ -29,6 +29,12 @@ export default {
   props: {
     chat: {
       type: Object,
+    },
+  },
+  computed: {
+    ...mapState(['currentUser']),
+    isCurrentUser() {
+      return this.currentUser.id === this.chat.UserId
     },
   },
 }
@@ -62,10 +68,11 @@ export default {
       color: var(--white);
       background-color: var(--theme);
       border-radius: 25px 25px 0 25px;
+      text-align: right;
     }
   }
   &__avatar {
-    width: 40px;
+    min-width: 40px;
     height: 40px;
     border-radius: 20px;
     background-color: var(--blue-gray-600);
@@ -80,6 +87,9 @@ export default {
     border-radius: 25px 25px 25px 0px;
     color: var(--text);
     background-color: var(--blue-gray-600);
+    word-wrap: break-word;
+    word-break: break-all;
+    text-align: left;
   }
   &__time {
     text-align: left;

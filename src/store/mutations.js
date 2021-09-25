@@ -107,4 +107,7 @@ export default {
   pushPublicAllMessages(state, data) {
     state.publicAllMessages.push(data)
   },
+  setPrivateRooms(state, data) {
+    state.privateRooms.room = data
+  },
 }
