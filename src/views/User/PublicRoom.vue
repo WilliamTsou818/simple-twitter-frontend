@@ -2,10 +2,14 @@
   <div class="container container--chat">
     <div class="chat">
       <div class="chat__list">
-        <Head title="上線使用者(5)" />
-        <ChatList name="apple" account="apple" />
-        <ChatList name="apple" account="apple" />
-        <ChatList name="apple" account="apple" />
+        <Head :title="onlineUsers" />
+        <ChatList
+          v-for="user in publicUsers"
+          :key="user.id"
+          :name="user.name"
+          :account="user.account"
+          :avatar="user.avatar"
+        />
       </div>
       <div class="chat__room">
         <Head title="公開聊天室" />
@@ -103,7 +107,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(['publicAllMessages']),
+    ...mapState(['publicUsers', 'publicAllMessages']),
+    onlineUsers() {
+      return `上線使用者(${this.publicUsers.length})`
+    },
   },
   created() {
     this.openPublicRoom()
@@ -112,6 +119,8 @@ export default {
     if (this.isJoin) {
       console.log('beforeDestroy------------leavePublicRoom')
       this.$socket.emit('leavePublicRoom')
+      // 清空上線使用者
+      this.$store.commit('setPublicUsers', [])
     }
   },
   sockets: {
@@ -119,6 +128,19 @@ export default {
       console.log('publicRoon socket connected', this.$socket.connected)
       // 斷線重連，重新加入房間
       this.openPublicRoom()
+    },
+    error(error) {
+      console.log('publicRoon socket error', error)
+      let title = ''
+      switch (error.errType) {
+        default:
+          title = 'PublicRoon Error!'
+          break
+      }
+      this.ToastError({
+        title,
+        description: error.message,
+      })
     },
   },
   methods: {
