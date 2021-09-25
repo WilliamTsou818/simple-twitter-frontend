@@ -1,7 +1,7 @@
 <template>
   <div class="container container--chat">
     <div class="chat">
-      <div class="chat__lists">
+      <div class="chat__lists md-d-none">
         <Head :title="onlineUsers" />
         <ChatList
           v-for="user in publicUsers"
@@ -14,7 +14,19 @@
         <Spinner v-show="isLoading" />
       </div>
       <div class="chat__room">
-        <Head title="公開聊天室" />
+        <Head title="公開聊天室" class="md-d-none" />
+        <Head :title="chatUsers" class="lg-d-none" />
+        <div class="chat__head lg-d-none">
+          <div class="chat__head__lists">
+            <div
+              v-for="user in publicUsers"
+              :key="user.id"
+              class="chat__head__avatar"
+              :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
+            ></div>
+          </div>
+        </div>
+
         <ChatRoom :chats="publicAllMessages" @new-chat="handleNewChatSend" />
       </div>
     </div>
@@ -50,6 +62,9 @@ export default {
     ...mapState(['publicUsers', 'publicAllMessages']),
     onlineUsers() {
       return `上線使用者(${this.publicUsers.length})`
+    },
+    chatUsers() {
+      return `公開聊天室(${this.publicUsers.length})`
     },
   },
   created() {
@@ -139,6 +154,52 @@ export default {
   }
   &__room {
     flex: 1;
+  }
+  &__head {
+    display: flex;
+    position: fixed;
+    top: 46px;
+    z-index: 2;
+    background-color: var(--white);
+    height: 50px;
+    width: calc(100vw - 70px);
+    border-bottom: 2px solid var(--blue-gray-600);
+    border-radius: 15px;
+    padding: 0 15px;
+    padding-top: 10px;
+    &__lists {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    &__avatar {
+      margin-right: 10px;
+      min-width: 30px;
+      height: 30px;
+      border-radius: 15px;
+      background-color: var(--blue-gray-600);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .chat {
+    &__head {
+      width: 100vw;
+    }
+  }
+}
+@media screen and (max-width: 960px) {
+  .md-d-none {
+    display: none;
+  }
+}
+@media screen and (min-width: 959px) {
+  .lg-d-none {
+    display: none;
   }
 }
 </style>
