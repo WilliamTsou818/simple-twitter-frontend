@@ -1,11 +1,16 @@
 <template>
   <div :class="['chat-list', { 'chat-list-active': active }]">
-    <div class="chat-list__avatar"></div>
+    <div
+      class="chat-list__avatar"
+      :style="{ backgroundImage: 'url(' + avatar + ')' }"
+    ></div>
     <div class="chat-list__info">
       <div class="chat-list__info__detail">
         <div class="chat-list__info__user">
           <span class="chat-list__info__name">{{ name }} </span>
-          <span class="chat-list__info__account">@{{ account }}</span>
+          <span class="chat-list__info__account">{{
+            account | altFilter
+          }}</span>
         </div>
         <div v-show="time" class="chat-list__info__time">
           {{ time | fromNowFilter }}
@@ -19,10 +24,10 @@
 </template>
 
 <script>
-import { fromNowFilter } from '../utils/mixins'
+import { fromNowFilter, altFilter } from '../utils/mixins'
 export default {
   name: 'Chatlist',
-  mixins: [fromNowFilter],
+  mixins: [fromNowFilter, altFilter],
   props: {
     active: {
       type: Boolean,
