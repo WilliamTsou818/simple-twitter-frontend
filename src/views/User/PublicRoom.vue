@@ -163,14 +163,29 @@ export default {
     background-color: var(--white);
     height: 50px;
     width: calc(100vw - 70px);
-    border-bottom: 2px solid var(--blue-gray-600);
-    border-radius: 15px;
-    padding: 0 15px;
+
     padding-top: 10px;
     &__lists {
+      padding: 0 15px;
       flex: 1;
       display: flex;
       align-items: center;
+      overflow-x: scroll;
+      // scrollbar設定
+      &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        background-color: var(--blue-gray-500);
+      }
+      &::-webkit-scrollbar {
+        height: 3px;
+        background-color: var(--blue-gray-500);
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: var(--blue-gray-900);
+      }
     }
     &__avatar {
       margin-right: 10px;
