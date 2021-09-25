@@ -36,6 +36,9 @@ export default {
   &:hover {
     background-color: var(--theme-200);
     color: var(--theme);
+    .nav-item__icon__svg {
+      fill: var(--theme);
+    }
   }
   &.router-link-active {
     color: #ff6600;
