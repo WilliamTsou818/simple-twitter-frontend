@@ -65,14 +65,23 @@ new Vue({
     error(error) {
       console.log('socket error', error)
     },
+    // TODO:這邊之後如果沒有需要就可以刪掉
     // 公開聊天室(系統通知)
     announce(data) {
       console.log('announce back', data)
+    },
+    // 公開聊天室(線上的使用者)
+    publicUsers(data) {
+      console.log('publicUsers back', data)
     },
     // 公開聊天室(訊息通知)
     publicMessage(data) {
       console.log('publicMessage back', data)
     },
+    // 私人聊天室(訊息通知)
+    privateMessage(data) {
+      console.log('privateMessage back', data)
+    }
   },
 }).$mount('#app')
 

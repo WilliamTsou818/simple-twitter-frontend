@@ -17,6 +17,7 @@
 
 <script>
 import usersAPI from '@/apis/users'
+import { Toastification } from './../../utils/mixins'
 import { mapState } from 'vuex'
 
 import Head from '@/components/Head'
@@ -25,6 +26,7 @@ import ChatRoom from '@/components/ChatRoom'
 
 export default {
   name: 'PublicRoom',
+  mixins: [Toastification],
   components: {
     Head,
     ChatList,
@@ -33,6 +35,7 @@ export default {
   data() {
     return {
       isLoading: true,
+      isJoin: false,
       chats: [
         {
           isPill: true,
@@ -103,26 +106,33 @@ export default {
     ...mapState(['publicAllMessages']),
   },
   created() {
-    console.log('created------------joinPublicRoom')
-    this.fetchAllMessages()
-    this.$socket.emit('joinPublicRoom')
+    this.openPublicRoom()
   },
   beforeDestroy() {
-    console.log('beforeDestroy------------leavePublicRoom')
-    this.$socket.emit('leavePublicRoom')
+    if (this.isJoin) {
+      console.log('beforeDestroy------------leavePublicRoom')
+      this.$socket.emit('leavePublicRoom')
+    }
   },
   sockets: {
     connect() {
       console.log('publicRoon socket connected', this.$socket.connected)
       // 斷線重連，重新加入房間
-      this.$socket.emit('joinPublicRoom')
+      this.openPublicRoom()
     },
   },
   methods: {
+    async openPublicRoom() {
+      await this.fetchAllMessages()
+      console.log('created------------joinPublicRoom')
+      this.$socket.emit('joinPublicRoom')
+      this.isJoin = true
+    },
     async fetchAllMessages() {
       try {
         this.isLoading = true
         const { data } = await usersAPI.messages.getPublicAll()
+        console.log('fetchAllMessages', data)
         this.$store.dispatch('setPublicAllMessages', data)
         this.isLoading = false
       } catch (err) {
@@ -144,7 +154,8 @@ export default {
     handleNewChatSend(content) {
       console.log('handleNewChatSend', content)
       this.$socket.emit('publicMessage', {
-        userId: this.$store.getters.getCurrentUser.id,
+        UserId: this.$store.getters.getCurrentUser.id,
+        RoomId: 5,
         content,
       })
     },
