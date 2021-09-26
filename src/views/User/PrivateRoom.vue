@@ -104,7 +104,7 @@ export default {
     async fetchAllRooms() {
       try {
         this.isLoading = true
-        const { data } = await usersAPI.messages.getPrivateRoomOld()
+        const { data } = await usersAPI.messages.getPrivateRoom()
         this.$store.dispatch('setPrivateRooms', data)
         console.log('fetchAllRooms', data)
         this.isLoading = false

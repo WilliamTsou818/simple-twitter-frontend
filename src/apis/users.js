@@ -88,10 +88,6 @@ export default {
     getPrivateAll({ RoomId }) {
       return apiHelper.get(`/messages/${RoomId}`)
     },
-    // 取得當前使用者的所有Private Room列表
-    getPrivateRoomOld() {
-      return apiHelper.get('/messages/private')
-    },
     // 取得當前使用者的所有Private Room列表及最新的訊息
     getPrivateRoom() {
       return apiHelper.get('/messages/latest_messages')
