@@ -12,8 +12,11 @@
         />
       </div>
       <div class="chat__room">
-        <Head title="Apple" account="apple" />
-        <ChatRoom :chats="chats" @new-chat="handleNewChatSend" />
+        <Head
+          :title="currentRoomData.User ? currentRoomData.User.name : ''"
+          :account="currentRoomData.User ? currentRoomData.User.account : ''"
+        />
+        <ChatRoom :chats="privateAllMessages" @new-chat="handleNewChatSend" />
       </div>
     </div>
   </div>
