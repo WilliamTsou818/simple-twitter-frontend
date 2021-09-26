@@ -1,7 +1,7 @@
 <template>
   <div
     :class="['chat-list', { 'chat-list-active': active }]"
-    @click.stop.prevent="handleClickList(room.id, user.id)"
+    @click.stop.prevent="handleClickList(room.RoomId, user.id)"
   >
     <div
       class="chat-list__avatar"
@@ -15,12 +15,12 @@
             user.account | altFilter
           }}</span>
         </div>
-        <div v-show="time" class="chat-list__info__time">
-          {{ time | fromNowFilter }}
+        <div v-show="room" class="chat-list__info__time">
+          {{ room.createdAt | fromNowFilter }}
         </div>
       </div>
       <div v-show="room" class="chat-list__info__chat">
-        {{ room.chat }}
+        {{ room.content }}
       </div>
     </div>
   </div>
@@ -38,9 +38,6 @@ export default {
     room: {
       type: [Object, Boolean],
       default: false,
-    },
-    time: {
-      type: String,
     },
   },
   data() {
