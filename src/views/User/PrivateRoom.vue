@@ -100,6 +100,10 @@ export default {
       console.log('privateRoom newPrivateRoom')
       this.fetchAllRooms()
     },
+    unReadMessage() {
+      console.log('privateRoom unReadMessage')
+      this.fetchAllRooms()
+    },
   },
   methods: {
     async openPrivateRoom(room_id) {
