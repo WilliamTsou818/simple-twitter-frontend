@@ -16,7 +16,7 @@ const socketOptions = {
 }
 
 Vue.use(new VueSocketIO({
-  debug: true,
+  debug: process.env.NODE_ENV === "production" ? false : true,
   connection: SocketIO('https://wahp-simeple-twitter-api.herokuapp.com', socketOptions),
   vuex: {
     store,
