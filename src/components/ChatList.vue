@@ -51,11 +51,11 @@ export default {
     },
   },
   created() {
-    this.active = this.paramsRoomId === this.room.id
+    this.active = this.paramsRoomId === this.room.RoomId
   },
   watch: {
     paramsRoomId() {
-      this.active = this.paramsRoomId === this.room.id
+      this.active = this.paramsRoomId === this.room.RoomId
     },
   },
   methods: {
@@ -65,7 +65,7 @@ export default {
           name: 'PrivateRoom',
           params: { room_id: room },
         })
-        this.createActive = Number(this.roomId) === this.room.id
+        this.createActive = Number(this.roomId) === this.room.RoomId
       } else {
         this.$router.push({
           name: 'UserInfo',
