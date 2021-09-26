@@ -4,16 +4,18 @@
       <div class="chat__lists">
         <Head title="訊息" message />
         <ChatList
-          v-for="data in dummyRooms"
-          :key="data.id"
+          v-for="data in privateRooms"
+          :key="data.RoomId"
           :user="data.User"
-          :room="data.Room"
-          :time="data.updatedAt"
+          :room="data"
         />
       </div>
       <div class="chat__room">
-        <Head title="Apple" account="apple" />
-        <ChatRoom :chats="chats" @new-chat="handleNewChatSend" />
+        <Head
+          :title="currentRoomData.User ? currentRoomData.User.name : ''"
+          :account="currentRoomData.User ? currentRoomData.User.account : ''"
+        />
+        <ChatRoom :chats="privateAllMessages" @new-chat="handleNewChatSend" />
       </div>
     </div>
   </div>
@@ -41,88 +43,6 @@ export default {
       isLoading: true,
       isJoin: false,
       currentRoomData: {},
-      chats: [
-        {
-          isPill: false,
-          id: '45678',
-          isSelf: false,
-          content: 'Hello 你最近好嗎？',
-          createdAt: '2021-09-11T08:51:50.000Z',
-          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
-        },
-        {
-          isPill: false,
-          id: '4532g',
-          isSelf: true,
-          content: '最近天氣變化大～',
-          createdAt: '2021-09-24T08:51:50.000Z',
-        },
-        {
-          isPill: false,
-          id: '4532U',
-          isSelf: false,
-          content: '記得多穿一點囉！',
-          createdAt: '2021-09-24T18:51:50.000Z',
-          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
-        },
-        {
-          isPill: false,
-          id: '453ww2g',
-          isSelf: true,
-          content: '好喔～',
-          createdAt: '2021-09-24T18:51:50.000Z',
-        },
-        {
-          isPill: false,
-          id: '422532U',
-          isSelf: false,
-          content: '我先去洗澡喔',
-          createdAt: '2021-09-24T18:51:50.000Z',
-          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
-        },
-      ],
-      //TODO: 不確定roomID和roomName的內容，該使用誰當path
-      //TODO: apiary的account有@ 待確認
-      dummyRooms: [
-        {
-          id: 15,
-          UserId: 25,
-          RoomId: 15,
-          createdAt: '2021-09-11T08:51:50.000Z',
-          updatedAt: '2021-09-11T08:51:50.000Z',
-          Room: {
-            id: 15,
-            name: '25-15',
-            chat: '這樣也是符合挑戰規格',
-          },
-          User: {
-            id: 25,
-            avatar:
-              'https://loremflickr.com/320/240/boy/?lock=30.806766147458163',
-            name: 'User2',
-            account: '@user2',
-          },
-        },
-        {
-          id: 35,
-          UserId: 35,
-          RoomId: 25,
-          createdAt: '2021-09-11T08:51:50.000Z',
-          updatedAt: '2021-09-11T08:51:50.000Z',
-          Room: {
-            id: 25,
-            name: '15-35',
-            chat: '嗯嗯 你先去吃飯吧',
-          },
-          User: {
-            id: 35,
-            avatar:
-              'https://loremflickr.com/320/240/girl/?lock=43.956002864159',
-            name: 'User3',
-            account: '@user3',
-          },
-        },
-      ],
     }
   },
   computed: {
@@ -184,7 +104,7 @@ export default {
     async fetchAllRooms() {
       try {
         this.isLoading = true
-        const { data } = await usersAPI.messages.getPrivateRoomOld()
+        const { data } = await usersAPI.messages.getPrivateRoom()
         this.$store.dispatch('setPrivateRooms', data)
         console.log('fetchAllRooms', data)
         this.isLoading = false
