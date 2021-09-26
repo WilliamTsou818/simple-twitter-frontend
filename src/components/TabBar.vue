@@ -185,7 +185,6 @@ export default {
       this.$router.push(`/${role}/login`)
     },
     hanadleMenuToggle() {
-      console.log('hi')
       this.isMenuOpen = !this.isMenuOpen
     },
   },

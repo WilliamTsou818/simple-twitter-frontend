@@ -73,8 +73,6 @@ export default {
 .chat-room {
   height: calc(100vh - 56px);
   box-sizing: border-box;
-  /* display: flex; */
-  /* flex-direction: column; */
   position: relative;
   &__chat {
     flex: 1;
@@ -119,11 +117,10 @@ export default {
   }
 }
 
-.fade-enter-active,
-.fade-leave-active {
+.fade-enter-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter {
   opacity: 0;
 }
 
