@@ -128,7 +128,7 @@ export default {
       try {
         this.isLoading = true
         const { data } = await usersAPI.messages.getPrivateRoom()
-        console.log('fetchAllRooms', data)
+        // console.log('fetchAllRooms', data)
         this.$store.dispatch('setPrivateRooms', data)
         this.isLoading = false
       } catch (err) {
@@ -148,24 +148,21 @@ export default {
       }
     },
     joinPrivateRoom(room_id) {
-      console.log('joinPrivateRoom', room_id)
+      // console.log('joinPrivateRoom', room_id)
       const roomData = room_id
         ? this.privateRooms.find((room) => room.RoomId === room_id)
         : null
 
-      console.log('roomData 1', roomData)
       if (!roomData && this.privateRooms.length > 0) {
         // 重新導向第一個私訊
-        console.log('重新導向第一個私訊 RoomId', this.privateRooms[0].RoomId)
+        // console.log('重新導向第一個私訊 RoomId', this.privateRooms[0].RoomId)
         this.$router.push({
           name: 'PrivateRoom',
           params: { room_id: this.privateRooms[0].RoomId },
         })
         return
       }
-      console.log('roomData', roomData)
       if (roomData) {
-        console.log('------------joinPrivateRoom')
         this.currentRoomData = { ...roomData }
         this.$socket.emit(
           'joinPrivateRoom',
@@ -178,14 +175,14 @@ export default {
         this.isJoin = true
         this.fetchAllMessages(room_id)
       } else {
-        console.log('目前沒有私訊房間')
+        // console.log('目前沒有私訊房間')
       }
     },
     async fetchAllMessages(RoomId) {
       try {
         this.isLoading = true
         const { data } = await usersAPI.messages.getPrivateAll({ RoomId })
-        console.log('fetchAllMessages', data)
+        // console.log('fetchAllMessages', data)
         this.$store.dispatch('setPrivateAllMessages', data)
         this.isLoading = false
       } catch (err) {
