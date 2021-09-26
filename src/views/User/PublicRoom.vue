@@ -68,7 +68,10 @@ export default {
     },
   },
   created() {
-    this.openPublicRoom()
+    console.log('created socket connected ', this.$socket.connected)
+    if (this.$socket.connected) {
+      this.openPublicRoom()
+    }
   },
   beforeDestroy() {
     if (this.isJoin) {
@@ -100,6 +103,7 @@ export default {
   },
   methods: {
     async openPublicRoom() {
+      console.log('openPublicRoom')
       await this.fetchAllMessages()
       console.log('created------------joinPublicRoom')
       this.$socket.emit('joinPublicRoom')
