@@ -1,7 +1,8 @@
 <template>
   <div class="nav-item">
     <div class="nav-item__icon">
-      <div v-if="count" class="nav-item__icon__badge">{{ count }}</div>
+      <div v-if="count" class="nav-item__icon__count">{{ count }}</div>
+      <div v-if="badge" class="nav-item__icon__badge"></div>
       <slot class="nav-item__icon__svg"></slot>
     </div>
     <span class="nav-item__text">{{ title }}</span>
@@ -20,6 +21,9 @@ export default {
     },
     count: {
       type: [Number, String],
+    },
+    badge: {
+      type: Boolean,
     },
   },
 }
@@ -64,18 +68,29 @@ export default {
     &__svg {
       fill: var(--text);
     }
-    &__badge {
+    &__badge,
+    &__count {
       position: absolute;
+      line-height: 16px;
+      border-radius: 8px;
+      font-size: 5px;
+      border: 1px solid var(--white);
+      background-color: var(--theme);
+      color: var(--white);
+    }
+    &__badge {
+      top: -2px;
+      right: -4px;
+      width: 12px;
+      height: 12px;
+    }
+    &__count {
       top: -7px;
       right: -10px;
       font-size: 5px;
       width: 18px;
       height: 18px;
       line-height: 16px;
-      border-radius: 8px;
-      border: 1px solid var(--white);
-      background-color: var(--theme);
-      color: white;
     }
   }
 }
