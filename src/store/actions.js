@@ -137,6 +137,19 @@ export default {
   SOCKET_privateMessage(context, data) {
     console.log('SOCKET_privateMessage back', data)
     context.commit('pushPrivateAllMessages', data)
+    // 更新room資料
+    const updatePrivateRooms = context.state.privateRooms.map((room) => {
+      if (room.RoomId === data.RoomId) {
+        return {
+          ...room,
+          createdAt: data.createdAt,
+          content: data.content
+        }
+      } else {
+        return room
+      }
+    })
+    context.dispatch('setPrivateRooms', updatePrivateRooms)
   },
   // 未讀訊息
   SOCKET_unReadMessage(context, data) {
