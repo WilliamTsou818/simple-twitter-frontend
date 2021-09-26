@@ -79,7 +79,6 @@ export default {
   &__chat {
     flex: 1;
     padding-top: 16px;
-    //TODO:不知道寫法哪裡錯 一定要用絕對高度才可以不被內容撐開
     height: calc(100vh - 112px);
     overflow-y: scroll;
     padding-bottom: 55px;

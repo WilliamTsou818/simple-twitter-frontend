@@ -3,14 +3,7 @@
     <div class="chat">
       <div class="chat__lists md-d-none">
         <Head :title="onlineUsers" />
-        <ChatList
-          v-for="user in publicUsers"
-          :user="user"
-          :key="user.id"
-          :name="user.name"
-          :account="user.account"
-          :avatar="user.avatar"
-        />
+        <ChatList v-for="user in publicUsers" :user="user" :key="user.id" />
         <Spinner v-show="isLoading" />
       </div>
       <div class="chat__room">
