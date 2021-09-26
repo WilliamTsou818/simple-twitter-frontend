@@ -87,7 +87,7 @@ export default {
     &__count {
       top: -7px;
       right: -10px;
-      font-size: 5px;
+      font-size: 12px;
       width: 18px;
       height: 18px;
       line-height: 16px;
