@@ -20,7 +20,10 @@ export default {
       if (router.currentRoute.name === 'PublicRoom') {
         console.log('登出前呼叫離開房間')
         Vue.prototype.$socket.emit('leavePublicRoom')
-      } else if (router.currentRoute.name === 'Private' || router.currentRoute.name === 'PrivateRoom') {
+      } else if (
+        router.currentRoute.name === 'Private' ||
+        router.currentRoute.name === 'PrivateRoom'
+      ) {
         Vue.prototype.$socket.emit('leavePrivateRoom')
       }
       Vue.prototype.$socket.disconnect()
@@ -108,6 +111,9 @@ export default {
   },
   setIsReplyRefresh(state, isRefresh) {
     state.isReplyRefresh = isRefresh
+  },
+  setPublicUnreadMessage(state, data) {
+    state.publicUnreadMessage = data
   },
   setPublicAllMessages(state, data) {
     state.publicAllMessages = [...data]
