@@ -151,10 +151,6 @@ export default {
     },
     // 開啟私訊按鈕
     handleClickMessege() {
-      // TODO:待測試
-      console.log('handleClickMessege')
-      console.log('targetUserId', this.user.id)
-      console.log('currentUserId', this.currentUser.id)
       // 這邊先joinPrivateRoom
       this.isProcessing = true
       this.$socket.emit(
@@ -162,10 +158,12 @@ export default {
         { targetUserId: this.user.id, currentUserId: this.currentUser.id },
         (response) => {
           // 回傳room_id
-          console.log('response', response)
+          // console.log('response', response)
           // 然後跳轉私訊頁面
-          const room_id = ''
-          this.$router.push({ name: 'PrivateRoom', params: { room_id } })
+          this.$router.push({
+            name: 'PrivateRoom',
+            params: { room_id: response.RoomId },
+          })
         }
       )
     },

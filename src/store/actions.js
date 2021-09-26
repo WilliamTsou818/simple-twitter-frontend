@@ -1,5 +1,6 @@
 import router from '@/router'
 import usersAPI from '../apis/users'
+import { sortBy } from '../utils/helpers'
 
 export default {
   async fetchCurrentUser({ commit }) {
@@ -106,26 +107,55 @@ export default {
   },
   //設定私人聊天室們
   setPrivateRooms(context, data) {
-    context.commit('setPrivateRooms', data)
+    // 先排序
+    let orderData = sortBy.createdAt(data, sortBy.DESC)
+    context.commit('setPrivateRooms', orderData)
+  },
+  // 設定私人聊天室歷史訊息
+  setPrivateAllMessages(context, data) {
+    context.commit('setPrivateAllMessages', data)
   },
   // 設定公開聊天室線上的使用者
   SOCKET_publicUsers(context, data) {
-    console.log('SOCKET_publicUsers back', data)
     context.commit('setPublicUsers', data)
   },
   // 公開聊天室系統通知
   SOCKET_announce(context, data) {
-    console.log('SOCKET_announce back', data)
     context.commit('pushPublicAllMessages', {
       ...data,
       isPill: true,
     })
   },
+  // 公開聊天室訊息
   SOCKET_publicMessage(context, data) {
-    console.log('SOCKET_publicMessage back', data)
     context.commit('pushPublicAllMessages', data)
   },
+  // 私人聊天室訊息
   SOCKET_privateMessage(context, data) {
-    console.log('SOCKET_privateMessage back', data)
+    context.commit('pushPrivateAllMessages', data)
+    // 更新room資料
+    const updatePrivateRooms = context.state.privateRooms.map((room) => {
+      if (room.RoomId === data.RoomId) {
+        return {
+          ...room,
+          createdAt: data.createdAt,
+          content: data.content
+        }
+      } else {
+        return room
+      }
+    })
+    context.dispatch('setPrivateRooms', updatePrivateRooms)
+  },
+  // 未讀訊息
+  SOCKET_unReadMessage(context, data) {
+    context.commit(
+      'setPrivateUnreadMessageCount',
+      data.privateUnreadMessageCount
+    )
+  },
+  // 公開未讀
+  SOCKET_publicUnreadMessage(context, data) {
+    context.commit('setPublicUnreadMessage', data.hasUnreadPublicMessage)
   },
 }

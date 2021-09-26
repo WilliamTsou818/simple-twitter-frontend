@@ -1,5 +1,8 @@
 <template>
-  <div :class="['chat-list', { 'chat-list-active': active }]">
+  <div
+    :class="['chat-list', { 'chat-list-active': active }]"
+    @click.stop.prevent="handleClickList(room.RoomId, user.id)"
+  >
     <div
       class="chat-list__avatar"
       :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
@@ -12,12 +15,12 @@
             user.account | altFilter
           }}</span>
         </div>
-        <div v-show="time" class="chat-list__info__time">
-          {{ time | fromNowFilter }}
+        <div v-show="room" class="chat-list__info__time">
+          {{ room.createdAt | fromNowFilter }}
         </div>
       </div>
       <div v-show="room" class="chat-list__info__chat">
-        {{ room.chat }}
+        {{ room.content }}
       </div>
     </div>
   </div>
@@ -29,10 +32,6 @@ export default {
   name: 'Chatlist',
   mixins: [fromNowFilter, altFilter],
   props: {
-    active: {
-      type: Boolean,
-      default: false,
-    },
     user: {
       type: Object,
     },
@@ -40,11 +39,39 @@ export default {
       type: [Object, Boolean],
       default: false,
     },
-    // chat: {
-    //   type: String,
-    // },
-    time: {
-      type: String,
+  },
+  data() {
+    return {
+      active: false,
+    }
+  },
+  computed: {
+    paramsRoomId() {
+      return Number(this.$route.params.room_id)
+    },
+  },
+  created() {
+    this.active = this.paramsRoomId === this.room.RoomId
+  },
+  watch: {
+    paramsRoomId() {
+      this.active = this.paramsRoomId === this.room.RoomId
+    },
+  },
+  methods: {
+    handleClickList(room, user) {
+      if (room) {
+        this.$router.push({
+          name: 'PrivateRoom',
+          params: { room_id: room },
+        })
+        this.createActive = Number(this.roomId) === this.room.RoomId
+      } else {
+        this.$router.push({
+          name: 'UserInfo',
+          params: { user_id: user },
+        })
+      }
     },
   },
 }
@@ -58,6 +85,7 @@ export default {
   width: 100%;
   padding: 0 15px;
   border-bottom: 1px solid var(--blue-gray-600);
+  border-right: 2px solid var(--white);
   cursor: pointer;
   &-active {
     border-right: 2px solid var(--theme);

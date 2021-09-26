@@ -1,19 +1,40 @@
 <template>
   <div class="container container--chat">
+    <transition class="modal" name="modal">
+      <div
+        v-show="isListOpen"
+        class="chat__modal lg-d-none"
+        @click="handleToggleList"
+      >
+        <div class="chat__modal__container">
+          <ChatList
+            v-for="data in privateRooms"
+            :key="data.RoomId"
+            :user="data.User"
+            :room="data"
+          />
+        </div>
+      </div>
+    </transition>
     <div class="chat">
-      <div class="chat__lists">
+      <div class="chat__lists md-d-none">
         <Head title="訊息" message />
         <ChatList
-          v-for="data in dummyRooms"
-          :key="data.id"
+          v-for="data in privateRooms"
+          :key="data.RoomId"
           :user="data.User"
-          :room="data.Room"
-          :time="data.updatedAt"
+          :room="data"
         />
       </div>
       <div class="chat__room">
-        <Head title="Apple" account="apple" />
-        <ChatRoom :chats="chats" />
+        <Head
+          :title="currentRoomData.User ? currentRoomData.User.name : ''"
+          :account="currentRoomData.User ? currentRoomData.User.account : ''"
+        />
+        <div class="chat__room__icon lg-d-none" @click="handleToggleList">
+          <IconList />
+        </div>
+        <ChatRoom :chats="privateAllMessages" @new-chat="handleNewChatSend" />
       </div>
     </div>
   </div>
@@ -28,6 +49,8 @@ import Head from '@/components/Head'
 import ChatList from '@/components/ChatList'
 import ChatRoom from '@/components/ChatRoom'
 
+import IconList from '@/components/icons/IconList'
+
 export default {
   name: 'PrivateRoom',
   mixins: [Toastification],
@@ -35,103 +58,78 @@ export default {
     Head,
     ChatList,
     ChatRoom,
-  },
-  created() {
-    this.fetchAllRooms()
+    IconList,
   },
   data() {
     return {
-      chats: [
-        {
-          isPill: false,
-          id: '45678',
-          isSelf: false,
-          content: 'Hello 你最近好嗎？',
-          createdAt: '2021-09-11T08:51:50.000Z',
-          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
-        },
-        {
-          isPill: false,
-          id: '4532g',
-          isSelf: true,
-          content: '最近天氣變化大～',
-          createdAt: '2021-09-24T08:51:50.000Z',
-        },
-        {
-          isPill: false,
-          id: '4532U',
-          isSelf: false,
-          content: '記得多穿一點囉！',
-          createdAt: '2021-09-24T18:51:50.000Z',
-          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
-        },
-        {
-          isPill: false,
-          id: '453ww2g',
-          isSelf: true,
-          content: '好喔～',
-          createdAt: '2021-09-24T18:51:50.000Z',
-        },
-        {
-          isPill: false,
-          id: '422532U',
-          isSelf: false,
-          content: '我先去洗澡喔',
-          createdAt: '2021-09-24T18:51:50.000Z',
-          avatar: 'https://i.imgur.com/DIGOWdG.jpeg',
-        },
-      ],
-      //TODO: 不確定roomID和roomName的內容，該使用誰當path
-      //TODO: apiary的account有@ 待確認
-      dummyRooms: [
-        {
-          id: 15,
-          UserId: 25,
-          RoomId: 15,
-          createdAt: '2021-09-11T08:51:50.000Z',
-          updatedAt: '2021-09-11T08:51:50.000Z',
-          Room: {
-            id: 15,
-            name: '25-15',
-            chat: '這樣也是符合挑戰規格',
-          },
-          User: {
-            id: 25,
-            avatar:
-              'https://loremflickr.com/320/240/boy/?lock=30.806766147458163',
-            name: 'User2',
-            account: '@user2',
-          },
-        },
-        {
-          id: 35,
-          UserId: 35,
-          RoomId: 25,
-          createdAt: '2021-09-11T08:51:50.000Z',
-          updatedAt: '2021-09-11T08:51:50.000Z',
-          Room: {
-            id: 25,
-            name: '15-35',
-            chat: '嗯嗯 你先去吃飯吧',
-          },
-          User: {
-            id: 35,
-            avatar:
-              'https://loremflickr.com/320/240/girl/?lock=43.956002864159',
-            name: 'User3',
-            account: '@user3',
-          },
-        },
-      ],
+      isLoading: true,
+      isJoin: false,
+      currentRoomData: {},
+      isListOpen: false,
     }
   },
+  computed: {
+    ...mapState(['currentUser', 'privateRooms', 'privateAllMessages']),
+  },
+  created() {
+    if (this.$socket.connected) {
+      const { room_id } = this.$route.params
+      this.openPrivateRoom(Number(room_id))
+    }
+  },
+  beforeRouteUpdate(to, from, next) {
+    // 這邊要離開房間?在join?
+    if (this.isJoin) {
+      this.$socket.emit('leavePrivateRoom')
+      this.handleToggleList()
+    }
+    const { room_id } = to.params
+    this.openPrivateRoom(Number(room_id))
+    next()
+  },
+  beforeDestroy() {
+    if (this.isJoin) {
+      this.$socket.emit('leavePrivateRoom')
+    }
+  },
+  sockets: {
+    connect() {
+      // 斷線重連，重新加入房間
+      const { room_id } = this.$route.params
+      this.openPrivateRoom(Number(room_id))
+    },
+    error(error) {
+      console.log('privateRoon socket error', error)
+      let title = ''
+      switch (error.errType) {
+        default:
+          title = 'PrivateRoom Error!'
+          break
+      }
+      this.ToastError({
+        title,
+        description: error.message,
+      })
+    },
+    // 新私聊房間出現
+    newPrivateRoom() {
+      this.fetchAllRooms()
+    },
+    unReadMessage() {
+      this.fetchAllRooms()
+    },
+  },
   methods: {
+    async openPrivateRoom(room_id) {
+      await this.fetchAllRooms()
+      this.joinPrivateRoom(room_id)
+    },
     async fetchAllRooms() {
       try {
         this.isLoading = true
         const { data } = await usersAPI.messages.getPrivateRoom()
+        // console.log('fetchAllRooms', data)
         this.$store.dispatch('setPrivateRooms', data)
-        console.log(data)
         this.isLoading = false
       } catch (err) {
         let message = ''
@@ -149,18 +147,85 @@ export default {
         })
       }
     },
+    joinPrivateRoom(room_id) {
+      // console.log('joinPrivateRoom', room_id)
+      const roomData = room_id
+        ? this.privateRooms.find((room) => room.RoomId === room_id)
+        : null
+
+      if (!roomData && this.privateRooms.length > 0) {
+        // 重新導向第一個私訊
+        // console.log('重新導向第一個私訊 RoomId', this.privateRooms[0].RoomId)
+        this.$router.push({
+          name: 'PrivateRoom',
+          params: { room_id: this.privateRooms[0].RoomId },
+        })
+        return
+      }
+      if (roomData) {
+        this.currentRoomData = { ...roomData }
+        this.$socket.emit(
+          'joinPrivateRoom',
+          { targetUserId: roomData.UserId, currentUserId: this.currentUser.id },
+          (response) => {
+            // 回傳room_id
+            // console.log('response', response)
+          }
+        )
+        this.isJoin = true
+        this.fetchAllMessages(room_id)
+      } else {
+        // console.log('目前沒有私訊房間')
+      }
+    },
+    async fetchAllMessages(RoomId) {
+      try {
+        this.isLoading = true
+        const { data } = await usersAPI.messages.getPrivateAll({ RoomId })
+        // console.log('fetchAllMessages', data)
+        this.$store.dispatch('setPrivateAllMessages', data)
+        this.isLoading = false
+      } catch (err) {
+        let message = ''
+        if (err.response) {
+          console.log(err.response.data)
+          message = err.response.data.message
+        } else {
+          console.log(err)
+          message = err.message
+        }
+
+        this.ToastError({
+          title: '獲取私訊失敗！',
+          description: message,
+        })
+      }
+    },
     handleNewChatSend(content) {
-      console.log('handleNewChatSend', content)
-      this.$socket.emit('publicMessage', {
-        userId: this.$store.getters.getCurrentUser.id,
+      this.$socket.emit('privateMessage', {
+        currentUserId: this.currentUser.id,
+        RoomId: this.currentRoomData.RoomId,
+        targetUserId: this.currentRoomData.UserId,
         content,
       })
+    },
+    handleToggleList() {
+      this.isListOpen = !this.isListOpen
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.modal-enter,
+.modal-leave-active {
+  opacity: 0;
+}
+.modal-enter .modal__container,
+.modal-leave-active .chat__modal__container {
+  transform: scale(1.2);
+}
+
 .chat {
   display: flex;
   &__lists {
@@ -174,6 +239,57 @@ export default {
   }
   &__room {
     flex: 1;
+    &__icon {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      z-index: 10;
+      cursor: pointer;
+    }
+  }
+  &__modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: calc(100vh - 50px);
+    bottom: 50px;
+    background-color: var(--gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: opacity 0.2s ease;
+    &__container {
+      width: 85%;
+      height: 70vh;
+      padding: 20px 0;
+      overflow-y: scroll;
+      background-color: var(--white);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      color: var(--text);
+      transition: all 0.2s ease;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}
+@media screen and (max-width: 960px) {
+  .md-d-none {
+    display: none;
+  }
+  .chat {
+    &__lists {
+      width: 100%;
+    }
+  }
+}
+@media screen and (min-width: 959px) {
+  .lg-d-none {
+    display: none;
   }
 }
 </style>

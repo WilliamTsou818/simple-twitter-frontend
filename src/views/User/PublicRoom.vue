@@ -3,14 +3,7 @@
     <div class="chat">
       <div class="chat__lists md-d-none">
         <Head :title="onlineUsers" />
-        <ChatList
-          v-for="user in publicUsers"
-          :user="user"
-          :key="user.id"
-          :name="user.name"
-          :account="user.account"
-          :avatar="user.avatar"
-        />
+        <ChatList v-for="user in publicUsers" :user="user" :key="user.id" />
         <Spinner v-show="isLoading" />
       </div>
       <div class="chat__room">
@@ -68,11 +61,12 @@ export default {
     },
   },
   created() {
-    this.openPublicRoom()
+    if (this.$socket.connected) {
+      this.openPublicRoom()
+    }
   },
   beforeDestroy() {
     if (this.isJoin) {
-      console.log('beforeDestroy------------leavePublicRoom')
       this.$socket.emit('leavePublicRoom')
       // 清空上線使用者
       this.$store.commit('setPublicUsers', [])
@@ -80,7 +74,6 @@ export default {
   },
   sockets: {
     connect() {
-      console.log('publicRoon socket connected', this.$socket.connected)
       // 斷線重連，重新加入房間
       this.openPublicRoom()
     },
@@ -100,8 +93,8 @@ export default {
   },
   methods: {
     async openPublicRoom() {
+      // console.log('openPublicRoom')
       await this.fetchAllMessages()
-      console.log('created------------joinPublicRoom')
       this.$socket.emit('joinPublicRoom')
       this.isJoin = true
     },
@@ -109,7 +102,7 @@ export default {
       try {
         this.isLoading = true
         const { data } = await usersAPI.messages.getPublicAll()
-        console.log('fetchAllMessages', data)
+        // console.log('fetchAllMessages', data)
         this.$store.dispatch('setPublicAllMessages', data)
         this.isLoading = false
       } catch (err) {
@@ -129,7 +122,6 @@ export default {
       }
     },
     handleNewChatSend(content) {
-      console.log('handleNewChatSend', content)
       this.$socket.emit('publicMessage', {
         UserId: this.$store.getters.getCurrentUser.id,
         RoomId: 5,

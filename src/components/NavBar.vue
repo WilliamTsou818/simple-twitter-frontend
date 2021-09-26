@@ -24,16 +24,25 @@
         </router-link>
 
         <router-link class="nav-left__nav__link" to="/user/chat/public">
-          <NavItem title="公開聊天室">
-            <IconChat />
+          <NavItem title="公開聊天室" :badge="publicUnreadMessage">
+            <IconChat count />
           </NavItem>
         </router-link>
 
-        <!-- <router-link class="nav-left__nav__link" to="/user/chat/private">
-          <NavItem title="私人訊息" count="6">
+        <router-link
+          :class="[
+            'nav-left__nav__link',
+            { 'router-link-active': room === 'PrivateRoom' },
+          ]"
+          :to="{
+            name: 'PrivateRoom',
+            params: { room_id: 0 },
+          }"
+        >
+          <NavItem title="私人訊息" :count="privateUnreadMessageCount">
             <IconMail />
           </NavItem>
-        </router-link> -->
+        </router-link>
 
         <router-link
           :to="{ name: 'UserInfo', params: { user_id: currentUser.id } }"
@@ -110,7 +119,14 @@ import IconSetting from '@/components/icons/IconSetting'
 export default {
   name: 'NavBar',
   computed: {
-    ...mapState(['currentUser']),
+    ...mapState([
+      'currentUser',
+      'privateUnreadMessageCount',
+      'publicUnreadMessage',
+    ]),
+    room() {
+      return this.$route.name
+    },
   },
   components: {
     NavItem,
