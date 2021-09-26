@@ -35,6 +35,7 @@ export default {
     localStorage.removeItem('token')
     // 重置聊天室資料
     state.publicUsers = []
+    state.publicUnreadMessage = false
     state.publicAllMessages = []
     state.privateRooms = []
     state.privateUnreadMessageCount = 0
