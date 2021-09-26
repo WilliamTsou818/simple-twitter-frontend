@@ -44,7 +44,7 @@ export default {
   // 公開聊天室線上使用者
   publicUsers: [],
   // 公開聊天是否有未讀
-  publicUnreadMessageCount: true,
+  publicUnreadMessage: false,
   // 公開聊天室訊息
   publicAllMessages: [],
   // 私人聊天室們

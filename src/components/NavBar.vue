@@ -24,7 +24,7 @@
         </router-link>
 
         <router-link class="nav-left__nav__link" to="/user/chat/public">
-          <NavItem title="公開聊天室" :badge="publicUnreadMessageCount">
+          <NavItem title="公開聊天室" :badge="publicUnreadMessage">
             <IconChat count />
           </NavItem>
         </router-link>
@@ -122,7 +122,7 @@ export default {
     ...mapState([
       'currentUser',
       'privateUnreadMessageCount',
-      'publicUnreadMessageCount',
+      'publicUnreadMessage',
     ]),
     room() {
       return this.$route.name

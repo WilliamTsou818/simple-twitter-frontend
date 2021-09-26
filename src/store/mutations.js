@@ -106,8 +106,8 @@ export default {
   setIsReplyRefresh(state, isRefresh) {
     state.isReplyRefresh = isRefresh
   },
-  setPublicUnreadMessageCount(state, data) {
-    state.publicUnreadMessageCount = data
+  setPublicUnreadMessage(state, data) {
+    state.publicUnreadMessage = data
   },
   setPublicAllMessages(state, data) {
     state.publicAllMessages = [...data]
