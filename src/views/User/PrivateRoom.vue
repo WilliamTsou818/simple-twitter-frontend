@@ -13,7 +13,7 @@
       </div>
       <div class="chat__room">
         <Head title="Apple" account="apple" />
-        <ChatRoom :chats="chats" />
+        <ChatRoom :chats="chats" @new-chat="handleNewChatSend" />
       </div>
     </div>
   </div>
@@ -40,6 +40,7 @@ export default {
     return {
       isLoading: true,
       isJoin: false,
+      currentRoomData: {},
       chats: [
         {
           isPill: false,
@@ -130,7 +131,7 @@ export default {
   created() {
     const { room_id } = this.$route.params
     console.log('room_id', room_id)
-    this.openPrivateRoom(room_id)
+    this.openPrivateRoom(Number(room_id))
   },
   beforeRouteUpdate(to, from, next) {
     console.log('beforeRouteUpdate to', to)
@@ -141,7 +142,7 @@ export default {
     }
     const { room_id } = to.params
     console.log('beforeRouteUpdate room_id', room_id)
-    this.openPrivateRoom(room_id)
+    this.openPrivateRoom(Number(room_id))
     next()
   },
   beforeDestroy() {
@@ -158,9 +159,9 @@ export default {
     async fetchAllRooms() {
       try {
         this.isLoading = true
-        const { data } = await usersAPI.messages.getPrivateRoom()
+        const { data } = await usersAPI.messages.getPrivateRoomOld()
         this.$store.dispatch('setPrivateRooms', data)
-        console.log(data)
+        console.log('fetchAllRooms', data)
         this.isLoading = false
       } catch (err) {
         let message = ''
@@ -197,6 +198,7 @@ export default {
       console.log('roomData', roomData)
       if (roomData) {
         console.log('------------joinPrivateRoom')
+        this.currentRoomData = { ...roomData }
         this.$socket.emit(
           'joinPrivateRoom',
           { targetUserId: roomData.UserId, currentUserId: this.currentUser.id },
@@ -236,8 +238,10 @@ export default {
     },
     handleNewChatSend(content) {
       console.log('handleNewChatSend', content)
-      this.$socket.emit('publicMessage', {
-        userId: this.$store.getters.getCurrentUser.id,
+      this.$socket.emit('privateMessage', {
+        currentUserId: this.currentUser.id,
+        RoomId: this.currentRoomData.RoomId,
+        targetUserId: this.currentRoomData.UserId,
         content,
       })
     },

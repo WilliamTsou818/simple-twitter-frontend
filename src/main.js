@@ -54,7 +54,6 @@ new Vue({
   sockets: {
     connect() {
       console.log('socket connected', this.$socket.connected)
-      this.$socket.emit('unReadMessage', { currentUserId: store.state.currentUser.id })
     },
     disconnect(reason) {
       console.log('socket disconnect', reason)
