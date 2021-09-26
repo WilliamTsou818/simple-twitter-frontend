@@ -95,6 +95,11 @@ export default {
         description: error.message,
       })
     },
+    // 新私聊房間出現
+    newPrivateRoom() {
+      console.log('privateRoom newPrivateRoom')
+      this.fetchAllRooms()
+    },
   },
   methods: {
     async openPrivateRoom(room_id) {
