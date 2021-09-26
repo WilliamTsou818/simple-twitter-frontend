@@ -30,6 +30,12 @@ export default {
     state.isAuthenticated = false
     state.token = ''
     localStorage.removeItem('token')
+    // 重置聊天室資料
+    state.publicUsers = []
+    state.publicAllMessages = []
+    state.privateRooms = []
+    state.privateUnreadMessageCount = 0
+    state.privateAllMessages = []
   },
   setInitViewUser(state, data) {
     //編輯個人資料 先暫時用解構賦值解決
