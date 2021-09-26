@@ -13,7 +13,7 @@
       </div>
       <div class="chat__room">
         <Head title="Apple" account="apple" />
-        <ChatRoom :chats="chats" />
+        <ChatRoom :chats="chats" @new-chat="handleNewChatSend" />
       </div>
     </div>
   </div>
@@ -40,6 +40,7 @@ export default {
     return {
       isLoading: true,
       isJoin: false,
+      currentRoomData: {},
       chats: [
         {
           isPill: false,
@@ -197,6 +198,7 @@ export default {
       console.log('roomData', roomData)
       if (roomData) {
         console.log('------------joinPrivateRoom')
+        this.currentRoomData = { ...roomData }
         this.$socket.emit(
           'joinPrivateRoom',
           { targetUserId: roomData.UserId, currentUserId: this.currentUser.id },
@@ -236,8 +238,10 @@ export default {
     },
     handleNewChatSend(content) {
       console.log('handleNewChatSend', content)
-      this.$socket.emit('publicMessage', {
-        userId: this.$store.getters.getCurrentUser.id,
+      this.$socket.emit('privateMessage', {
+        currentUserId: this.currentUser.id,
+        RoomId: this.currentRoomData.RoomId,
+        targetUserId: this.currentRoomData.UserId,
         content,
       })
     },
