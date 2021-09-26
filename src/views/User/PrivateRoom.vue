@@ -1,7 +1,23 @@
 <template>
   <div class="container container--chat">
+    <transition class="modal" name="modal">
+      <div
+        v-show="isListOpen"
+        class="chat__modal lg-d-none"
+        @click="handleToggleList"
+      >
+        <div class="chat__modal__container">
+          <ChatList
+            v-for="data in privateRooms"
+            :key="data.RoomId"
+            :user="data.User"
+            :room="data"
+          />
+        </div>
+      </div>
+    </transition>
     <div class="chat">
-      <div class="chat__lists">
+      <div class="chat__lists md-d-none">
         <Head title="訊息" message />
         <ChatList
           v-for="data in privateRooms"
@@ -15,6 +31,9 @@
           :title="currentRoomData.User ? currentRoomData.User.name : ''"
           :account="currentRoomData.User ? currentRoomData.User.account : ''"
         />
+        <div class="chat__room__icon lg-d-none" @click="handleToggleList">
+          <IconList />
+        </div>
         <ChatRoom :chats="privateAllMessages" @new-chat="handleNewChatSend" />
       </div>
     </div>
@@ -30,6 +49,8 @@ import Head from '@/components/Head'
 import ChatList from '@/components/ChatList'
 import ChatRoom from '@/components/ChatRoom'
 
+import IconList from '@/components/icons/IconList'
+
 export default {
   name: 'PrivateRoom',
   mixins: [Toastification],
@@ -37,12 +58,14 @@ export default {
     Head,
     ChatList,
     ChatRoom,
+    IconList,
   },
   data() {
     return {
       isLoading: true,
       isJoin: false,
       currentRoomData: {},
+      isListOpen: false,
     }
   },
   computed: {
@@ -58,6 +81,7 @@ export default {
     // 這邊要離開房間?在join?
     if (this.isJoin) {
       this.$socket.emit('leavePrivateRoom')
+      this.handleToggleList()
     }
     const { room_id } = to.params
     this.openPrivateRoom(Number(room_id))
@@ -188,11 +212,23 @@ export default {
         content,
       })
     },
+    handleToggleList() {
+      this.isListOpen = !this.isListOpen
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.modal-enter,
+.modal-leave-active {
+  opacity: 0;
+}
+.modal-enter .modal__container,
+.modal-leave-active .chat__modal__container {
+  transform: scale(1.2);
+}
+
 .chat {
   display: flex;
   &__lists {
@@ -206,6 +242,57 @@ export default {
   }
   &__room {
     flex: 1;
+    &__icon {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      z-index: 10;
+      cursor: pointer;
+    }
+  }
+  &__modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: calc(100vh - 50px);
+    bottom: 50px;
+    background-color: var(--gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: opacity 0.2s ease;
+    &__container {
+      width: 85%;
+      height: 70vh;
+      padding: 20px 0;
+      overflow-y: scroll;
+      background-color: var(--white);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      color: var(--text);
+      transition: all 0.2s ease;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}
+@media screen and (max-width: 960px) {
+  .md-d-none {
+    display: none;
+  }
+  .chat {
+    &__lists {
+      width: 100%;
+    }
+  }
+}
+@media screen and (min-width: 959px) {
+  .lg-d-none {
+    display: none;
   }
 }
 </style>
