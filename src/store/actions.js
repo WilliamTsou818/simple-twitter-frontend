@@ -117,12 +117,10 @@ export default {
   },
   // 設定公開聊天室線上的使用者
   SOCKET_publicUsers(context, data) {
-    console.log('SOCKET_publicUsers back', data)
     context.commit('setPublicUsers', data)
   },
   // 公開聊天室系統通知
   SOCKET_announce(context, data) {
-    console.log('SOCKET_announce back', data)
     context.commit('pushPublicAllMessages', {
       ...data,
       isPill: true,
@@ -130,12 +128,10 @@ export default {
   },
   // 公開聊天室訊息
   SOCKET_publicMessage(context, data) {
-    console.log('SOCKET_publicMessage back', data)
     context.commit('pushPublicAllMessages', data)
   },
   // 私人聊天室訊息
   SOCKET_privateMessage(context, data) {
-    console.log('SOCKET_privateMessage back', data)
     context.commit('pushPrivateAllMessages', data)
     // 更新room資料
     const updatePrivateRooms = context.state.privateRooms.map((room) => {
@@ -153,7 +149,6 @@ export default {
   },
   // 未讀訊息
   SOCKET_unReadMessage(context, data) {
-    console.log('SOCKET_unReadMessage back', data)
     context.commit(
       'setPrivateUnreadMessageCount',
       data.privateUnreadMessageCount
@@ -161,7 +156,6 @@ export default {
   },
   // 公開未讀
   SOCKET_publicUnreadMessage(context, data) {
-    console.log('SOCKET_publicUnreadMessage  back', data)
     context.commit('setPublicUnreadMessage', data.hasUnreadPublicMessage)
   },
 }

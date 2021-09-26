@@ -52,18 +52,12 @@ new Vue({
   store,
   render: (h) => h(App),
   sockets: {
-    connect() {
-      console.log('socket connected', this.$socket.connected)
-    },
     disconnect(reason) {
-      console.log('socket disconnect', reason)
+      // console.log('socket disconnect', reason)
       if (reason === "io server disconnect") {
         // the disconnection was initiated by the server, you need to reconnect manually
         this.$socket.connect();
       }
-    },
-    error(error) {
-      console.log('socket error', error)
     },
   },
 }).$mount('#app')

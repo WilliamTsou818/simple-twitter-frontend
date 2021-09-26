@@ -13,12 +13,10 @@ export default {
   },
   // 登出，撤銷相關資料
   revokeAuthentication(state) {
-    // TODO:socket disconnect
+    // socket disconnect
     if (Vue.prototype.$socket.connected) {
-      console.log('呼叫 socket disconnect')
-      // 如果在公共聊天室，要發送離開事件
+      // 如果在聊天室，要發送離開事件
       if (router.currentRoute.name === 'PublicRoom') {
-        console.log('登出前呼叫離開房間')
         Vue.prototype.$socket.emit('leavePublicRoom')
       } else if (
         router.currentRoute.name === 'Private' ||
