@@ -20,7 +20,8 @@ Aphitter (Simple Twitter) 是一個功能類似於 Twitter 的社群網站，使
 
 21/09/26 新增即時聊天功能
 
-使用者可以分別進入公開聊天室與所有用戶進行聊天或是透過個人資料頁面的私訊按鈕向指定用戶發送私人訊息。當收到訊息時側邊攔會顯示未讀訊息提醒使用者。
+使用者可以分別進入公開聊天室與所有用戶進行聊天或是透過個人資料頁面的私訊按鈕向指定用戶發送私人訊息。
+當收到訊息時側邊攔會顯示未讀訊息提醒使用者。
 
 ## 功能介紹
 
@@ -37,7 +38,7 @@ Aphitter (Simple Twitter) 是一個功能類似於 Twitter 的社群網站，使
 
 ## 測試使用者帳號
 
-- user1、user2、user3、user4、user5
+- user1@example.com、user2@example.com、user3@example.com、user4@example.com、user5@example.com
 - 12345678
 
 ## 開發人員
