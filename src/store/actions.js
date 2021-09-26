@@ -138,6 +138,18 @@ export default {
   // 未讀訊息
   SOCKET_unReadMessage(context, data) {
     console.log('SOCKET_unReadMessage back', data)
-    context.commit('setPrivateUnreadMessageCount', data.privateUnreadMessageCount)
+    context.commit(
+      'setPrivateUnreadMessageCount',
+      data.privateUnreadMessageCount
+    )
+    context.commit(
+      'setPublicUnreadMessageCount',
+      data.publicUnreadMessageCount || false
+    )
+  },
+  // 公開未讀
+  SOCKET_publicUnreadMessage(context, data) {
+    console.log('SOCKET_publicUnreadMessage  back', data)
+    context.commit('setPublicUnreadMessageCount', data.hasUnreadPublicMessage)
   },
 }
