@@ -105,8 +105,8 @@ export default {
       try {
         this.isLoading = true
         const { data } = await usersAPI.messages.getPrivateRoom()
-        this.$store.dispatch('setPrivateRooms', data)
         console.log('fetchAllRooms', data)
+        this.$store.dispatch('setPrivateRooms', data)
         this.isLoading = false
       } catch (err) {
         let message = ''

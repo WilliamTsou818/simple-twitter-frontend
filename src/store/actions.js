@@ -1,5 +1,6 @@
 import router from '@/router'
 import usersAPI from '../apis/users'
+import { sortBy } from '../utils/helpers'
 
 export default {
   async fetchCurrentUser({ commit }) {
@@ -106,7 +107,9 @@ export default {
   },
   //設定私人聊天室們
   setPrivateRooms(context, data) {
-    context.commit('setPrivateRooms', data)
+    // 先排序
+    let orderData = sortBy.createdAt(data, sortBy.DESC)
+    context.commit('setPrivateRooms', orderData)
   },
   // 設定私人聊天室歷史訊息
   setPrivateAllMessages(context, data) {

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import dayjs from 'dayjs'
 
 //需替換
 const baseURL = 'https://wahp-simeple-twitter-api.herokuapp.com/api'
@@ -36,3 +37,25 @@ axiosInstance.interceptors.response.use(
 )
 
 export const apiHelper = axiosInstance
+
+export const sortBy = {
+  ASC: 'ASC',
+  DESC: 'DESC',
+  // ASC 小到大(舊到新) | DESC 大到小(新到舊)
+  // 用CreatedAt排序
+  createdAt(dataArray, orderby) {
+    let newArray = []
+    switch (orderby) {
+      case sortBy.ASC:
+        newArray = [...dataArray].sort((a, b) => dayjs(a.createdAt).unix() - dayjs(b.createdAt).unix())
+        break;
+      case sortBy.DESC:
+        newArray = [...dataArray].sort((a, b) => dayjs(b.createdAt).unix() - dayjs(a.createdAt).unix())
+        break;
+      default:
+        newArray = dataArray
+        break;
+    }
+    return newArray
+  }
+}
