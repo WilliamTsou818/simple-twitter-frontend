@@ -52,23 +52,12 @@ new Vue({
   store,
   render: (h) => h(App),
   sockets: {
-    connect() {
-      console.log('socket connected', this.$socket.connected)
-    },
     disconnect(reason) {
-      console.log('socket disconnect', reason)
+      // console.log('socket disconnect', reason)
       if (reason === "io server disconnect") {
         // the disconnection was initiated by the server, you need to reconnect manually
         this.$socket.connect();
       }
-    },
-    error(error) {
-      console.log('socket error', error)
-    },
-    // TODO:這邊之後如果沒有需要就可以刪掉
-    // 私人聊天室(訊息通知)
-    privateMessage(data) {
-      console.log('privateMessage back', data)
     },
   },
 }).$mount('#app')
