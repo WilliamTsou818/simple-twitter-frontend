@@ -129,9 +129,12 @@ export default {
     ...mapState(['currentUser', 'privateRooms', 'privateAllMessages']),
   },
   created() {
-    const { room_id } = this.$route.params
-    console.log('room_id', room_id)
-    this.openPrivateRoom(Number(room_id))
+    console.log('created socket connected', this.$socket.connected)
+    if (this.$socket.connected) {
+      const { room_id } = this.$route.params
+      console.log('created room_id', room_id)
+      this.openPrivateRoom(Number(room_id))
+    }
   },
   beforeRouteUpdate(to, from, next) {
     console.log('beforeRouteUpdate to', to)
@@ -150,6 +153,28 @@ export default {
       console.log('beforeDestroy------------leavePrivateRoom')
       this.$socket.emit('leavePrivateRoom')
     }
+  },
+  sockets: {
+    connect() {
+      console.log('privateRoom socket connected', this.$socket.connected)
+      // 斷線重連，重新加入房間
+      const { room_id } = this.$route.params
+      console.log('privateRoom socket room_id', room_id)
+      this.openPrivateRoom(Number(room_id))
+    },
+    error(error) {
+      console.log('privateRoom socket error', error)
+      let title = ''
+      switch (error.errType) {
+        default:
+          title = 'PrivateRoom Error!'
+          break
+      }
+      this.ToastError({
+        title,
+        description: error.message,
+      })
+    },
   },
   methods: {
     async openPrivateRoom(room_id) {
