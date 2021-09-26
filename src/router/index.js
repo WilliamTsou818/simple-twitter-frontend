@@ -139,7 +139,7 @@ const routes = [
         //私人聊天室
         path: '/user/chat/private',
         name: 'Private',
-        component: () => import('../views/User/PrivateRoom.vue'),
+        redirect: '/user/chat/private/0',
         beforeEnter: checkUserAuthorize,
       },
       {

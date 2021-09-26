@@ -121,4 +121,7 @@ export default {
   setPrivateAllMessages(state, data) {
     state.privateAllMessages = [...data]
   },
+  pushPrivateAllMessages(state, data) {
+    state.privateAllMessages.push(data)
+  },
 }

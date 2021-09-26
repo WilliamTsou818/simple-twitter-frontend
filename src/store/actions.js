@@ -133,6 +133,7 @@ export default {
   // 私人聊天室訊息
   SOCKET_privateMessage(context, data) {
     console.log('SOCKET_privateMessage back', data)
+    context.commit('pushPrivateAllMessages', data)
   },
   // 未讀訊息
   SOCKET_unReadMessage(context, data) {

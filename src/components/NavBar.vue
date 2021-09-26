@@ -29,7 +29,16 @@
           </NavItem>
         </router-link>
 
-        <router-link class="nav-left__nav__link" to="/user/chat/private">
+        <router-link
+          :class="[
+            'nav-left__nav__link',
+            { 'router-link-active': room === 'PrivateRoom' },
+          ]"
+          :to="{
+            name: 'PrivateRoom',
+            params: { room_id: 0 },
+          }"
+        >
           <NavItem title="私人訊息" :count="privateUnreadMessageCount">
             <IconMail />
           </NavItem>
@@ -111,6 +120,9 @@ export default {
   name: 'NavBar',
   computed: {
     ...mapState(['currentUser', 'privateUnreadMessageCount']),
+    room() {
+      return this.$route.name
+    },
   },
   components: {
     NavItem,
