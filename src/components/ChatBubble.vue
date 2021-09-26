@@ -53,11 +53,11 @@ export default {
 }
 .chatBubble {
   display: flex;
-  justify-content: left;
+  justify-content: flex-start;
   align-items: flex-end;
   padding: 10px 15px;
   &-self {
-    justify-content: right;
+    justify-content: flex-end;
     .chatBubble__avatar {
       display: none;
     }

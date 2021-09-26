@@ -7,8 +7,10 @@
         <Spinner v-show="isLoading" />
       </div>
       <div class="chat__room">
-        <Head title="公開聊天室" class="md-d-none" />
-        <Head :title="chatUsers" class="lg-d-none" />
+        <div class="md-d-none">
+          <Head title="公開聊天室" class="md-d-none" />
+        </div>
+        <div class="lg-d-none"><Head :title="chatUsers" /></div>
         <div class="chat__head lg-d-none">
           <div class="chat__head__lists">
             <div
