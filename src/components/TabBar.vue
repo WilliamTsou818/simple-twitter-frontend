@@ -72,37 +72,14 @@
       </div>
       <div class="tab-bar__tab">
         <router-link to="/user/chat/public">
-          <svg
-            class="tab-bar__tab__icon"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12.0029 23.274C11.9199 23.274 11.8359 23.26 11.7549 23.232C11.4549 23.127 11.2529 22.842 11.2529 22.524V18.384C9.17292 18.212 7.23992 17.318 5.74692 15.824C2.29692 12.374 2.29692 6.76204 5.74692 3.31404C9.19692 -0.133955 14.8089 -0.135955 18.2589 3.31404C21.3549 6.41104 21.7089 11.384 19.0789 14.879L12.5889 22.991C12.4429 23.173 12.2259 23.273 12.0019 23.273L12.0029 23.274ZM12.0029 2.22405C10.1209 2.22405 8.23992 2.94105 6.80792 4.37405C3.94392 7.23705 3.94392 11.898 6.80792 14.764C8.19592 16.151 10.0409 16.914 12.0029 16.914C12.4169 16.914 12.7529 17.251 12.7529 17.664V20.384L17.8949 13.959C20.0649 11.074 19.7709 6.94505 17.1989 4.37205C15.7649 2.94205 13.8829 2.22405 12.0019 2.22405H12.0029Z"
-            />
-            <path
-              d="M15.55 8.70007H8.44995C8.03695 8.70007 7.69995 8.36307 7.69995 7.95007C7.69995 7.53707 8.03695 7.20007 8.44995 7.20007H15.55C15.963 7.20007 16.3 7.53507 16.3 7.95007C16.3 8.36507 15.963 8.70007 15.55 8.70007ZM12.5 11.9381H8.44995C8.03695 11.9381 7.69995 11.6021 7.69995 11.1881C7.69995 10.7741 8.03695 10.4381 8.44995 10.4381H12.5C12.914 10.4381 13.25 10.7741 13.25 11.1881C13.25 11.6021 12.914 11.9381 12.5 11.9381Z"
-            />
-          </svg>
+          <NavItem :badge="publicUnreadMessage">
+            <IconChat />
+          </NavItem>
         </router-link>
       </div>
       <div class="tab-bar__tab">
-        <router-link to="/user/home">
-          <svg
-            class="tab-bar__tab__icon"
-            width="24"
-            height="22"
-            viewBox="0 0 24 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M22.58 6.34986L12.475 0.896855C12.178 0.736855 11.821 0.736855 11.525 0.896855L1.42496 6.34986C0.938957 6.61386 0.757957 7.21986 1.01996 7.70586C1.19996 8.04086 1.54496 8.23086 1.89996 8.23086C2.05996 8.23086 2.22396 8.19286 2.37496 8.11086L3.10896 7.71486L4.69896 18.9649C4.91496 20.1789 6.00896 21.0269 7.35896 21.0269H16.641C17.991 21.0269 19.085 20.1789 19.303 18.9389L20.891 7.71386L21.628 8.11186C22.113 8.37486 22.72 8.19386 22.982 7.70786C23.245 7.22186 23.062 6.61486 22.578 6.35286L22.58 6.34986ZM12 14.4349C10.205 14.4349 8.74996 12.9799 8.74996 11.1849C8.74996 9.38986 10.205 7.93486 12 7.93486C13.795 7.93486 15.25 9.38986 15.25 11.1849C15.25 12.9799 13.795 14.4349 12 14.4349Z"
-            />
-          </svg>
+        <router-link to="/user/home" class="tab-bar__tab__icon">
+          <IconHome />
         </router-link>
       </div>
       <div class="tab-bar__tab">
@@ -111,8 +88,12 @@
             name: 'PrivateRoom',
             params: { room_id: 0 },
           }"
+          :class="[
+            'tab-bar__tab__icon',
+            { 'router-link-active': room === 'PrivateRoom' },
+          ]"
         >
-          <NavItem title="私人訊息">
+          <NavItem title="私人訊息" :count="privateUnreadMessageCount">
             <IconMail />
           </NavItem>
         </router-link>
@@ -122,14 +103,14 @@
       </div>
       <div v-show="isMenuOpen" class="tab-bar__menu" @click="hanadleMenuToggle">
         <div class="tab-bar__menu__container">
-          <router-link to="/user/setting">
-            <IconSetting />
-          </router-link>
           <router-link
             :to="{ name: 'UserInfo', params: { user_id: currentUser.id } }"
             class="tab-bar__menu__icon"
           >
             <IconUser />
+          </router-link>
+          <router-link to="/user/setting" class="tab-bar__menu__icon">
+            <IconSetting />
           </router-link>
           <div class="tab-bar__menu__icon">
             <button @click="handleLogout">
@@ -164,6 +145,8 @@ import IconMail from '@/components/icons/IconMail'
 import IconMore from '@/components/icons/IconMore'
 import IconSetting from '@/components/icons/IconSetting'
 import IconUser from '@/components/icons/IconUser'
+import IconHome from '@/components/icons/IconHome'
+import IconChat from '@/components/icons/IconChat'
 
 export default {
   name: 'TabBar',
@@ -176,6 +159,18 @@ export default {
     IconMore,
     IconSetting,
     IconUser,
+    IconHome,
+    IconChat,
+  },
+  computed: {
+    ...mapState([
+      'currentUser',
+      'privateUnreadMessageCount',
+      'publicUnreadMessage',
+    ]),
+    room() {
+      return this.$route.name
+    },
   },
   data() {
     return {
@@ -214,11 +209,13 @@ export default {
     justify-content: center;
     width: 6rem;
     height: 50px;
+    color: var(--theme);
     &__icon--left {
       stroke: var(--black);
     }
     &__icon {
       fill: var(--black);
+      color: var(--black);
     }
     &:hover {
       background-color: var(--theme-200);
@@ -226,11 +223,13 @@ export default {
     &:hover > a > .tab-bar__tab__icon,
     &:hover > button > .tab-bar__tab__icon {
       fill: var(--theme);
+      color: var(--theme);
     }
     &:hover > button > .tab-bar__tab__icon--left {
       stroke: var(--theme);
     }
     > .router-link-active {
+      color: var(--theme);
       > .tab-bar__tab__icon {
         fill: var(--theme);
       }
@@ -243,15 +242,16 @@ export default {
     bottom: 50px;
     background-color: var(--gray-100);
     &__container {
-      width: 80px;
-      height: 120px;
+      width: 48px;
+      height: 140px;
       background-color: var(--white);
       border-radius: 20px;
       position: absolute;
-      bottom: 10px;
-      right: 32px;
+      bottom: 8px;
+      right: 8px;
       display: flex;
       flex-direction: column;
+      justify-content: space-evenly;
       color: var(--text);
     }
     &__icon {
