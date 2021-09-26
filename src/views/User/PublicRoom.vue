@@ -100,9 +100,8 @@ export default {
   },
   methods: {
     async openPublicRoom() {
-      console.log('openPublicRoom')
+      // console.log('openPublicRoom')
       await this.fetchAllMessages()
-      console.log('created------------joinPublicRoom')
       this.$socket.emit('joinPublicRoom')
       this.isJoin = true
     },
@@ -110,7 +109,7 @@ export default {
       try {
         this.isLoading = true
         const { data } = await usersAPI.messages.getPublicAll()
-        console.log('fetchAllMessages', data)
+        // console.log('fetchAllMessages', data)
         this.$store.dispatch('setPublicAllMessages', data)
         this.isLoading = false
       } catch (err) {
