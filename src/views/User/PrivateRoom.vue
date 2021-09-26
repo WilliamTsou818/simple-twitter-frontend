@@ -1,19 +1,21 @@
 <template>
   <div class="container container--chat">
-    <div
-      v-show="isListOpen"
-      class="chat__modal lg-d-none"
-      @click="handleToggleList"
-    >
-      <div class="chat__modal__container">
-        <ChatList
-          v-for="data in privateRooms"
-          :key="data.RoomId"
-          :user="data.User"
-          :room="data"
-        />
+    <transition class="modal" name="modal">
+      <div
+        v-show="isListOpen"
+        class="chat__modal lg-d-none"
+        @click="handleToggleList"
+      >
+        <div class="chat__modal__container">
+          <ChatList
+            v-for="data in privateRooms"
+            :key="data.RoomId"
+            :user="data.User"
+            :room="data"
+          />
+        </div>
       </div>
-    </div>
+    </transition>
     <div class="chat">
       <div class="chat__lists md-d-none">
         <Head title="訊息" message />
@@ -63,7 +65,7 @@ export default {
       isLoading: true,
       isJoin: false,
       currentRoomData: {},
-      isListOpen: true,
+      isListOpen: false,
     }
   },
   computed: {
@@ -218,6 +220,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.modal-enter,
+.modal-leave-active {
+  opacity: 0;
+}
+.modal-enter .modal__container,
+.modal-leave-active .chat__modal__container {
+  transform: scale(1.2);
+}
+
 .chat {
   display: flex;
   &__lists {
@@ -251,6 +262,7 @@ export default {
     align-items: center;
     justify-content: center;
     z-index: 10;
+    transition: opacity 0.2s ease;
     &__container {
       width: 85%;
       height: 70vh;
@@ -261,6 +273,7 @@ export default {
       display: flex;
       flex-direction: column;
       color: var(--text);
+      transition: all 0.2s ease;
       &::-webkit-scrollbar {
         display: none;
       }

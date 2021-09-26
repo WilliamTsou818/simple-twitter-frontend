@@ -55,7 +55,12 @@
     </template>
     <template v-if="currentUser.role === 'user'">
       <div class="tab-bar__tab">
-        <button @click.stop.prevent="$emit('new-post')">
+        <button
+          @click.stop.prevent="
+            $emit('new-post')
+            handleMenuClose()
+          "
+        >
           <svg
             class="tab-bar__tab__icon"
             width="24"
@@ -70,19 +75,19 @@
           </svg>
         </button>
       </div>
-      <div class="tab-bar__tab">
+      <div class="tab-bar__tab" @click="handleMenuClose">
         <router-link to="/user/chat/public">
           <NavItem :badge="publicUnreadMessage">
             <IconChat />
           </NavItem>
         </router-link>
       </div>
-      <div class="tab-bar__tab">
+      <div class="tab-bar__tab" @click="handleMenuClose">
         <router-link to="/user/home" class="tab-bar__tab__icon">
           <IconHome />
         </router-link>
       </div>
-      <div class="tab-bar__tab">
+      <div class="tab-bar__tab" @click="handleMenuClose">
         <router-link
           :to="{
             name: 'PrivateRoom',
@@ -186,6 +191,9 @@ export default {
     },
     hanadleMenuToggle() {
       this.isMenuOpen = !this.isMenuOpen
+    },
+    handleMenuClose() {
+      this.isMenuOpen = false
     },
   },
 }
