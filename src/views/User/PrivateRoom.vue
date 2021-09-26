@@ -241,6 +241,8 @@ export default {
   }
   &__modal {
     position: fixed;
+    left: 0;
+    top: 0;
     width: 100vw;
     height: calc(100vh - 50px);
     bottom: 50px;
@@ -248,10 +250,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 20;
+    z-index: 10;
     &__container {
       width: 85%;
       height: 70vh;
+      padding: 20px 0;
       overflow-y: scroll;
       background-color: var(--white);
       border-radius: 20px;
