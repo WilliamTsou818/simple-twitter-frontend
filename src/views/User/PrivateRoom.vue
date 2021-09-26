@@ -131,7 +131,7 @@ export default {
   created() {
     const { room_id } = this.$route.params
     console.log('room_id', room_id)
-    this.openPrivateRoom(room_id)
+    this.openPrivateRoom(Number(room_id))
   },
   beforeRouteUpdate(to, from, next) {
     console.log('beforeRouteUpdate to', to)
@@ -142,7 +142,7 @@ export default {
     }
     const { room_id } = to.params
     console.log('beforeRouteUpdate room_id', room_id)
-    this.openPrivateRoom(room_id)
+    this.openPrivateRoom(Number(room_id))
     next()
   },
   beforeDestroy() {
