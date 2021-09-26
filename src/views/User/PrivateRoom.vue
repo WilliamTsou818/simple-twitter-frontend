@@ -49,41 +49,33 @@ export default {
     ...mapState(['currentUser', 'privateRooms', 'privateAllMessages']),
   },
   created() {
-    console.log('created socket connected', this.$socket.connected)
     if (this.$socket.connected) {
       const { room_id } = this.$route.params
-      console.log('created room_id', room_id)
       this.openPrivateRoom(Number(room_id))
     }
   },
   beforeRouteUpdate(to, from, next) {
-    console.log('beforeRouteUpdate to', to)
     // 這邊要離開房間?在join?
     if (this.isJoin) {
-      console.log('beforeRouteUpdate------------leavePrivateRoom')
       this.$socket.emit('leavePrivateRoom')
     }
     const { room_id } = to.params
-    console.log('beforeRouteUpdate room_id', room_id)
     this.openPrivateRoom(Number(room_id))
     next()
   },
   beforeDestroy() {
     if (this.isJoin) {
-      console.log('beforeDestroy------------leavePrivateRoom')
       this.$socket.emit('leavePrivateRoom')
     }
   },
   sockets: {
     connect() {
-      console.log('privateRoom socket connected', this.$socket.connected)
       // 斷線重連，重新加入房間
       const { room_id } = this.$route.params
-      console.log('privateRoom socket room_id', room_id)
       this.openPrivateRoom(Number(room_id))
     },
     error(error) {
-      console.log('privateRoom socket error', error)
+      console.log('privateRoon socket error', error)
       let title = ''
       switch (error.errType) {
         default:
@@ -95,6 +87,13 @@ export default {
         description: error.message,
       })
     },
+    // 新私聊房間出現
+    newPrivateRoom() {
+      this.fetchAllRooms()
+    },
+    unReadMessage() {
+      this.fetchAllRooms()
+    },
   },
   methods: {
     async openPrivateRoom(room_id) {
@@ -105,8 +104,8 @@ export default {
       try {
         this.isLoading = true
         const { data } = await usersAPI.messages.getPrivateRoom()
-        this.$store.dispatch('setPrivateRooms', data)
         console.log('fetchAllRooms', data)
+        this.$store.dispatch('setPrivateRooms', data)
         this.isLoading = false
       } catch (err) {
         let message = ''
@@ -149,7 +148,7 @@ export default {
           { targetUserId: roomData.UserId, currentUserId: this.currentUser.id },
           (response) => {
             // 回傳room_id
-            console.log('response', response)
+            // console.log('response', response)
           }
         )
         this.isJoin = true
@@ -182,7 +181,6 @@ export default {
       }
     },
     handleNewChatSend(content) {
-      console.log('handleNewChatSend', content)
       this.$socket.emit('privateMessage', {
         currentUserId: this.currentUser.id,
         RoomId: this.currentRoomData.RoomId,

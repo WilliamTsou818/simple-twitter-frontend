@@ -68,14 +68,12 @@ export default {
     },
   },
   created() {
-    console.log('created socket connected ', this.$socket.connected)
     if (this.$socket.connected) {
       this.openPublicRoom()
     }
   },
   beforeDestroy() {
     if (this.isJoin) {
-      console.log('beforeDestroy------------leavePublicRoom')
       this.$socket.emit('leavePublicRoom')
       // 清空上線使用者
       this.$store.commit('setPublicUsers', [])
@@ -83,7 +81,6 @@ export default {
   },
   sockets: {
     connect() {
-      console.log('publicRoon socket connected', this.$socket.connected)
       // 斷線重連，重新加入房間
       this.openPublicRoom()
     },
@@ -133,7 +130,6 @@ export default {
       }
     },
     handleNewChatSend(content) {
-      console.log('handleNewChatSend', content)
       this.$socket.emit('publicMessage', {
         UserId: this.$store.getters.getCurrentUser.id,
         RoomId: 5,

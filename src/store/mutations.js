@@ -13,12 +13,10 @@ export default {
   },
   // 登出，撤銷相關資料
   revokeAuthentication(state) {
-    // TODO:socket disconnect
+    // socket disconnect
     if (Vue.prototype.$socket.connected) {
-      console.log('呼叫 socket disconnect')
-      // 如果在公共聊天室，要發送離開事件
+      // 如果在聊天室，要發送離開事件
       if (router.currentRoute.name === 'PublicRoom') {
-        console.log('登出前呼叫離開房間')
         Vue.prototype.$socket.emit('leavePublicRoom')
       } else if (
         router.currentRoute.name === 'Private' ||
@@ -33,6 +31,13 @@ export default {
     state.isAuthenticated = false
     state.token = ''
     localStorage.removeItem('token')
+    // 重置聊天室資料
+    state.publicUsers = []
+    state.publicUnreadMessage = false
+    state.publicAllMessages = []
+    state.privateRooms = []
+    state.privateUnreadMessageCount = 0
+    state.privateAllMessages = []
   },
   setInitViewUser(state, data) {
     //編輯個人資料 先暫時用解構賦值解決
