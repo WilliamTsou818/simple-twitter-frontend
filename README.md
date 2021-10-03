@@ -45,7 +45,7 @@ Aphitter (Simple Twitter) 是一個功能類似於 Twitter 的社群網站，使
 
 - WAHP (work at home professions)
 - 後端 [WilliamTsou](https://github.com/WilliamTsou818)
-- 後端 [Avery](https://github.com/AveryYang)
+- 後端 [Avery](https://github.com/Kcih4518)
 - 前端 [Hugh](https://github.com/indexhui)
 - 前端 [PINPIN](https://github.com/YPINPIN)
 
